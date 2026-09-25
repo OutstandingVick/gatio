@@ -1,8 +1,7 @@
 import { cn } from "@/lib/cn";
 import { COLOR_HEX, topicColor, type ColorKey } from "@/lib/topics";
 
-export const COVER_STYLES = ["bars", "circles", "squares", "triangle", "line", "rings"] as const;
-export type CoverStyle = (typeof COVER_STYLES)[number];
+import { COVER_STYLES, type CoverStyle } from "@/lib/covers";
 
 type CoverProps = {
   coverStyle?: string | null;

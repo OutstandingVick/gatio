@@ -1,6 +1,6 @@
 import { defineField } from "sanity";
 import { COLOR_KEYS } from "../../lib/topics";
-import { COVER_STYLES } from "../../components/ui/Cover";
+import { COVER_STYLES } from "../../lib/covers";
 
 export const colorKeyOptions = COLOR_KEYS.map((key) => ({ title: key, value: key }));
 
