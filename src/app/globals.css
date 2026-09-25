@@ -1,26 +1,116 @@
 @import "tailwindcss";
 
+/* ------------------------------------------------------------------ */
+/* Design tokens                                                        */
+/* ------------------------------------------------------------------ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Surfaces */
+  --cream: #f6f1e7;
+  --paper: #fffdf8;
+  --sand: #ede5d4;
+  --line: #ddd3c0;
+
+  /* Text + brand */
+  --ink: #14213d;
+  --ink-muted: #3a4460;
+  --accent: #c2410c;
+  --teal: #0b6b6a;
+  --plum: #6b2d5c;
+  --mustard: #e9b949;
+  --mustard-text: #8a5a00; /* use when mustard is needed as a text colour */
+
+  /* Topics */
+  --topic-payments: var(--accent);
+  --topic-banking: var(--teal);
+  --topic-consumer: var(--plum);
+  --topic-digital-economy: var(--mustard);
+  --topic-fintech: var(--ink);
+  --topic-markets: var(--ink);
+
+  /* Radii */
+  --radius-card: 20px;
+  --radius-panel: 28px;
+
+  /* Layout */
+  --container-max: 1280px;
+  --gutter: 20px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@media (min-width: 1024px) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --gutter: 80px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@theme inline {
+  --color-cream: var(--cream);
+  --color-paper: var(--paper);
+  --color-sand: var(--sand);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-accent: var(--accent);
+  --color-teal: var(--teal);
+  --color-plum: var(--plum);
+  --color-mustard: var(--mustard);
+  --color-mustard-text: var(--mustard-text);
+
+  --color-topic-payments: var(--topic-payments);
+  --color-topic-banking: var(--topic-banking);
+  --color-topic-consumer: var(--topic-consumer);
+  --color-topic-digital-economy: var(--topic-digital-economy);
+  --color-topic-fintech: var(--topic-fintech);
+  --color-topic-markets: var(--topic-markets);
+
+  --font-sans: var(--font-instrument-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+
+  --radius-card: var(--radius-card);
+  --radius-panel: var(--radius-panel);
+
+  --tracking-headline: -0.025em;
+}
+
+/* ------------------------------------------------------------------ */
+/* Base                                                                 */
+/* ------------------------------------------------------------------ */
+@layer base {
+  html {
+    background: var(--cream);
+    color: var(--ink);
+  }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: var(--font-sans);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  .headline {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: var(--tracking-headline);
+    line-height: 1.08;
+    font-optical-sizing: auto;
+  }
+
+  :is(h1, h2, h3, h4, .headline) em {
+    color: var(--accent);
+    font-style: italic;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: var(--mustard);
+    color: var(--ink);
+  }
 }
