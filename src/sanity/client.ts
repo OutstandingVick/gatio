@@ -1,4 +1,4 @@
-import { createClient, type QueryParams } from "next-sanity";
+import { createClient, type ClientReturn, type QueryParams } from "next-sanity";
 import { apiVersion, dataset, isSanityConfigured, projectId, readToken } from "./env";
 
 export const client = createClient({
@@ -24,16 +24,17 @@ type FetchOptions<Q extends string> = {
 /**
  * Typed, cached fetch. Results are cached with Next's data cache, tagged by
  * document type, and refreshed either by the webhook or after `revalidate` seconds.
+ * Result types come from Sanity TypeGen via the query string.
  * Returns null when Sanity isn't configured so pages still render.
  */
-export async function sanityFetch<const Q extends string, R = unknown>({
+export async function sanityFetch<const Q extends string>({
   query,
   params = {},
   tags,
   revalidate = 60,
-}: FetchOptions<Q>): Promise<R | null> {
+}: FetchOptions<Q>): Promise<ClientReturn<Q> | null> {
   if (!isSanityConfigured) return null;
   return client
     .withConfig(readToken ? { token: readToken } : {})
-    .fetch<R>(query, params, { next: { revalidate, tags } });
+    .fetch(query, params, { next: { revalidate, tags } });
 }
