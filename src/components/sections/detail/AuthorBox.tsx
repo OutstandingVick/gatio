@@ -4,7 +4,9 @@ import type { AuthorDetail } from "@/sanity/types";
 
 function initials(name: string | null) {
   return (name ?? "?")
+    .replace(/[^\p{L}\s]/gu, "")
     .split(/\s+/)
+    .filter(Boolean)
     .map((p) => p[0])
     .slice(0, 2)
     .join("")
