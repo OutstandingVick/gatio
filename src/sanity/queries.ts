@@ -29,9 +29,12 @@ const articleCardFields = /* groq */ `
   author->{ name, "slug": slug.current }
 `;
 
+/** The featured report, falling back to the latest report. */
 export const featuredReportQuery = defineQuery(`
-  *[_type == "report" && featured == true && defined(slug.current)]
-    | order(publishedAt desc)[0]{ ${reportCardFields}, keyFindings }
+  coalesce(
+    *[_type == "report" && featured == true && defined(slug.current)] | order(publishedAt desc)[0],
+    *[_type == "report" && defined(slug.current)] | order(publishedAt desc)[0]
+  ){ ${reportCardFields}, keyFindings, "pdfUrl": pdf.asset->url }
 `);
 
 export const latestReportsQuery = defineQuery(`
@@ -42,6 +45,7 @@ export const latestReportsQuery = defineQuery(`
 export const reportBySlugQuery = defineQuery(`
   *[_type == "report" && slug.current == $slug][0]{
     ${reportCardFields},
+    "topicId": topic._ref,
     authors[]->{ _id, name, "slug": slug.current, role, photo, bio },
     keyFindings,
     body,
@@ -66,6 +70,7 @@ export const latestArticlesQuery = defineQuery(`
 export const articleBySlugQuery = defineQuery(`
   *[_type == "article" && slug.current == $slug][0]{
     ${articleCardFields},
+    "topicId": topic._ref,
     author->{ _id, name, "slug": slug.current, role, photo, bio },
     body,
     seo,
@@ -75,4 +80,36 @@ export const articleBySlugQuery = defineQuery(`
 
 export const allTopicsQuery = defineQuery(`
   *[_type == "topic"] | order(title asc){ ${topicFields}, description }
+`);
+
+/** All reports, newest first, optionally filtered by topic slug (pass null for all). */
+export const reportsListQuery = defineQuery(`
+  *[_type == "report" && defined(slug.current) && (!defined($topic) || topic->slug.current == $topic)]
+    | order(publishedAt desc){ ${reportCardFields} }
+`);
+
+/** Other reports on the same topic. */
+export const relatedReportsQuery = defineQuery(`
+  *[_type == "report" && defined(slug.current) && _id != $id && topic._ref == $topicId]
+    | order(publishedAt desc)[0...3]{ ${reportCardFields} }
+`);
+
+export const reportSlugsQuery = defineQuery(`
+  *[_type == "report" && defined(slug.current)].slug.current
+`);
+
+/** All articles, newest first, optionally filtered by topic slug (pass null for all). */
+export const articlesListQuery = defineQuery(`
+  *[_type == "article" && defined(slug.current) && (!defined($topic) || topic->slug.current == $topic)]
+    | order(publishedAt desc){ ${articleCardFields} }
+`);
+
+/** Other articles, same topic first, then newest. */
+export const relatedArticlesQuery = defineQuery(`
+  *[_type == "article" && defined(slug.current) && _id != $id]
+    | order(select(topic._ref == $topicId => 1, 0) desc, publishedAt desc)[0...3]{ ${articleCardFields} }
+`);
+
+export const articleSlugsQuery = defineQuery(`
+  *[_type == "article" && defined(slug.current)].slug.current
 `);

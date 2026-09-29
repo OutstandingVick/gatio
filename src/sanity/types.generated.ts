@@ -364,7 +364,7 @@ export type AllSanitySchemaTypes =
 
 // Source: src/sanity/queries.ts
 // Variable: featuredReportQuery
-// Query: *[_type == "report" && featured == true && defined(slug.current)]    | order(publishedAt desc)[0]{   _id,  title,  "slug": slug.current,  subtitle,  abstract,  coverStyle,  publishedAt,  featured,  // Estimated from body length at ~220 words per minute.  "readTime": round(length(pt::text(body)) / 5 / 220) + 1,  topic->{ _id, title, "slug": slug.current, colorKey }, keyFindings }
+// Query: coalesce(    *[_type == "report" && featured == true && defined(slug.current)] | order(publishedAt desc)[0],    *[_type == "report" && defined(slug.current)] | order(publishedAt desc)[0]  ){   _id,  title,  "slug": slug.current,  subtitle,  abstract,  coverStyle,  publishedAt,  featured,  // Estimated from body length at ~220 words per minute.  "readTime": round(length(pt::text(body)) / 5 / 220) + 1,  topic->{ _id, title, "slug": slug.current, colorKey }, keyFindings, "pdfUrl": pdf.asset->url }
 export type FeaturedReportQueryResult = {
   _id: string;
   title: string | null;
@@ -388,6 +388,7 @@ export type FeaturedReportQueryResult = {
     _type: "finding";
     _key: string;
   }> | null;
+  pdfUrl: string | null;
 } | null;
 
 // Source: src/sanity/queries.ts
@@ -414,7 +415,7 @@ export type LatestReportsQueryResult = Array<{
 
 // Source: src/sanity/queries.ts
 // Variable: reportBySlugQuery
-// Query: *[_type == "report" && slug.current == $slug][0]{      _id,  title,  "slug": slug.current,  subtitle,  abstract,  coverStyle,  publishedAt,  featured,  // Estimated from body length at ~220 words per minute.  "readTime": round(length(pt::text(body)) / 5 / 220) + 1,  topic->{ _id, title, "slug": slug.current, colorKey },    authors[]->{ _id, name, "slug": slug.current, role, photo, bio },    keyFindings,    body,    methodology,    sources,    "pdfUrl": pdf.asset->url,    seo,    isSample  }
+// Query: *[_type == "report" && slug.current == $slug][0]{      _id,  title,  "slug": slug.current,  subtitle,  abstract,  coverStyle,  publishedAt,  featured,  // Estimated from body length at ~220 words per minute.  "readTime": round(length(pt::text(body)) / 5 / 220) + 1,  topic->{ _id, title, "slug": slug.current, colorKey },    "topicId": topic._ref,    authors[]->{ _id, name, "slug": slug.current, role, photo, bio },    keyFindings,    body,    methodology,    sources,    "pdfUrl": pdf.asset->url,    seo,    isSample  }
 export type ReportBySlugQueryResult = {
   _id: string;
   title: string | null;
@@ -432,6 +433,7 @@ export type ReportBySlugQueryResult = {
     slug: string | null;
     colorKey: "accent" | "ink" | "mustard" | "plum" | "teal" | null;
   } | null;
+  topicId: string | null;
   authors: Array<{
     _id: string;
     name: string | null;
@@ -515,7 +517,7 @@ export type LatestArticlesQueryResult = Array<{
 
 // Source: src/sanity/queries.ts
 // Variable: articleBySlugQuery
-// Query: *[_type == "article" && slug.current == $slug][0]{      _id,  title,  "slug": slug.current,  excerpt,  coverStyle,  publishedAt,  readTime,  featured,  topic->{ _id, title, "slug": slug.current, colorKey },  author->{ name, "slug": slug.current },    author->{ _id, name, "slug": slug.current, role, photo, bio },    body,    seo,    isSample  }
+// Query: *[_type == "article" && slug.current == $slug][0]{      _id,  title,  "slug": slug.current,  excerpt,  coverStyle,  publishedAt,  readTime,  featured,  topic->{ _id, title, "slug": slug.current, colorKey },  author->{ name, "slug": slug.current },    "topicId": topic._ref,    author->{ _id, name, "slug": slug.current, role, photo, bio },    body,    seo,    isSample  }
 export type ArticleBySlugQueryResult = {
   _id: string;
   title: string | null;
@@ -547,6 +549,7 @@ export type ArticleBySlugQueryResult = {
     } | null;
     bio: string | null;
   } | null;
+  topicId: string | null;
   body: RichText | null;
   seo: Seo | null;
   isSample: boolean | null;
@@ -563,16 +566,126 @@ export type AllTopicsQueryResult = Array<{
   description: string | null;
 }>;
 
+// Source: src/sanity/queries.ts
+// Variable: reportsListQuery
+// Query: *[_type == "report" && defined(slug.current) && (!defined($topic) || topic->slug.current == $topic)]    | order(publishedAt desc){   _id,  title,  "slug": slug.current,  subtitle,  abstract,  coverStyle,  publishedAt,  featured,  // Estimated from body length at ~220 words per minute.  "readTime": round(length(pt::text(body)) / 5 / 220) + 1,  topic->{ _id, title, "slug": slug.current, colorKey } }
+export type ReportsListQueryResult = Array<{
+  _id: string;
+  title: string | null;
+  slug: string | null;
+  subtitle: string | null;
+  abstract: string | null;
+  coverStyle:
+    "bars" | "circles" | "line" | "rings" | "squares" | "triangle" | null;
+  publishedAt: string | null;
+  featured: boolean | null;
+  readTime: number;
+  topic: {
+    _id: string;
+    title: string | null;
+    slug: string | null;
+    colorKey: "accent" | "ink" | "mustard" | "plum" | "teal" | null;
+  } | null;
+}>;
+
+// Source: src/sanity/queries.ts
+// Variable: relatedReportsQuery
+// Query: *[_type == "report" && defined(slug.current) && _id != $id && topic._ref == $topicId]    | order(publishedAt desc)[0...3]{   _id,  title,  "slug": slug.current,  subtitle,  abstract,  coverStyle,  publishedAt,  featured,  // Estimated from body length at ~220 words per minute.  "readTime": round(length(pt::text(body)) / 5 / 220) + 1,  topic->{ _id, title, "slug": slug.current, colorKey } }
+export type RelatedReportsQueryResult = Array<{
+  _id: string;
+  title: string | null;
+  slug: string | null;
+  subtitle: string | null;
+  abstract: string | null;
+  coverStyle:
+    "bars" | "circles" | "line" | "rings" | "squares" | "triangle" | null;
+  publishedAt: string | null;
+  featured: boolean | null;
+  readTime: number;
+  topic: {
+    _id: string;
+    title: string | null;
+    slug: string | null;
+    colorKey: "accent" | "ink" | "mustard" | "plum" | "teal" | null;
+  } | null;
+}>;
+
+// Source: src/sanity/queries.ts
+// Variable: reportSlugsQuery
+// Query: *[_type == "report" && defined(slug.current)].slug.current
+export type ReportSlugsQueryResult = Array<string | null>;
+
+// Source: src/sanity/queries.ts
+// Variable: articlesListQuery
+// Query: *[_type == "article" && defined(slug.current) && (!defined($topic) || topic->slug.current == $topic)]    | order(publishedAt desc){   _id,  title,  "slug": slug.current,  excerpt,  coverStyle,  publishedAt,  readTime,  featured,  topic->{ _id, title, "slug": slug.current, colorKey },  author->{ name, "slug": slug.current } }
+export type ArticlesListQueryResult = Array<{
+  _id: string;
+  title: string | null;
+  slug: string | null;
+  excerpt: string | null;
+  coverStyle:
+    "bars" | "circles" | "line" | "rings" | "squares" | "triangle" | null;
+  publishedAt: string | null;
+  readTime: number | null;
+  featured: boolean | null;
+  topic: {
+    _id: string;
+    title: string | null;
+    slug: string | null;
+    colorKey: "accent" | "ink" | "mustard" | "plum" | "teal" | null;
+  } | null;
+  author: {
+    name: string | null;
+    slug: string | null;
+  } | null;
+}>;
+
+// Source: src/sanity/queries.ts
+// Variable: relatedArticlesQuery
+// Query: *[_type == "article" && defined(slug.current) && _id != $id]    | order(select(topic._ref == $topicId => 1, 0) desc, publishedAt desc)[0...3]{   _id,  title,  "slug": slug.current,  excerpt,  coverStyle,  publishedAt,  readTime,  featured,  topic->{ _id, title, "slug": slug.current, colorKey },  author->{ name, "slug": slug.current } }
+export type RelatedArticlesQueryResult = Array<{
+  _id: string;
+  title: string | null;
+  slug: string | null;
+  excerpt: string | null;
+  coverStyle:
+    "bars" | "circles" | "line" | "rings" | "squares" | "triangle" | null;
+  publishedAt: string | null;
+  readTime: number | null;
+  featured: boolean | null;
+  topic: {
+    _id: string;
+    title: string | null;
+    slug: string | null;
+    colorKey: "accent" | "ink" | "mustard" | "plum" | "teal" | null;
+  } | null;
+  author: {
+    name: string | null;
+    slug: string | null;
+  } | null;
+}>;
+
+// Source: src/sanity/queries.ts
+// Variable: articleSlugsQuery
+// Query: *[_type == "article" && defined(slug.current)].slug.current
+export type ArticleSlugsQueryResult = Array<string | null>;
+
 // Query TypeMap
 declare global {
   interface SanityQueries {
-    '\n  *[_type == "report" && featured == true && defined(slug.current)]\n    | order(publishedAt desc)[0]{ \n  _id,\n  title,\n  "slug": slug.current,\n  subtitle,\n  abstract,\n  coverStyle,\n  publishedAt,\n  featured,\n  // Estimated from body length at ~220 words per minute.\n  "readTime": round(length(pt::text(body)) / 5 / 220) + 1,\n  topic->{ _id, title, "slug": slug.current, colorKey }\n, keyFindings }\n': FeaturedReportQueryResult;
+    '\n  coalesce(\n    *[_type == "report" && featured == true && defined(slug.current)] | order(publishedAt desc)[0],\n    *[_type == "report" && defined(slug.current)] | order(publishedAt desc)[0]\n  ){ \n  _id,\n  title,\n  "slug": slug.current,\n  subtitle,\n  abstract,\n  coverStyle,\n  publishedAt,\n  featured,\n  // Estimated from body length at ~220 words per minute.\n  "readTime": round(length(pt::text(body)) / 5 / 220) + 1,\n  topic->{ _id, title, "slug": slug.current, colorKey }\n, keyFindings, "pdfUrl": pdf.asset->url }\n': FeaturedReportQueryResult;
     '\n  *[_type == "report" && defined(slug.current)]\n    | order(publishedAt desc)[0...$limit]{ \n  _id,\n  title,\n  "slug": slug.current,\n  subtitle,\n  abstract,\n  coverStyle,\n  publishedAt,\n  featured,\n  // Estimated from body length at ~220 words per minute.\n  "readTime": round(length(pt::text(body)) / 5 / 220) + 1,\n  topic->{ _id, title, "slug": slug.current, colorKey }\n }\n': LatestReportsQueryResult;
-    '\n  *[_type == "report" && slug.current == $slug][0]{\n    \n  _id,\n  title,\n  "slug": slug.current,\n  subtitle,\n  abstract,\n  coverStyle,\n  publishedAt,\n  featured,\n  // Estimated from body length at ~220 words per minute.\n  "readTime": round(length(pt::text(body)) / 5 / 220) + 1,\n  topic->{ _id, title, "slug": slug.current, colorKey }\n,\n    authors[]->{ _id, name, "slug": slug.current, role, photo, bio },\n    keyFindings,\n    body,\n    methodology,\n    sources,\n    "pdfUrl": pdf.asset->url,\n    seo,\n    isSample\n  }\n': ReportBySlugQueryResult;
+    '\n  *[_type == "report" && slug.current == $slug][0]{\n    \n  _id,\n  title,\n  "slug": slug.current,\n  subtitle,\n  abstract,\n  coverStyle,\n  publishedAt,\n  featured,\n  // Estimated from body length at ~220 words per minute.\n  "readTime": round(length(pt::text(body)) / 5 / 220) + 1,\n  topic->{ _id, title, "slug": slug.current, colorKey }\n,\n    "topicId": topic._ref,\n    authors[]->{ _id, name, "slug": slug.current, role, photo, bio },\n    keyFindings,\n    body,\n    methodology,\n    sources,\n    "pdfUrl": pdf.asset->url,\n    seo,\n    isSample\n  }\n': ReportBySlugQueryResult;
     '\n  *[_type == "report" && topic->slug.current == $topic && defined(slug.current)]\n    | order(publishedAt desc){ \n  _id,\n  title,\n  "slug": slug.current,\n  subtitle,\n  abstract,\n  coverStyle,\n  publishedAt,\n  featured,\n  // Estimated from body length at ~220 words per minute.\n  "readTime": round(length(pt::text(body)) / 5 / 220) + 1,\n  topic->{ _id, title, "slug": slug.current, colorKey }\n }\n': ReportsByTopicQueryResult;
     '\n  *[_type == "article" && defined(slug.current)]\n    | order(publishedAt desc)[0...$limit]{ \n  _id,\n  title,\n  "slug": slug.current,\n  excerpt,\n  coverStyle,\n  publishedAt,\n  readTime,\n  featured,\n  topic->{ _id, title, "slug": slug.current, colorKey },\n  author->{ name, "slug": slug.current }\n }\n': LatestArticlesQueryResult;
-    '\n  *[_type == "article" && slug.current == $slug][0]{\n    \n  _id,\n  title,\n  "slug": slug.current,\n  excerpt,\n  coverStyle,\n  publishedAt,\n  readTime,\n  featured,\n  topic->{ _id, title, "slug": slug.current, colorKey },\n  author->{ name, "slug": slug.current }\n,\n    author->{ _id, name, "slug": slug.current, role, photo, bio },\n    body,\n    seo,\n    isSample\n  }\n': ArticleBySlugQueryResult;
+    '\n  *[_type == "article" && slug.current == $slug][0]{\n    \n  _id,\n  title,\n  "slug": slug.current,\n  excerpt,\n  coverStyle,\n  publishedAt,\n  readTime,\n  featured,\n  topic->{ _id, title, "slug": slug.current, colorKey },\n  author->{ name, "slug": slug.current }\n,\n    "topicId": topic._ref,\n    author->{ _id, name, "slug": slug.current, role, photo, bio },\n    body,\n    seo,\n    isSample\n  }\n': ArticleBySlugQueryResult;
     '\n  *[_type == "topic"] | order(title asc){ _id, title, "slug": slug.current, colorKey, description }\n': AllTopicsQueryResult;
+    '\n  *[_type == "report" && defined(slug.current) && (!defined($topic) || topic->slug.current == $topic)]\n    | order(publishedAt desc){ \n  _id,\n  title,\n  "slug": slug.current,\n  subtitle,\n  abstract,\n  coverStyle,\n  publishedAt,\n  featured,\n  // Estimated from body length at ~220 words per minute.\n  "readTime": round(length(pt::text(body)) / 5 / 220) + 1,\n  topic->{ _id, title, "slug": slug.current, colorKey }\n }\n': ReportsListQueryResult;
+    '\n  *[_type == "report" && defined(slug.current) && _id != $id && topic._ref == $topicId]\n    | order(publishedAt desc)[0...3]{ \n  _id,\n  title,\n  "slug": slug.current,\n  subtitle,\n  abstract,\n  coverStyle,\n  publishedAt,\n  featured,\n  // Estimated from body length at ~220 words per minute.\n  "readTime": round(length(pt::text(body)) / 5 / 220) + 1,\n  topic->{ _id, title, "slug": slug.current, colorKey }\n }\n': RelatedReportsQueryResult;
+    '\n  *[_type == "report" && defined(slug.current)].slug.current\n': ReportSlugsQueryResult;
+    '\n  *[_type == "article" && defined(slug.current) && (!defined($topic) || topic->slug.current == $topic)]\n    | order(publishedAt desc){ \n  _id,\n  title,\n  "slug": slug.current,\n  excerpt,\n  coverStyle,\n  publishedAt,\n  readTime,\n  featured,\n  topic->{ _id, title, "slug": slug.current, colorKey },\n  author->{ name, "slug": slug.current }\n }\n': ArticlesListQueryResult;
+    '\n  *[_type == "article" && defined(slug.current) && _id != $id]\n    | order(select(topic._ref == $topicId => 1, 0) desc, publishedAt desc)[0...3]{ \n  _id,\n  title,\n  "slug": slug.current,\n  excerpt,\n  coverStyle,\n  publishedAt,\n  readTime,\n  featured,\n  topic->{ _id, title, "slug": slug.current, colorKey },\n  author->{ name, "slug": slug.current }\n }\n': RelatedArticlesQueryResult;
+    '\n  *[_type == "article" && defined(slug.current)].slug.current\n': ArticleSlugsQueryResult;
   }
 }
 // Lets @sanity/client releases that predate the global registry read it too
