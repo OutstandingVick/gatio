@@ -6,6 +6,9 @@ import { ResearchAreas } from "@/components/sections/home/ResearchAreas";
 import { sanityFetch } from "@/sanity/client";
 import { allTopicsQuery, featuredReportQuery, latestArticlesQuery, latestReportsQuery } from "@/sanity/queries";
 
+// ISR fallback; publishing in the Studio refreshes sooner via the /api/revalidate webhook.
+export const revalidate = 60;
+
 export default async function HomePage() {
   const [reports, featured, articles, topics] = await Promise.all([
     sanityFetch({ query: latestReportsQuery, params: { limit: 6 }, tags: ["report", "topic"] }),
