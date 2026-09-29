@@ -23,7 +23,7 @@ export function Hero({ reports }: { reports: ReportCardData[] }) {
 
       {reports.length > 0 && (
         <Container className="mt-14 md:mt-20">
-          <div className="overflow-hidden rounded-[var(--radius-panel)] bg-sand px-5 pt-6 lg:px-10 lg:pt-10">
+          <div className="overflow-hidden rounded-[var(--radius-panel)] bg-sand px-5 pt-6 xl:px-10 xl:pt-10">
             <ReportFan reports={reports} />
           </div>
         </Container>
