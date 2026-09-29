@@ -68,9 +68,9 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <Button href="/contact" className="hidden sm:inline-flex">
-            Work with us
-          </Button>
+          <div className="hidden sm:block">
+            <Button href="/contact">Work with us</Button>
+          </div>
           <button
             ref={toggleRef}
             type="button"

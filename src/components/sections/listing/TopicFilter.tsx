@@ -15,7 +15,7 @@ const pill =
 /** Topic pills as links, so the filter lives in the URL and works without JS. */
 export function TopicFilter({ topics, active, basePath }: TopicFilterProps) {
   return (
-    <nav aria-label="Filter by topic" className="-mx-[var(--gutter)] overflow-x-auto px-[var(--gutter)] py-1">
+    <nav aria-label="Filter by topic" className="-mx-[var(--gutter)] overflow-x-auto px-[var(--gutter)] py-1 [scrollbar-width:none]">
       <ul className="flex gap-2 sm:flex-wrap">
         <li>
           <Link
