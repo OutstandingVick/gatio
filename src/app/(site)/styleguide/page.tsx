@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { CoverArt } from "@/components/ui/CoverArt";
-import { Footer } from "@/components/ui/Footer";
-import { Navbar } from "@/components/ui/Navbar";
 import { ReportCard } from "@/components/ui/ReportCard";
 import { Section } from "@/components/ui/Section";
 import { StatBlock } from "@/components/ui/StatBlock";
@@ -69,8 +67,6 @@ export default function StyleguidePage() {
 
   return (
     <>
-      <Navbar />
-      <main id="main" className="flex-1">
         <Container className="py-16 md:py-24">
           <p className="mb-4 text-xs font-semibold uppercase tracking-[0.14em] text-accent">Internal · temporary</p>
           <h1 className="text-5xl md:text-7xl">
@@ -214,8 +210,6 @@ export default function StyleguidePage() {
         </Section>
 
         <LiveContent />
-      </main>
-      <Footer />
     </>
   );
 }
