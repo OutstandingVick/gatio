@@ -36,7 +36,7 @@ export function FeaturedReport({ report }: { report: NonNullable<FeaturedReportQ
                   value={f.value ?? ""}
                   label={f.label ?? ""}
                   color={STAT_COLORS[i]}
-                  className="[&>p:first-child]:text-5xl"
+                  size="md"
                 />
               ))}
             </div>
