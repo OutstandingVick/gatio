@@ -3,17 +3,20 @@ import { COLOR_HEX, topicColor, type ColorKey } from "@/lib/topics";
 
 import { COVER_STYLES, type CoverStyle } from "@/lib/covers";
 
-type CoverProps = {
+type CoverArtProps = {
   coverStyle?: string | null;
   topicSlug?: string | null;
   colorKey?: string | null;
   className?: string;
 };
 
+const CREAM = "#F6F1E7";
+
+/** Topic colour as ground; cream, ink and mustard as supporting colours. */
 function palette(color: ColorKey) {
   const bg = COLOR_HEX[color];
   // Shapes contrast with the background; mustard takes ink shapes.
-  const fg = color === "mustard" ? COLOR_HEX.ink : "#FFFDF8";
+  const fg = color === "mustard" ? COLOR_HEX.ink : CREAM;
   const alt = color === "mustard" ? COLOR_HEX.accent : COLOR_HEX.mustard;
   return { bg, fg, alt };
 }
@@ -83,8 +86,8 @@ function Shapes({ style, fg, alt }: { style: CoverStyle; fg: string; alt: string
   }
 }
 
-/** Decorative geometric cover, driven by `coverStyle` and the topic colour. */
-export function Cover({ coverStyle, topicSlug, colorKey, className }: CoverProps) {
+/** Decorative geometric cover art, driven by `coverStyle` and the topic colour. */
+export function CoverArt({ coverStyle, topicSlug, colorKey, className }: CoverArtProps) {
   const style: CoverStyle = (COVER_STYLES as readonly string[]).includes(coverStyle ?? "")
     ? (coverStyle as CoverStyle)
     : "bars";

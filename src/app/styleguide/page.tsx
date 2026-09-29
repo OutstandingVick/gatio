@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
-import { Cover } from "@/components/ui/Cover";
+import { CoverArt } from "@/components/ui/CoverArt";
 import { Footer } from "@/components/ui/Footer";
 import { Navbar } from "@/components/ui/Navbar";
 import { ReportCard } from "@/components/ui/ReportCard";
@@ -161,7 +161,7 @@ export default function StyleguidePage() {
             {COVER_STYLES.map((style, i) => (
               <li key={style}>
                 <div className="aspect-[4/3] overflow-hidden rounded-[var(--radius-card)]">
-                  <Cover coverStyle={style} topicSlug={topics[i % topics.length]} />
+                  <CoverArt coverStyle={style} topicSlug={topics[i % topics.length]} />
                 </div>
                 <p className="mt-2 text-sm text-ink-muted">
                   {style} · {topics[i % topics.length]}

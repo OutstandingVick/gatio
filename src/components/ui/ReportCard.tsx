@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { cn } from "@/lib/cn";
 import { formatDate } from "@/lib/format";
-import { Cover } from "./Cover";
+import { CoverArt } from "./CoverArt";
 import { TopicTag } from "./TopicTag";
 
 export type ReportCardProps = {
@@ -38,7 +38,7 @@ export function ReportCard({
       )}
     >
       <div className="aspect-[4/3] overflow-hidden border-b border-line">
-        <Cover coverStyle={coverStyle} topicSlug={topic?.slug} colorKey={topic?.colorKey} />
+        <CoverArt coverStyle={coverStyle} topicSlug={topic?.slug} colorKey={topic?.colorKey} />
       </div>
       <div className="flex flex-1 flex-col gap-3 p-6">
         <TopicTag slug={topic?.slug} colorKey={topic?.colorKey} label={topic?.title} />
