@@ -7,6 +7,7 @@ type WebhookPayload = { _type?: string };
 /**
  * Called by a Sanity GROQ webhook on publish. Invalidates every cached fetch
  * tagged with the document's type, so new content shows without a redeploy.
+ * `expire: 0` drops the cached data at once, so the very next visit is fresh.
  */
 export async function POST(req: NextRequest) {
   const secret = process.env.SANITY_REVALIDATE_SECRET;
@@ -23,11 +24,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "Missing _type" }, { status: 400 });
     }
 
-    revalidateTag(body._type, "max");
+    revalidateTag(body._type, { expire: 0 });
     // Reports and articles embed topic and author data, so refresh those lists too.
     if (body._type === "topic" || body._type === "author") {
-      revalidateTag("report", "max");
-      revalidateTag("article", "max");
+      revalidateTag("report", { expire: 0 });
+      revalidateTag("article", { expire: 0 });
     }
     return NextResponse.json({ revalidated: true, type: body._type, now: Date.now() });
   } catch (err) {
