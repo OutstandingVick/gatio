@@ -2,12 +2,13 @@
 
 import { useId, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/Button";
+import { Emphasis } from "@/components/ui/Emphasis";
 import { Section } from "@/components/ui/Section";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 /** Front-end only: validates and confirms inline. No data is sent anywhere. */
-export function Newsletter() {
+export function Newsletter({ heading, text }: { heading?: string | null; text?: string | null }) {
   const id = useId();
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
@@ -28,9 +29,9 @@ export function Newsletter() {
       <div className="grid gap-10 rounded-[var(--radius-panel)] bg-sand p-8 md:p-14 lg:grid-cols-2 lg:items-end">
         <div>
           <h2 id={`${id}-title`} className="text-4xl md:text-6xl">
-            Research worth <em>opening.</em>
+            <Emphasis text={heading || "Research worth *opening.*"} />
           </h2>
-          <p className="mt-4 max-w-[48ch] text-ink-muted">[NEWSLETTER DESCRIPTION]</p>
+          <p className="mt-4 max-w-[48ch] text-ink-muted">{text || "[NEWSLETTER DESCRIPTION]"}</p>
         </div>
 
         {done ? (

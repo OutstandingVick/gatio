@@ -1,22 +1,25 @@
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
-import type { ReportCardData } from "@/sanity/types";
+import { Emphasis } from "@/components/ui/Emphasis";
+import type { HomePageQueryResult, ReportCardData } from "@/sanity/types";
 import { ReportFan } from "./ReportFan";
 
-export function Hero({ reports }: { reports: ReportCardData[] }) {
+type HeroContent = Pick<NonNullable<HomePageQueryResult>, "eyebrow" | "headline" | "intro" | "primaryCta" | "secondaryCta">;
+
+export function Hero({ reports, content }: { reports: ReportCardData[]; content: HeroContent | null }) {
   return (
     <section aria-labelledby="hero-title" className="pt-16 pb-12 md:pt-24">
       <Container className="flex flex-col items-center text-center">
-        <Eyebrow tone="teal">Research &amp; market intelligence</Eyebrow>
+        <Eyebrow tone="teal">{content?.eyebrow || "Research & market intelligence"}</Eyebrow>
         <h1 id="hero-title" className="mt-6 max-w-[16ch] text-5xl sm:text-6xl lg:text-[88px] lg:leading-[1.02]">
-          Research that turns <em>complex markets</em> into clear decisions.
+          <Emphasis text={content?.headline || "Research that turns *complex markets* into clear decisions."} />
         </h1>
-        <p className="mt-6 max-w-[56ch] text-lg text-ink-muted">[AGENCY POSITIONING]</p>
+        <p className="mt-6 max-w-[56ch] text-lg text-ink-muted">{content?.intro || "[AGENCY POSITIONING]"}</p>
         <div className="mt-10 flex flex-wrap justify-center gap-3">
-          <Button href="/research">Explore research</Button>
+          <Button href="/research">{content?.primaryCta || "Explore research"}</Button>
           <Button href="/contact" variant="outline">
-            Work with us
+            {content?.secondaryCta || "Work with us"}
           </Button>
         </div>
       </Container>

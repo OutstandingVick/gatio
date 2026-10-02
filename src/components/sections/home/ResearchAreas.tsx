@@ -2,16 +2,17 @@ import Link from "next/link";
 import { cn } from "@/lib/cn";
 import { researchTopicHref } from "@/lib/routes";
 import { COLOR_CLASSES, topicColor } from "@/lib/topics";
+import { Emphasis } from "@/components/ui/Emphasis";
 import { Section } from "@/components/ui/Section";
 import type { AllTopicsQueryResult } from "@/sanity/types";
 
-export function ResearchAreas({ topics }: { topics: AllTopicsQueryResult }) {
+export function ResearchAreas({ topics, heading }: { topics: AllTopicsQueryResult; heading?: string | null }) {
   if (!topics.length) return null;
 
   return (
     <Section tone="ink" labelledBy="areas-title">
       <h2 id="areas-title" className="mb-12 text-4xl md:text-6xl [&_em]:text-mustard">
-        Where we dig <em>deepest</em>
+        <Emphasis text={heading || "Where we dig *deepest*"} />
       </h2>
       <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {topics.map((topic, i) => {

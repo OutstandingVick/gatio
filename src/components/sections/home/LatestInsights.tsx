@@ -1,15 +1,16 @@
 import Link from "next/link";
 import { ReportCard } from "@/components/ui/ReportCard";
+import { Emphasis } from "@/components/ui/Emphasis";
 import { Section } from "@/components/ui/Section";
 import { articleHref } from "@/lib/routes";
 import type { ArticleCardData } from "@/sanity/types";
 
-export function LatestInsights({ articles }: { articles: ArticleCardData[] }) {
+export function LatestInsights({ articles, heading }: { articles: ArticleCardData[]; heading?: string | null }) {
   return (
     <Section labelledBy="insights-title">
       <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
         <h2 id="insights-title" className="text-4xl md:text-6xl [&_em]:text-teal">
-          What we&rsquo;re <em>thinking about</em>
+          <Emphasis text={heading || "What we're *thinking about*"} />
         </h2>
         <Link
           href="/insights"
