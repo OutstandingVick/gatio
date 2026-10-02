@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, useSyncExternalStore, type ReactNode } from "react";
 import { ExternalLink, PanelLeft, PenLine, X } from "lucide-react";
 import { LogoMark } from "@/components/ui/Logo";
 import { CoverArt } from "@/components/ui/CoverArt";
@@ -13,6 +13,31 @@ const ShellContext = createContext<{ openMobile: () => void }>({ openMobile: () 
 export const useAdminShell = () => useContext(ShellContext);
 
 const PROMO_KEY = "gatio-admin-promo-dismissed";
+const promoListeners = new Set<() => void>();
+
+function readPromoHidden() {
+  try {
+    return localStorage.getItem(PROMO_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function subscribePromo(cb: () => void) {
+  promoListeners.add(cb);
+  window.addEventListener("storage", cb);
+  return () => {
+    promoListeners.delete(cb);
+    window.removeEventListener("storage", cb);
+  };
+}
+
+function dismissPromo() {
+  try {
+    localStorage.setItem(PROMO_KEY, "1");
+  } catch {}
+  promoListeners.forEach((cb) => cb());
+}
 
 function isActive(pathname: string, href: string) {
   return href === "/admin" ? pathname === "/admin" : pathname === href || pathname.startsWith(`${href}/`);
@@ -20,22 +45,8 @@ function isActive(pathname: string, href: string) {
 
 function SidebarContent({ collapsed, onNavigate, onToggle }: { collapsed: boolean; onNavigate?: () => void; onToggle?: () => void }) {
   const pathname = usePathname();
-  const [promoHidden, setPromoHidden] = useState(true);
-
-  useEffect(() => {
-    try {
-      setPromoHidden(localStorage.getItem(PROMO_KEY) === "1");
-    } catch {
-      setPromoHidden(false);
-    }
-  }, []);
-
-  const hidePromo = () => {
-    setPromoHidden(true);
-    try {
-      localStorage.setItem(PROMO_KEY, "1");
-    } catch {}
-  };
+  // Hidden on the server render, then read from localStorage in the browser.
+  const promoHidden = useSyncExternalStore(subscribePromo, readPromoHidden, () => true);
 
   return (
     <div className="flex h-full flex-col">
@@ -109,7 +120,7 @@ function SidebarContent({ collapsed, onNavigate, onToggle }: { collapsed: boolea
             </div>
             <button
               type="button"
-              onClick={hidePromo}
+              onClick={dismissPromo}
               className="absolute top-2 right-2 flex size-7 items-center justify-center rounded-md bg-black/60 text-white hover:bg-black/80"
               aria-label="Dismiss"
             >
@@ -162,9 +173,6 @@ function SidebarContent({ collapsed, onNavigate, onToggle }: { collapsed: boolea
 export function AdminShell({ children }: { children: ReactNode }) {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const pathname = usePathname();
-
-  useEffect(() => setMobileOpen(false), [pathname]);
 
   useEffect(() => {
     if (!mobileOpen) return;
