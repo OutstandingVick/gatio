@@ -18,7 +18,8 @@ A spec demo of a research agency website with a CMS. Gatio publishes research re
 | `/services/[slug]` | Service detail with what's included |
 | `/contact` | Contact details and a demo form (validates, sends nothing) |
 | `/styleguide` | Temporary: every token and component, plus a live Sanity content test section |
-| `/studio` | Embedded Sanity Studio |
+| `/admin` | Admin dashboard (overview, pages, posts, media, services, settings, users) |
+| `/studio` | Embedded Sanity Studio, where content is edited |
 | `/api/revalidate` | Sanity webhook target for tag-based revalidation |
 
 ## Environment setup
@@ -62,7 +63,26 @@ pnpm lint
 pnpm typegen    # regenerate query types after changing schemas or queries
 ```
 
-## The admin (Sanity Studio)
+## The admin dashboard (`/admin`)
+
+A dark dashboard showing live Sanity content. It doesn't cache, so it always shows the current state.
+
+| Screen | What it shows |
+| --- | --- |
+| **Overview** | Counts for reports, articles, services and images (with 30-day change), publishing activity per day (7/30/90 days), content by topic, recently edited items |
+| **Pages** | Home, About and Contact, each with Edit and View |
+| **Reports / Articles / Services** | Tables with topic, status (Featured, Sample, Published), author and last update |
+| **Media** | Every uploaded image with size and usage |
+| **Authors / Topics** | Library tables with how often each is used |
+| **Settings** | Site-wide details at a glance |
+| **Users** | Roles, with a link to manage people in Sanity |
+| **Search** | Search across all content from the top bar |
+
+**Edit** and **Create new** open the document in the Studio (below), where content is actually written and published.
+
+The dashboard only reads published content, which is public anyway. Editing still requires signing in to Sanity. If the dashboard itself should be private, add a login (e.g. Vercel password protection or middleware) before sharing the URL.
+
+## The editor (Sanity Studio, `/studio`)
 
 Open `/studio` and sign in with your Sanity account. It has:
 
