@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { SiteSettings } from "@/sanity/types";
 import { Container } from "./Container";
+import { Logo } from "./Logo";
 
 type FooterLink = { href: string; label: string; external?: boolean };
 
@@ -8,22 +9,29 @@ const BASE_COLUMNS: { title: string; links: FooterLink[] }[] = [
   {
     title: "Explore",
     links: [
+      { href: "/services", label: "Services" },
       { href: "/research", label: "Research" },
       { href: "/insights", label: "Insights" },
-      { href: "/research?topic=payments", label: "Topics" },
     ],
   },
   {
-    title: "Agency",
+    title: "Company",
     links: [
       { href: "/about", label: "About" },
-      { href: "/services", label: "Services" },
       { href: "/contact", label: "Contact" },
+      { href: "/contact", label: "Request a quote" },
+    ],
+  },
+  {
+    title: "Legal",
+    links: [
+      { href: "/privacy", label: "Privacy" },
+      { href: "/terms", label: "Terms" },
     ],
   },
 ];
 
-const linkClass = "text-cream/80 underline-offset-4 hover:text-cream hover:underline";
+const linkClass = "text-[15px] text-white/70 hover:text-white";
 
 export function Footer({ settings }: { settings?: SiteSettings | null }) {
   const year = new Date().getFullYear();
@@ -33,60 +41,56 @@ export function Footer({ settings }: { settings?: SiteSettings | null }) {
   const columns = socials.length ? [...BASE_COLUMNS, { title: "Follow", links: socials }] : BASE_COLUMNS;
 
   return (
-    <footer className="mt-auto bg-ink text-cream">
-      <Container className="flex flex-col gap-16 pt-20 pb-10">
-        <div className="grid gap-12 md:grid-cols-[1.4fr_repeat(3,1fr)]">
-          <div className="flex flex-col gap-4">
-            <p className="max-w-[32ch] text-cream/80">{settings?.positioning || "[AGENCY POSITIONING]"}</p>
-            {settings?.email && (
-              <a href={`mailto:${settings.email}`} className={`${linkClass} w-fit`}>
-                {settings.email}
-              </a>
-            )}
+    <footer className="mt-auto bg-ink text-white">
+      <Container className="flex flex-col gap-14 pt-20 pb-10">
+        <div className="grid gap-12 lg:grid-cols-[1.3fr_2fr]">
+          <div className="flex flex-col gap-5">
+            <Logo light className="text-white" />
+            <p className="max-w-[34ch] text-white/70">{settings?.positioning || "[AGENCY POSITIONING]"}</p>
+            <address className="flex flex-col gap-1.5 text-[15px] text-white/70 not-italic">
+              {settings?.address && <span className="whitespace-pre-line">{settings.address}</span>}
+              {settings?.email && (
+                <a href={`mailto:${settings.email}`} className="w-fit hover:text-white">
+                  {settings.email}
+                </a>
+              )}
+              {settings?.phone && (
+                <a href={`tel:${settings.phone.replace(/[^\d+]/g, "")}`} className="w-fit hover:text-white">
+                  {settings.phone}
+                </a>
+              )}
+            </address>
           </div>
-          {columns.map((col) => (
-            <nav key={col.title} aria-label={col.title}>
-              <h2 className="mb-4 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-mustard">
-                {col.title}
-              </h2>
-              <ul className="flex flex-col gap-3">
-                {col.links.map((link) => (
-                  <li key={link.label}>
-                    {link.external ? (
-                      <a href={link.href} className={linkClass} rel="noopener noreferrer">
-                        {link.label}
-                      </a>
-                    ) : (
-                      <Link href={link.href} className={linkClass}>
-                        {link.label}
-                      </Link>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          ))}
+          <div className="grid grid-cols-2 gap-10 sm:grid-cols-4">
+            {columns.map((col) => (
+              <nav key={col.title} aria-label={col.title}>
+                <h2 className="mb-4 text-[15px] font-bold tracking-normal text-white">{col.title}</h2>
+                <ul className="flex flex-col gap-3">
+                  {col.links.map((link) => (
+                    <li key={link.label}>
+                      {link.external ? (
+                        <a href={link.href} className={linkClass} rel="noopener noreferrer" target="_blank">
+                          {link.label}
+                          <span className="sr-only"> (opens in a new tab)</span>
+                        </a>
+                      ) : (
+                        <Link href={link.href} className={linkClass}>
+                          {link.label}
+                        </Link>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            ))}
+          </div>
         </div>
 
-        <p
-          aria-hidden="true"
-          className="font-display text-[26vw] leading-[0.8] tracking-[-0.05em] select-none lg:text-[300px]"
-        >
-          Gatio<span className="text-accent">.</span>
-        </p>
-
-        <div className="flex flex-col gap-4 border-t border-cream/20 pt-6 text-sm text-cream/70 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-4 border-t border-white/15 pt-6 text-sm text-white/60 sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {year} {settings?.copyright || "Gatio"}. All rights reserved.
           </p>
-          <ul className="flex gap-6">
-            <li>
-              <Link href="/privacy" className={linkClass}>Privacy</Link>
-            </li>
-            <li>
-              <Link href="/terms" className={linkClass}>Terms</Link>
-            </li>
-          </ul>
+          <p>A spec demo. Sample content is marked on each page.</p>
         </div>
       </Container>
     </footer>
