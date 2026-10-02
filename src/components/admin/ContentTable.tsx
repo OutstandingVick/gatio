@@ -33,7 +33,7 @@ export function ContentTable({
   }
 
   return (
-    <div className="overflow-x-auto">
+    <div className="relative overflow-x-auto">
       <table className="w-full min-w-[880px] border-collapse text-left text-[15px]">
         <caption className="sr-only">{caption}</caption>
         <thead>

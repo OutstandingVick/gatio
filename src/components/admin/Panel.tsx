@@ -22,7 +22,7 @@ export function Panel({
 }) {
   const headingId = id ?? `panel-${title.toLowerCase().replace(/\W+/g, "-")}`;
   return (
-    <section aria-labelledby={headingId} className={cn("flex flex-col rounded-2xl border border-admin-line bg-admin-panel p-1.5", className)}>
+    <section aria-labelledby={headingId} className={cn("flex min-w-0 flex-col rounded-2xl border border-admin-line bg-admin-panel p-1.5", className)}>
       <div className="flex min-h-11 flex-wrap items-center justify-between gap-2 px-2.5 py-1.5">
         <h2 id={headingId} className="flex items-center gap-2 text-[15px]">
           <Icon className="size-4 text-admin-text" aria-hidden="true" />
@@ -30,7 +30,7 @@ export function Panel({
         </h2>
         {action}
       </div>
-      <div className={cn("flex-1 rounded-xl border border-admin-line bg-admin-inset", insetClassName)}>{children}</div>
+      <div className={cn("min-w-0 flex-1 rounded-xl border border-admin-line bg-admin-inset", insetClassName)}>{children}</div>
     </section>
   );
 }
