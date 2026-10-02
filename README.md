@@ -13,6 +13,10 @@ A spec demo of a research agency website with a CMS. Gatio publishes research re
 | `/research/[slug]` | Research detail: findings, charts, pull quotes, contents rail, methodology, sources, related |
 | `/insights` | Insights listing, filterable by `?topic=slug` |
 | `/insights/[slug]` | Insight detail |
+| `/about` | About: story, figures, values and team |
+| `/services` | Services listing |
+| `/services/[slug]` | Service detail with what's included |
+| `/contact` | Contact details and a demo form (validates, sends nothing) |
 | `/styleguide` | Temporary: every token and component, plus a live Sanity content test section |
 | `/studio` | Embedded Sanity Studio |
 | `/api/revalidate` | Sanity webhook target for tag-based revalidation |
@@ -58,19 +62,23 @@ pnpm lint
 pnpm typegen    # regenerate query types after changing schemas or queries
 ```
 
-## The Studio
+## The admin (Sanity Studio)
 
-Open [localhost:3000/studio](http://localhost:3000/studio) and sign in with your Sanity account. The desk has four sections: **Reports**, **Articles**, **Authors** and **Topics**.
+Open `/studio` and sign in with your Sanity account. It has:
 
-Create content in this order, because reports and articles reference topics and authors:
+| Section | What it holds |
+| --- | --- |
+| **Dashboard** | Content counts, recently edited documents, quick "new" buttons, links to the website and to user management |
+| **Content → Pages** | Home, About and Contact page copy (one document each) |
+| **Content → Posts** | Reports, Articles, Authors, Topics |
+| **Content → Services** | Services, ordered by "Display order" |
+| **Content → Settings** | Site name, positioning line, navbar button, contact details, social links, copyright |
+| **Media** | Library of every uploaded image, with search and tagging |
+| **Users** | Managed in Sanity at sanity.io/manage (linked from the Dashboard) |
 
-1. **Topic**: pick a colour key (payments → accent, banking → teal, consumer → plum, digital-economy → mustard, fintech/markets → ink).
-2. **Author**
-3. **Report** or **Article**: set a cover style, a topic and authors, then publish.
+In page headlines, wrap words in `*asterisks*` to set them in the accent italic.
 
-Published content appears in the "Live content" section of `/styleguide`.
-
-All documents default to `isSample: true` so demo content can be filtered out later.
+Reports and articles reference topics and authors, so create those first. All demo documents have **Sample content** ticked, which shows a note on their detail pages.
 
 ## Content updates without a redeploy
 
