@@ -10,15 +10,38 @@ type CoverArtProps = {
   className?: string;
 };
 
-const CREAM = "#F6F1E7";
+const PASTEL: Record<ColorKey, string> = {
+  accent: "#DFE7FF",
+  teal: "#DCF7EA",
+  plum: "#FFE2EC",
+  mustard: "#FFF1C4",
+  ink: "#E8E4FF",
+};
 
-/** Topic colour as ground; cream, ink and mustard as supporting colours. */
+/** Contrasting accent for each topic colour, used for the highlight shape and blossom. */
+const ALT: Record<ColorKey, string> = {
+  accent: COLOR_HEX.plum,
+  teal: COLOR_HEX.accent,
+  plum: COLOR_HEX.mustard,
+  mustard: COLOR_HEX.plum,
+  ink: COLOR_HEX.accent,
+};
+
+/** Pastel ground, topic-colour shapes, contrasting highlight. */
 function palette(color: ColorKey) {
-  const bg = COLOR_HEX[color];
-  // Shapes contrast with the background; mustard takes ink shapes.
-  const fg = color === "mustard" ? COLOR_HEX.ink : CREAM;
-  const alt = color === "mustard" ? COLOR_HEX.accent : COLOR_HEX.mustard;
-  return { bg, fg, alt };
+  return { bg: PASTEL[color], fg: color === "mustard" ? "#E0A800" : COLOR_HEX[color], alt: ALT[color] };
+}
+
+function Petals({ cx, cy, r, fill }: { cx: number; cy: number; r: number; fill: string }) {
+  return (
+    <g fill={fill}>
+      {Array.from({ length: 8 }, (_, i) => {
+        const a = (i / 8) * Math.PI * 2;
+        return <circle key={i} cx={cx + Math.cos(a) * r * 0.55} cy={cy + Math.sin(a) * r * 0.55} r={r * 0.38} />;
+      })}
+      <circle cx={cx} cy={cy} r={r * 0.6} />
+    </g>
+  );
 }
 
 function Shapes({ style, fg, alt }: { style: CoverStyle; fg: string; alt: string }) {
@@ -86,7 +109,7 @@ function Shapes({ style, fg, alt }: { style: CoverStyle; fg: string; alt: string
   }
 }
 
-/** Decorative geometric cover art, driven by `coverStyle` and the topic colour. */
+/** Decorative geometric cover art on a pastel ground, driven by `coverStyle` and the topic colour. */
 export function CoverArt({ coverStyle, topicSlug, colorKey, className }: CoverArtProps) {
   const style: CoverStyle = (COVER_STYLES as readonly string[]).includes(coverStyle ?? "")
     ? (coverStyle as CoverStyle)
@@ -103,6 +126,7 @@ export function CoverArt({ coverStyle, topicSlug, colorKey, className }: CoverAr
     >
       <rect width={400} height={300} fill={bg} />
       <Shapes style={style} fg={fg} alt={alt} />
+      <Petals cx={352} cy={48} r={26} fill={alt} />
     </svg>
   );
 }
