@@ -113,7 +113,7 @@ function SidebarContent({ collapsed, onNavigate, onToggle }: { collapsed: boolea
       </nav>
 
       {!collapsed && !promoHidden && (
-        <div className="px-3 pb-3">
+        <div className="px-3 pb-3 [@media(max-height:760px)]:hidden">
           <div className="relative overflow-hidden rounded-xl border border-admin-line bg-admin-panel">
             <div className="h-24 overflow-hidden">
               <CoverArt coverStyle="rings" colorKey="ink" />

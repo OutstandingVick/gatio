@@ -34,7 +34,7 @@ export function ContentTable({
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-full min-w-[720px] border-collapse text-left text-[15px]">
+      <table className="w-full min-w-[880px] border-collapse text-left text-[15px]">
         <caption className="sr-only">{caption}</caption>
         <thead>
           <tr className="border-b border-admin-line text-admin-muted">
@@ -58,8 +58,8 @@ export function ContentTable({
             const people = (row.people ?? []).filter(Boolean).join(", ");
             return (
               <tr key={row._id} className="border-b border-admin-line last:border-0 hover:bg-white/[0.02]">
-                <th scope="row" className="max-w-[340px] px-4 py-3 font-normal">
-                  <Link href={studioEditHref(row._id, row._type)} className="line-clamp-1 hover:underline">
+                <th scope="row" className="min-w-[240px] max-w-[380px] px-4 py-3 font-normal">
+                  <Link href={studioEditHref(row._id, row._type)} className="line-clamp-2 hover:underline">
                     {row.title ?? TYPE_LABEL[row._type]}
                   </Link>
                 </th>
@@ -69,7 +69,7 @@ export function ContentTable({
                     {c === "topic" &&
                       (row.topic ? (
                         <span className="inline-flex items-center gap-2">
-                          <span aria-hidden="true" className={cn("size-2.5 rounded-sm", color?.bg)} />
+                          <span aria-hidden="true" className={cn("size-2.5 rounded-sm ring-1 ring-white/25", color?.bg)} />
                           {row.topic.title}
                         </span>
                       ) : (
