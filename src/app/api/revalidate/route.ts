@@ -25,11 +25,12 @@ export async function POST(req: NextRequest) {
     }
 
     revalidateTag(body._type, { expire: 0 });
-    // Reports and articles embed topic and author data, so refresh those lists too.
+    // Reports, articles and the About team embed topic and author data, so refresh those too.
     if (body._type === "topic" || body._type === "author") {
       revalidateTag("report", { expire: 0 });
       revalidateTag("article", { expire: 0 });
     }
+    if (body._type === "author") revalidateTag("aboutPage", { expire: 0 });
     return NextResponse.json({ revalidated: true, type: body._type, now: Date.now() });
   } catch (err) {
     console.error(err);
