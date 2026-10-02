@@ -15,20 +15,29 @@ export const COLOR_KEYS: ColorKey[] = ["accent", "teal", "plum", "mustard", "ink
 
 /** Background + readable foreground classes for each colour key. */
 export const COLOR_CLASSES: Record<ColorKey, { bg: string; fg: string; text: string }> = {
-  accent: { bg: "bg-accent", fg: "text-paper", text: "text-accent" },
-  teal: { bg: "bg-teal", fg: "text-paper", text: "text-teal" },
-  plum: { bg: "bg-plum", fg: "text-paper", text: "text-plum" },
+  accent: { bg: "bg-accent", fg: "text-white", text: "text-accent" },
+  teal: { bg: "bg-teal", fg: "text-white", text: "text-teal" },
+  plum: { bg: "bg-plum", fg: "text-white", text: "text-plum" },
   mustard: { bg: "bg-mustard", fg: "text-ink", text: "text-mustard-text" },
-  ink: { bg: "bg-ink", fg: "text-paper", text: "text-ink" },
+  ink: { bg: "bg-ink", fg: "text-white", text: "text-ink" },
 };
 
 /** Raw hex values, for SVG fills. */
 export const COLOR_HEX: Record<ColorKey, string> = {
-  accent: "#C2410C",
-  teal: "#0B6B6A",
-  plum: "#6B2D5C",
-  mustard: "#E9B949",
-  ink: "#14213D",
+  accent: "#2B3FE0",
+  teal: "#0B7A57",
+  plum: "#C92A63",
+  mustard: "#FFC940",
+  ink: "#0D1421",
+};
+
+/** Soft pastel companion for each colour key, for card backgrounds. */
+export const COLOR_SOFT: Record<ColorKey, string> = {
+  accent: "bg-sky",
+  teal: "bg-mint",
+  plum: "bg-blush",
+  mustard: "bg-butter",
+  ink: "bg-lavender",
 };
 
 function isTopicSlug(slug: string): slug is TopicSlug {
