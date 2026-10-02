@@ -8,8 +8,8 @@ const PAD = { top: 20, right: 16, bottom: 48, left: 52 };
 const INNER_W = W - PAD.left - PAD.right;
 const INNER_H = H - PAD.top - PAD.bottom;
 
-const LINE = "#DDD3C0";
-const MUTED = "#3A4460";
+const LINE = "#E3EAED";
+const MUTED = "#4A5466";
 
 /** Round the axis max up to a tidy number and return 4 evenly spaced ticks. */
 function niceTicks(max: number): number[] {
@@ -42,10 +42,10 @@ export function Chart({ value, color = "accent" }: { value: ChartData; color?: C
 
   return (
     <figure className="my-12">
-      <figcaption id={`${id}-cap`} className="mb-4 font-display text-xl tracking-[-0.02em]">
+      <figcaption id={`${id}-cap`} className="mb-4 text-lg font-bold tracking-[-0.02em]">
         {value.title}
       </figcaption>
-      <div className="rounded-[var(--radius-card)] border border-line bg-paper p-4 sm:p-6">
+      <div className="rounded-[var(--radius-card)] bg-paper p-4 shadow-[0_1px_2px_rgb(13_20_33/0.05)] sm:p-6">
         <svg viewBox={`0 0 ${W} ${H}`} className="h-auto w-full" aria-hidden="true" focusable="false">
           {ticks.map((t) => (
             <g key={t}>
@@ -62,12 +62,12 @@ export function Chart({ value, color = "accent" }: { value: ChartData; color?: C
                 points={data.map((d, i) => `${x(i)},${y(d.value)}`).join(" ")}
                 fill="none"
                 stroke={fill}
-                strokeWidth={3}
+                strokeWidth={4}
                 strokeLinejoin="round"
                 strokeLinecap="round"
               />
               {data.map((d, i) => (
-                <circle key={d._key} cx={x(i)} cy={y(d.value)} r={5} fill="#FFFDF8" stroke={fill} strokeWidth={2.5} />
+                <circle key={d._key} cx={x(i)} cy={y(d.value)} r={6} fill="#FFFFFF" stroke={fill} strokeWidth={3} />
               ))}
             </g>
           ) : (
@@ -78,13 +78,13 @@ export function Chart({ value, color = "accent" }: { value: ChartData; color?: C
                 y={Math.min(y(d.value), y(0))}
                 width={barW}
                 height={Math.abs(y(0) - y(d.value))}
-                rx={4}
+                rx={8}
                 fill={fill}
               />
             ))
           )}
 
-          <line x1={PAD.left} x2={W - PAD.right} y1={y(0)} y2={y(0)} stroke="#14213D" strokeWidth={1.5} />
+          <line x1={PAD.left} x2={W - PAD.right} y1={y(0)} y2={y(0)} stroke="#0D1421" strokeWidth={1.5} />
           {data.map((d, i) =>
             i % labelEvery === 0 ? (
               <text key={d._key} x={x(i)} y={H - PAD.bottom + 24} textAnchor="middle" fontSize={13} fill={MUTED}>

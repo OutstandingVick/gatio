@@ -49,7 +49,7 @@ function components(ids: Map<string, string>, color: ColorKey): PortableTextComp
         </h3>
       ),
       blockquote: ({ children }) => (
-        <blockquote className="my-8 border-l-4 border-accent pl-5 text-xl font-semibold">{children}</blockquote>
+        <blockquote className="my-8 rounded-2xl bg-sand px-6 py-5 text-xl font-semibold">{children}</blockquote>
       ),
     },
     list: {
