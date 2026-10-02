@@ -11,12 +11,14 @@ import { structureTool } from "sanity/structure";
 import { apiVersion, dataset, projectId } from "./src/sanity/env";
 import { schemaTypes } from "./src/sanity/schemas";
 import { Dashboard } from "./src/sanity/studio/Dashboard";
+import { studioTheme } from "./src/sanity/studio/theme";
 import { SINGLETON_TYPES, structure } from "./src/sanity/structure";
 
 export default defineConfig({
   name: "gatio",
   title: "Gatio",
   basePath: "/studio",
+  theme: studioTheme,
   projectId,
   dataset,
   schema: {
