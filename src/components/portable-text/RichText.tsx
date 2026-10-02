@@ -39,16 +39,18 @@ function components(ids: Map<string, string>, color: ColorKey): PortableTextComp
     block: {
       normal: ({ children }) => <p className="my-5">{children}</p>,
       h2: ({ children, value }) => (
-        <h2 id={value._key ? ids.get(value._key) : undefined} className="mt-14 mb-5 scroll-mt-28 text-3xl md:text-4xl">
+        <h2 id={value._key ? ids.get(value._key) : undefined} className="mt-14 mb-5 scroll-mt-32 text-[28px] md:text-[34px]">
           {children}
         </h2>
       ),
       h3: ({ children, value }) => (
-        <h3 id={value._key ? ids.get(value._key) : undefined} className="mt-10 mb-4 scroll-mt-28 text-2xl md:text-[28px]">
+        <h3 id={value._key ? ids.get(value._key) : undefined} className="mt-10 mb-4 scroll-mt-32 text-xl md:text-2xl">
           {children}
         </h3>
       ),
-      blockquote: ({ children }) => <blockquote className="my-8 font-display text-2xl italic">{children}</blockquote>,
+      blockquote: ({ children }) => (
+        <blockquote className="my-8 border-l-4 border-accent pl-5 text-xl font-semibold">{children}</blockquote>
+      ),
     },
     list: {
       bullet: ({ children }) => <ul className="my-5 list-disc space-y-2 pl-6 marker:text-accent">{children}</ul>,
@@ -61,7 +63,7 @@ function components(ids: Map<string, string>, color: ColorKey): PortableTextComp
         return (
           <a
             href={href}
-            className="underline decoration-accent decoration-2 underline-offset-4 hover:text-accent"
+            className="font-semibold text-accent underline decoration-accent/30 decoration-2 underline-offset-4 hover:decoration-accent"
             {...(external ? { rel: "noopener noreferrer", target: "_blank" } : {})}
           >
             {children}
@@ -90,7 +92,7 @@ type RichTextProps = {
 export function RichText({ value, color = "accent", className }: RichTextProps) {
   if (!value?.length) return null;
   return (
-    <div className={className ?? "max-w-[680px] text-[18px] leading-[1.7]"}>
+    <div className={className ?? "max-w-[680px] text-[17px] leading-[1.75] text-ink/90"}>
       <PortableText value={value as PortableTextBlock[]} components={components(headingIdMap(value), color)} />
     </div>
   );
