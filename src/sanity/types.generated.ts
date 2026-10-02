@@ -498,6 +498,523 @@ export type AllSanitySchemaTypes =
   | SanityImageAsset
   | Geopoint;
 
+// Source: src/sanity/adminQueries.ts
+// Variable: adminStatsQuery
+// Query: {  "reports": {    "total": count(*[_type == "report"]),    "recent": count(*[_type == "report" && _createdAt > $since]),    "previous": count(*[_type == "report" && _createdAt > $prevSince && _createdAt <= $since])  },  "articles": {    "total": count(*[_type == "article"]),    "recent": count(*[_type == "article" && _createdAt > $since]),    "previous": count(*[_type == "article" && _createdAt > $prevSince && _createdAt <= $since])  },  "services": {    "total": count(*[_type == "service"]),    "recent": count(*[_type == "service" && _createdAt > $since]),    "previous": count(*[_type == "service" && _createdAt > $prevSince && _createdAt <= $since])  },  "images": {    "total": count(*[_type == "sanity.imageAsset"]),    "recent": count(*[_type == "sanity.imageAsset" && _createdAt > $since]),    "previous": count(*[_type == "sanity.imageAsset" && _createdAt > $prevSince && _createdAt <= $since])  }}
+export type AdminStatsQueryResult = {
+  reports: {
+    total: number;
+    recent: number;
+    previous: number;
+  };
+  articles: {
+    total: number;
+    recent: number;
+    previous: number;
+  };
+  services: {
+    total: number;
+    recent: number;
+    previous: number;
+  };
+  images: {
+    total: number;
+    recent: number;
+    previous: number;
+  };
+};
+
+// Source: src/sanity/adminQueries.ts
+// Variable: adminActivityQuery
+// Query: *[_type in ["report", "article", "service", "author", "topic", "homePage", "aboutPage", "contactPage", "siteSettings", "sanity.imageAsset"] && _updatedAt > $since]{ _type, _updatedAt }
+export type AdminActivityQueryResult = Array<
+  | {
+      _type: "aboutPage";
+      _updatedAt: string;
+    }
+  | {
+      _type: "article";
+      _updatedAt: string;
+    }
+  | {
+      _type: "author";
+      _updatedAt: string;
+    }
+  | {
+      _type: "contactPage";
+      _updatedAt: string;
+    }
+  | {
+      _type: "homePage";
+      _updatedAt: string;
+    }
+  | {
+      _type: "report";
+      _updatedAt: string;
+    }
+  | {
+      _type: "sanity.imageAsset";
+      _updatedAt: string;
+    }
+  | {
+      _type: "service";
+      _updatedAt: string;
+    }
+  | {
+      _type: "siteSettings";
+      _updatedAt: string;
+    }
+  | {
+      _type: "topic";
+      _updatedAt: string;
+    }
+>;
+
+// Source: src/sanity/adminQueries.ts
+// Variable: adminTopicBreakdownQuery
+// Query: *[_type == "topic"]{    _id, title, colorKey,    "reports": count(*[_type == "report" && references(^._id)]),    "articles": count(*[_type == "article" && references(^._id)])  } | order((reports + articles) desc, title asc)
+export type AdminTopicBreakdownQueryResult = Array<{
+  _id: string;
+  title: string | null;
+  colorKey: "accent" | "ink" | "mustard" | "plum" | "teal" | null;
+  reports: number;
+  articles: number;
+}>;
+
+// Source: src/sanity/adminQueries.ts
+// Variable: adminRecentQuery
+// Query: *[_type in ["report", "article", "service", "author", "topic"]] | order(_updatedAt desc)[0...$limit]{   _id, _type, _updatedAt, _createdAt,  "title": coalesce(title, name),  "slug": slug.current,  featured, isSample, publishedAt,  "topic": topic->{ title, colorKey },  "people": coalesce(authors[]->name, [author->name]) }
+export type AdminRecentQueryResult = Array<
+  | {
+      _id: string;
+      _type: "article";
+      _updatedAt: string;
+      _createdAt: string;
+      title: string | null;
+      slug: string | null;
+      featured: boolean | null;
+      isSample: boolean | null;
+      publishedAt: string | null;
+      topic: {
+        title: string | null;
+        colorKey: "accent" | "ink" | "mustard" | "plum" | "teal" | null;
+      } | null;
+      people: Array<string | null>;
+    }
+  | {
+      _id: string;
+      _type: "author";
+      _updatedAt: string;
+      _createdAt: string;
+      title: string | null;
+      slug: string | null;
+      featured: null;
+      isSample: null;
+      publishedAt: null;
+      topic: null;
+      people: Array<null>;
+    }
+  | {
+      _id: string;
+      _type: "report";
+      _updatedAt: string;
+      _createdAt: string;
+      title: string | null;
+      slug: string | null;
+      featured: boolean | null;
+      isSample: boolean | null;
+      publishedAt: string | null;
+      topic: {
+        title: string | null;
+        colorKey: "accent" | "ink" | "mustard" | "plum" | "teal" | null;
+      } | null;
+      people: Array<null> | Array<string | null>;
+    }
+  | {
+      _id: string;
+      _type: "service";
+      _updatedAt: string;
+      _createdAt: string;
+      title: string | null;
+      slug: string | null;
+      featured: null;
+      isSample: boolean | null;
+      publishedAt: null;
+      topic: null;
+      people: Array<null>;
+    }
+  | {
+      _id: string;
+      _type: "topic";
+      _updatedAt: string;
+      _createdAt: string;
+      title: string | null;
+      slug: string | null;
+      featured: null;
+      isSample: null;
+      publishedAt: null;
+      topic: null;
+      people: Array<null>;
+    }
+>;
+
+// Source: src/sanity/adminQueries.ts
+// Variable: adminListQuery
+// Query: *[_type == $type] | order(_updatedAt desc){   _id, _type, _updatedAt, _createdAt,  "title": coalesce(title, name),  "slug": slug.current,  featured, isSample, publishedAt,  "topic": topic->{ title, colorKey },  "people": coalesce(authors[]->name, [author->name]), "count": count(*[references(^._id)]) }
+export type AdminListQueryResult = Array<
+  | {
+      _id: string;
+      _type: "aboutPage";
+      _updatedAt: string;
+      _createdAt: string;
+      title: null;
+      slug: null;
+      featured: null;
+      isSample: null;
+      publishedAt: null;
+      topic: null;
+      people: Array<null>;
+      count: number;
+    }
+  | {
+      _id: string;
+      _type: "article";
+      _updatedAt: string;
+      _createdAt: string;
+      title: string | null;
+      slug: string | null;
+      featured: boolean | null;
+      isSample: boolean | null;
+      publishedAt: string | null;
+      topic: {
+        title: string | null;
+        colorKey: "accent" | "ink" | "mustard" | "plum" | "teal" | null;
+      } | null;
+      people: Array<string | null>;
+      count: number;
+    }
+  | {
+      _id: string;
+      _type: "author";
+      _updatedAt: string;
+      _createdAt: string;
+      title: string | null;
+      slug: string | null;
+      featured: null;
+      isSample: null;
+      publishedAt: null;
+      topic: null;
+      people: Array<null>;
+      count: number;
+    }
+  | {
+      _id: string;
+      _type: "contactPage";
+      _updatedAt: string;
+      _createdAt: string;
+      title: null;
+      slug: null;
+      featured: null;
+      isSample: null;
+      publishedAt: null;
+      topic: null;
+      people: Array<null>;
+      count: number;
+    }
+  | {
+      _id: string;
+      _type: "homePage";
+      _updatedAt: string;
+      _createdAt: string;
+      title: null;
+      slug: null;
+      featured: null;
+      isSample: null;
+      publishedAt: null;
+      topic: null;
+      people: Array<null>;
+      count: number;
+    }
+  | {
+      _id: string;
+      _type: "media.folder";
+      _updatedAt: string;
+      _createdAt: string;
+      title: string | null;
+      slug: null;
+      featured: null;
+      isSample: null;
+      publishedAt: null;
+      topic: null;
+      people: Array<null>;
+      count: number;
+    }
+  | {
+      _id: string;
+      _type: "media.tag";
+      _updatedAt: string;
+      _createdAt: string;
+      title: Slug | null;
+      slug: null;
+      featured: null;
+      isSample: null;
+      publishedAt: null;
+      topic: null;
+      people: Array<null>;
+      count: number;
+    }
+  | {
+      _id: string;
+      _type: "report";
+      _updatedAt: string;
+      _createdAt: string;
+      title: string | null;
+      slug: string | null;
+      featured: boolean | null;
+      isSample: boolean | null;
+      publishedAt: string | null;
+      topic: {
+        title: string | null;
+        colorKey: "accent" | "ink" | "mustard" | "plum" | "teal" | null;
+      } | null;
+      people: Array<null> | Array<string | null>;
+      count: number;
+    }
+  | {
+      _id: string;
+      _type: "sanity.fileAsset";
+      _updatedAt: string;
+      _createdAt: string;
+      title: string | null;
+      slug: null;
+      featured: null;
+      isSample: null;
+      publishedAt: null;
+      topic: null;
+      people: Array<null>;
+      count: number;
+    }
+  | {
+      _id: string;
+      _type: "sanity.imageAsset";
+      _updatedAt: string;
+      _createdAt: string;
+      title: string | null;
+      slug: null;
+      featured: null;
+      isSample: null;
+      publishedAt: null;
+      topic: null;
+      people: Array<null>;
+      count: number;
+    }
+  | {
+      _id: string;
+      _type: "service";
+      _updatedAt: string;
+      _createdAt: string;
+      title: string | null;
+      slug: string | null;
+      featured: null;
+      isSample: boolean | null;
+      publishedAt: null;
+      topic: null;
+      people: Array<null>;
+      count: number;
+    }
+  | {
+      _id: string;
+      _type: "siteSettings";
+      _updatedAt: string;
+      _createdAt: string;
+      title: null;
+      slug: null;
+      featured: null;
+      isSample: null;
+      publishedAt: null;
+      topic: null;
+      people: Array<null>;
+      count: number;
+    }
+  | {
+      _id: string;
+      _type: "topic";
+      _updatedAt: string;
+      _createdAt: string;
+      title: string | null;
+      slug: string | null;
+      featured: null;
+      isSample: null;
+      publishedAt: null;
+      topic: null;
+      people: Array<null>;
+      count: number;
+    }
+>;
+
+// Source: src/sanity/adminQueries.ts
+// Variable: adminMediaQuery
+// Query: *[_type == "sanity.imageAsset"] | order(_createdAt desc){    _id, url, originalFilename, size, extension, _createdAt,    "width": metadata.dimensions.width, "height": metadata.dimensions.height,    "usedBy": count(*[references(^._id)])  }
+export type AdminMediaQueryResult = Array<{
+  _id: string;
+  url: string | null;
+  originalFilename: string | null;
+  size: number | null;
+  extension: string | null;
+  _createdAt: string;
+  width: number | null;
+  height: number | null;
+  usedBy: number;
+}>;
+
+// Source: src/sanity/adminQueries.ts
+// Variable: adminPagesQuery
+// Query: *[_id in ["homePage", "aboutPage", "contactPage", "siteSettings"]]{ _id, _type, _updatedAt }
+export type AdminPagesQueryResult = Array<
+  | {
+      _id: string;
+      _type: "aboutPage";
+      _updatedAt: string;
+    }
+  | {
+      _id: string;
+      _type: "article";
+      _updatedAt: string;
+    }
+  | {
+      _id: string;
+      _type: "author";
+      _updatedAt: string;
+    }
+  | {
+      _id: string;
+      _type: "contactPage";
+      _updatedAt: string;
+    }
+  | {
+      _id: string;
+      _type: "homePage";
+      _updatedAt: string;
+    }
+  | {
+      _id: string;
+      _type: "media.folder";
+      _updatedAt: string;
+    }
+  | {
+      _id: string;
+      _type: "media.tag";
+      _updatedAt: string;
+    }
+  | {
+      _id: string;
+      _type: "report";
+      _updatedAt: string;
+    }
+  | {
+      _id: string;
+      _type: "sanity.fileAsset";
+      _updatedAt: string;
+    }
+  | {
+      _id: string;
+      _type: "sanity.imageAsset";
+      _updatedAt: string;
+    }
+  | {
+      _id: string;
+      _type: "service";
+      _updatedAt: string;
+    }
+  | {
+      _id: string;
+      _type: "siteSettings";
+      _updatedAt: string;
+    }
+  | {
+      _id: string;
+      _type: "topic";
+      _updatedAt: string;
+    }
+>;
+
+// Source: src/sanity/adminQueries.ts
+// Variable: adminSearchQuery
+// Query: *[_type in ["report", "article", "service", "author", "topic"] && [coalesce(title, name), pt::text(body), summary, excerpt, abstract] match $q]    | order(_updatedAt desc)[0...30]{   _id, _type, _updatedAt, _createdAt,  "title": coalesce(title, name),  "slug": slug.current,  featured, isSample, publishedAt,  "topic": topic->{ title, colorKey },  "people": coalesce(authors[]->name, [author->name]) }
+export type AdminSearchQueryResult = Array<
+  | {
+      _id: string;
+      _type: "article";
+      _updatedAt: string;
+      _createdAt: string;
+      title: string | null;
+      slug: string | null;
+      featured: boolean | null;
+      isSample: boolean | null;
+      publishedAt: string | null;
+      topic: {
+        title: string | null;
+        colorKey: "accent" | "ink" | "mustard" | "plum" | "teal" | null;
+      } | null;
+      people: Array<string | null>;
+    }
+  | {
+      _id: string;
+      _type: "author";
+      _updatedAt: string;
+      _createdAt: string;
+      title: string | null;
+      slug: string | null;
+      featured: null;
+      isSample: null;
+      publishedAt: null;
+      topic: null;
+      people: Array<null>;
+    }
+  | {
+      _id: string;
+      _type: "report";
+      _updatedAt: string;
+      _createdAt: string;
+      title: string | null;
+      slug: string | null;
+      featured: boolean | null;
+      isSample: boolean | null;
+      publishedAt: string | null;
+      topic: {
+        title: string | null;
+        colorKey: "accent" | "ink" | "mustard" | "plum" | "teal" | null;
+      } | null;
+      people: Array<null> | Array<string | null>;
+    }
+  | {
+      _id: string;
+      _type: "service";
+      _updatedAt: string;
+      _createdAt: string;
+      title: string | null;
+      slug: string | null;
+      featured: null;
+      isSample: boolean | null;
+      publishedAt: null;
+      topic: null;
+      people: Array<null>;
+    }
+  | {
+      _id: string;
+      _type: "topic";
+      _updatedAt: string;
+      _createdAt: string;
+      title: string | null;
+      slug: string | null;
+      featured: null;
+      isSample: null;
+      publishedAt: null;
+      topic: null;
+      people: Array<null>;
+    }
+>;
+
 // Source: src/sanity/queries.ts
 // Variable: featuredReportQuery
 // Query: coalesce(    *[_type == "report" && featured == true && defined(slug.current)] | order(publishedAt desc)[0],    *[_type == "report" && defined(slug.current)] | order(publishedAt desc)[0]  ){   _id,  title,  "slug": slug.current,  subtitle,  abstract,  coverStyle,  publishedAt,  featured,  // Estimated from body length at ~220 words per minute.  "readTime": round(length(pt::text(body)) / 5 / 220) + 1,  topic->{ _id, title, "slug": slug.current, colorKey }, keyFindings, "pdfUrl": pdf.asset->url }
@@ -929,6 +1446,14 @@ export type ServiceSlugsQueryResult = Array<string | null>;
 // Query TypeMap
 declare global {
   interface SanityQueries {
+    '{\n  "reports": {\n    "total": count(*[_type == "report"]),\n    "recent": count(*[_type == "report" && _createdAt > $since]),\n    "previous": count(*[_type == "report" && _createdAt > $prevSince && _createdAt <= $since])\n  },\n  "articles": {\n    "total": count(*[_type == "article"]),\n    "recent": count(*[_type == "article" && _createdAt > $since]),\n    "previous": count(*[_type == "article" && _createdAt > $prevSince && _createdAt <= $since])\n  },\n  "services": {\n    "total": count(*[_type == "service"]),\n    "recent": count(*[_type == "service" && _createdAt > $since]),\n    "previous": count(*[_type == "service" && _createdAt > $prevSince && _createdAt <= $since])\n  },\n  "images": {\n    "total": count(*[_type == "sanity.imageAsset"]),\n    "recent": count(*[_type == "sanity.imageAsset" && _createdAt > $since]),\n    "previous": count(*[_type == "sanity.imageAsset" && _createdAt > $prevSince && _createdAt <= $since])\n  }\n}': AdminStatsQueryResult;
+    '\n  *[_type in ["report", "article", "service", "author", "topic", "homePage", "aboutPage", "contactPage", "siteSettings", "sanity.imageAsset"] && _updatedAt > $since]{ _type, _updatedAt }\n': AdminActivityQueryResult;
+    '\n  *[_type == "topic"]{\n    _id, title, colorKey,\n    "reports": count(*[_type == "report" && references(^._id)]),\n    "articles": count(*[_type == "article" && references(^._id)])\n  } | order((reports + articles) desc, title asc)\n': AdminTopicBreakdownQueryResult;
+    '\n  *[_type in ["report", "article", "service", "author", "topic"]] | order(_updatedAt desc)[0...$limit]{ \n  _id, _type, _updatedAt, _createdAt,\n  "title": coalesce(title, name),\n  "slug": slug.current,\n  featured, isSample, publishedAt,\n  "topic": topic->{ title, colorKey },\n  "people": coalesce(authors[]->name, [author->name])\n }\n': AdminRecentQueryResult;
+    '\n  *[_type == $type] | order(_updatedAt desc){ \n  _id, _type, _updatedAt, _createdAt,\n  "title": coalesce(title, name),\n  "slug": slug.current,\n  featured, isSample, publishedAt,\n  "topic": topic->{ title, colorKey },\n  "people": coalesce(authors[]->name, [author->name])\n, "count": count(*[references(^._id)]) }\n': AdminListQueryResult;
+    '\n  *[_type == "sanity.imageAsset"] | order(_createdAt desc){\n    _id, url, originalFilename, size, extension, _createdAt,\n    "width": metadata.dimensions.width, "height": metadata.dimensions.height,\n    "usedBy": count(*[references(^._id)])\n  }\n': AdminMediaQueryResult;
+    '\n  *[_id in ["homePage", "aboutPage", "contactPage", "siteSettings"]]{ _id, _type, _updatedAt }\n': AdminPagesQueryResult;
+    '\n  *[_type in ["report", "article", "service", "author", "topic"] && [coalesce(title, name), pt::text(body), summary, excerpt, abstract] match $q]\n    | order(_updatedAt desc)[0...30]{ \n  _id, _type, _updatedAt, _createdAt,\n  "title": coalesce(title, name),\n  "slug": slug.current,\n  featured, isSample, publishedAt,\n  "topic": topic->{ title, colorKey },\n  "people": coalesce(authors[]->name, [author->name])\n }\n': AdminSearchQueryResult;
     '\n  coalesce(\n    *[_type == "report" && featured == true && defined(slug.current)] | order(publishedAt desc)[0],\n    *[_type == "report" && defined(slug.current)] | order(publishedAt desc)[0]\n  ){ \n  _id,\n  title,\n  "slug": slug.current,\n  subtitle,\n  abstract,\n  coverStyle,\n  publishedAt,\n  featured,\n  // Estimated from body length at ~220 words per minute.\n  "readTime": round(length(pt::text(body)) / 5 / 220) + 1,\n  topic->{ _id, title, "slug": slug.current, colorKey }\n, keyFindings, "pdfUrl": pdf.asset->url }\n': FeaturedReportQueryResult;
     '\n  *[_type == "report" && defined(slug.current)]\n    | order(publishedAt desc)[0...$limit]{ \n  _id,\n  title,\n  "slug": slug.current,\n  subtitle,\n  abstract,\n  coverStyle,\n  publishedAt,\n  featured,\n  // Estimated from body length at ~220 words per minute.\n  "readTime": round(length(pt::text(body)) / 5 / 220) + 1,\n  topic->{ _id, title, "slug": slug.current, colorKey }\n }\n': LatestReportsQueryResult;
     '\n  *[_type == "report" && slug.current == $slug][0]{\n    \n  _id,\n  title,\n  "slug": slug.current,\n  subtitle,\n  abstract,\n  coverStyle,\n  publishedAt,\n  featured,\n  // Estimated from body length at ~220 words per minute.\n  "readTime": round(length(pt::text(body)) / 5 / 220) + 1,\n  topic->{ _id, title, "slug": slug.current, colorKey }\n,\n    "topicId": topic._ref,\n    authors[]->{ _id, name, "slug": slug.current, role, photo, bio },\n    keyFindings,\n    body,\n    methodology,\n    sources,\n    "pdfUrl": pdf.asset->url,\n    seo,\n    isSample\n  }\n': ReportBySlugQueryResult;
