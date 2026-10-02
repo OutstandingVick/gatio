@@ -8,12 +8,14 @@ const toneClasses: Record<Tone, string> = {
   cream: "bg-cream text-ink",
   paper: "bg-paper text-ink",
   sand: "bg-sand text-ink",
-  ink: "bg-ink text-cream",
+  ink: "bg-ink text-white",
 };
 
 type SectionProps = {
   id?: string;
   tone?: Tone;
+  /** Inset band with large rounded corners (PiggyVest-style). */
+  rounded?: boolean;
   /** Accessible label; required when the section has no visible heading. */
   label?: string;
   labelledBy?: string;
@@ -26,6 +28,7 @@ type SectionProps = {
 export function Section({
   id,
   tone = "cream",
+  rounded = false,
   label,
   labelledBy,
   className,
@@ -37,7 +40,12 @@ export function Section({
       id={id}
       aria-label={label}
       aria-labelledby={labelledBy}
-      className={cn("py-16 md:py-24", toneClasses[tone], className)}
+      className={cn(
+        "py-16 md:py-28",
+        toneClasses[tone],
+        rounded && "mx-2 rounded-[32px] md:mx-3 md:rounded-[48px]",
+        className,
+      )}
     >
       <Container className={containerClassName}>{children}</Container>
     </section>
