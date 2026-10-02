@@ -102,6 +102,24 @@ export type Seo = {
   description?: string;
 };
 
+export type Service = {
+  _id: string;
+  _type: "service";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  slug?: Slug;
+  summary?: string;
+  colorKey?: "accent" | "teal" | "plum" | "mustard" | "ink";
+  coverStyle?: "bars" | "circles" | "squares" | "triangle" | "line" | "rings";
+  deliverables?: Array<string>;
+  body?: RichText;
+  order?: number;
+  seo?: Seo;
+  isSample?: boolean;
+};
+
 export type TopicReference = {
   _ref: string;
   _type: "reference";
@@ -239,6 +257,116 @@ export type Topic = {
   description?: string;
 };
 
+export type SiteSettings = {
+  _id: string;
+  _type: "siteSettings";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  siteName?: string;
+  positioning?: string;
+  ctaLabel?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+  officeHours?: string;
+  socials?: Array<{
+    label?: string;
+    url?: string;
+    _type: "social";
+    _key: string;
+  }>;
+  copyright?: string;
+};
+
+export type ContactPage = {
+  _id: string;
+  _type: "contactPage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  headline?: string;
+  intro?: string;
+  topics?: Array<string>;
+  successMessage?: string;
+  seo?: Seo;
+};
+
+export type AboutPage = {
+  _id: string;
+  _type: "aboutPage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  headline?: string;
+  intro?: string;
+  story?: SimpleText;
+  values?: Array<{
+    title?: string;
+    text?: string;
+    _type: "value";
+    _key: string;
+  }>;
+  stats?: Array<{
+    value?: string;
+    label?: string;
+    _type: "stat";
+    _key: string;
+  }>;
+  teamHeading?: string;
+  team?: Array<
+    {
+      _key: string;
+    } & AuthorReference
+  >;
+  seo?: Seo;
+};
+
+export type HomePage = {
+  _id: string;
+  _type: "homePage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  eyebrow?: string;
+  headline?: string;
+  intro?: string;
+  primaryCta?: string;
+  secondaryCta?: string;
+  insightsHeading?: string;
+  servicesHeading?: string;
+  areasHeading?: string;
+  newsletterHeading?: string;
+  newsletterText?: string;
+  seo?: Seo;
+};
+
+export type MediaFolderReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "media.folder";
+};
+
+export type MediaFolder = {
+  _id: string;
+  _type: "media.folder";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name?: string;
+  parent?: MediaFolderReference;
+};
+
+export type MediaTag = {
+  _id: string;
+  _type: "media.tag";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name?: Slug;
+};
+
 export type SanityImagePaletteSwatch = {
   _type: "sanity.imagePaletteSwatch";
   background?: string;
@@ -343,6 +471,7 @@ export type AllSanitySchemaTypes =
   | Chart
   | PullQuote
   | Seo
+  | Service
   | TopicReference
   | AuthorReference
   | Article
@@ -353,6 +482,13 @@ export type AllSanitySchemaTypes =
   | SanityFileAssetReference
   | Report
   | Topic
+  | SiteSettings
+  | ContactPage
+  | AboutPage
+  | HomePage
+  | MediaFolderReference
+  | MediaFolder
+  | MediaTag
   | SanityImagePaletteSwatch
   | SanityImagePalette
   | SanityImageDimensions
@@ -670,6 +806,126 @@ export type RelatedArticlesQueryResult = Array<{
 // Query: *[_type == "article" && defined(slug.current)].slug.current
 export type ArticleSlugsQueryResult = Array<string | null>;
 
+// Source: src/sanity/queries.ts
+// Variable: siteSettingsQuery
+// Query: *[_type == "siteSettings" && _id == "siteSettings"][0]{    siteName, positioning, ctaLabel, email, phone, address, officeHours, socials[]{ _key, label, url }, copyright  }
+export type SiteSettingsQueryResult = {
+  siteName: string | null;
+  positioning: string | null;
+  ctaLabel: string | null;
+  email: string | null;
+  phone: string | null;
+  address: string | null;
+  officeHours: string | null;
+  socials: Array<{
+    _key: string;
+    label: string | null;
+    url: string | null;
+  }> | null;
+  copyright: string | null;
+} | null;
+
+// Source: src/sanity/queries.ts
+// Variable: homePageQuery
+// Query: *[_type == "homePage" && _id == "homePage"][0]{    eyebrow, headline, intro, primaryCta, secondaryCta,    insightsHeading, servicesHeading, areasHeading, newsletterHeading, newsletterText, seo  }
+export type HomePageQueryResult = {
+  eyebrow: string | null;
+  headline: string | null;
+  intro: string | null;
+  primaryCta: string | null;
+  secondaryCta: string | null;
+  insightsHeading: string | null;
+  servicesHeading: string | null;
+  areasHeading: string | null;
+  newsletterHeading: string | null;
+  newsletterText: string | null;
+  seo: Seo | null;
+} | null;
+
+// Source: src/sanity/queries.ts
+// Variable: aboutPageQuery
+// Query: *[_type == "aboutPage" && _id == "aboutPage"][0]{    headline, intro, story, values[]{ _key, title, text }, stats[]{ _key, value, label }, teamHeading,    team[]->{ _id, name, "slug": slug.current, role, photo, bio },    seo  }
+export type AboutPageQueryResult = {
+  headline: string | null;
+  intro: string | null;
+  story: SimpleText | null;
+  values: Array<{
+    _key: string;
+    title: string | null;
+    text: string | null;
+  }> | null;
+  stats: Array<{
+    _key: string;
+    value: string | null;
+    label: string | null;
+  }> | null;
+  teamHeading: string | null;
+  team: Array<{
+    _id: string;
+    name: string | null;
+    slug: string | null;
+    role: string | null;
+    photo: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+    } | null;
+    bio: string | null;
+  }> | null;
+  seo: Seo | null;
+} | null;
+
+// Source: src/sanity/queries.ts
+// Variable: contactPageQuery
+// Query: *[_type == "contactPage" && _id == "contactPage"][0]{ headline, intro, topics, successMessage, seo }
+export type ContactPageQueryResult = {
+  headline: string | null;
+  intro: string | null;
+  topics: Array<string> | null;
+  successMessage: string | null;
+  seo: Seo | null;
+} | null;
+
+// Source: src/sanity/queries.ts
+// Variable: servicesQuery
+// Query: *[_type == "service" && defined(slug.current)] | order(order asc, title asc){ _id, title, "slug": slug.current, summary, colorKey, coverStyle, order }
+export type ServicesQueryResult = Array<{
+  _id: string;
+  title: string | null;
+  slug: string | null;
+  summary: string | null;
+  colorKey: "accent" | "ink" | "mustard" | "plum" | "teal" | null;
+  coverStyle:
+    "bars" | "circles" | "line" | "rings" | "squares" | "triangle" | null;
+  order: number | null;
+}>;
+
+// Source: src/sanity/queries.ts
+// Variable: serviceBySlugQuery
+// Query: *[_type == "service" && slug.current == $slug][0]{    _id, title, "slug": slug.current, summary, colorKey, coverStyle, order, deliverables, body, seo, isSample  }
+export type ServiceBySlugQueryResult = {
+  _id: string;
+  title: string | null;
+  slug: string | null;
+  summary: string | null;
+  colorKey: "accent" | "ink" | "mustard" | "plum" | "teal" | null;
+  coverStyle:
+    "bars" | "circles" | "line" | "rings" | "squares" | "triangle" | null;
+  order: number | null;
+  deliverables: Array<string> | null;
+  body: RichText | null;
+  seo: Seo | null;
+  isSample: boolean | null;
+} | null;
+
+// Source: src/sanity/queries.ts
+// Variable: serviceSlugsQuery
+// Query: *[_type == "service" && defined(slug.current)].slug.current
+export type ServiceSlugsQueryResult = Array<string | null>;
+
 // Query TypeMap
 declare global {
   interface SanityQueries {
@@ -686,6 +942,13 @@ declare global {
     '\n  *[_type == "article" && defined(slug.current) && (!defined($topic) || topic->slug.current == $topic)]\n    | order(publishedAt desc){ \n  _id,\n  title,\n  "slug": slug.current,\n  excerpt,\n  coverStyle,\n  publishedAt,\n  readTime,\n  featured,\n  topic->{ _id, title, "slug": slug.current, colorKey },\n  author->{ name, "slug": slug.current }\n }\n': ArticlesListQueryResult;
     '\n  *[_type == "article" && defined(slug.current) && _id != $id]\n    | order(select(topic._ref == $topicId => 1, 0) desc, publishedAt desc)[0...3]{ \n  _id,\n  title,\n  "slug": slug.current,\n  excerpt,\n  coverStyle,\n  publishedAt,\n  readTime,\n  featured,\n  topic->{ _id, title, "slug": slug.current, colorKey },\n  author->{ name, "slug": slug.current }\n }\n': RelatedArticlesQueryResult;
     '\n  *[_type == "article" && defined(slug.current)].slug.current\n': ArticleSlugsQueryResult;
+    '\n  *[_type == "siteSettings" && _id == "siteSettings"][0]{\n    siteName, positioning, ctaLabel, email, phone, address, officeHours, socials[]{ _key, label, url }, copyright\n  }\n': SiteSettingsQueryResult;
+    '\n  *[_type == "homePage" && _id == "homePage"][0]{\n    eyebrow, headline, intro, primaryCta, secondaryCta,\n    insightsHeading, servicesHeading, areasHeading, newsletterHeading, newsletterText, seo\n  }\n': HomePageQueryResult;
+    '\n  *[_type == "aboutPage" && _id == "aboutPage"][0]{\n    headline, intro, story, values[]{ _key, title, text }, stats[]{ _key, value, label }, teamHeading,\n    team[]->{ _id, name, "slug": slug.current, role, photo, bio },\n    seo\n  }\n': AboutPageQueryResult;
+    '\n  *[_type == "contactPage" && _id == "contactPage"][0]{ headline, intro, topics, successMessage, seo }\n': ContactPageQueryResult;
+    '\n  *[_type == "service" && defined(slug.current)] | order(order asc, title asc){ _id, title, "slug": slug.current, summary, colorKey, coverStyle, order }\n': ServicesQueryResult;
+    '\n  *[_type == "service" && slug.current == $slug][0]{\n    _id, title, "slug": slug.current, summary, colorKey, coverStyle, order, deliverables, body, seo, isSample\n  }\n': ServiceBySlugQueryResult;
+    '\n  *[_type == "service" && defined(slug.current)].slug.current\n': ServiceSlugsQueryResult;
   }
 }
 // Lets @sanity/client releases that predate the global registry read it too

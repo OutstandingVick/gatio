@@ -113,3 +113,44 @@ export const relatedArticlesQuery = defineQuery(`
 export const articleSlugsQuery = defineQuery(`
   *[_type == "article" && defined(slug.current)].slug.current
 `);
+
+const serviceCardFields = /* groq */ `_id, title, "slug": slug.current, summary, colorKey, coverStyle, order`;
+
+export const siteSettingsQuery = defineQuery(`
+  *[_type == "siteSettings" && _id == "siteSettings"][0]{
+    siteName, positioning, ctaLabel, email, phone, address, officeHours, socials[]{ _key, label, url }, copyright
+  }
+`);
+
+export const homePageQuery = defineQuery(`
+  *[_type == "homePage" && _id == "homePage"][0]{
+    eyebrow, headline, intro, primaryCta, secondaryCta,
+    insightsHeading, servicesHeading, areasHeading, newsletterHeading, newsletterText, seo
+  }
+`);
+
+export const aboutPageQuery = defineQuery(`
+  *[_type == "aboutPage" && _id == "aboutPage"][0]{
+    headline, intro, story, values[]{ _key, title, text }, stats[]{ _key, value, label }, teamHeading,
+    team[]->{ _id, name, "slug": slug.current, role, photo, bio },
+    seo
+  }
+`);
+
+export const contactPageQuery = defineQuery(`
+  *[_type == "contactPage" && _id == "contactPage"][0]{ headline, intro, topics, successMessage, seo }
+`);
+
+export const servicesQuery = defineQuery(`
+  *[_type == "service" && defined(slug.current)] | order(order asc, title asc){ ${serviceCardFields} }
+`);
+
+export const serviceBySlugQuery = defineQuery(`
+  *[_type == "service" && slug.current == $slug][0]{
+    ${serviceCardFields}, deliverables, body, seo, isSample
+  }
+`);
+
+export const serviceSlugsQuery = defineQuery(`
+  *[_type == "service" && defined(slug.current)].slug.current
+`);

@@ -10,9 +10,15 @@ import type {
 } from "./types.generated";
 
 export type {
+  AboutPageQueryResult,
   AllTopicsQueryResult,
   ArticleBySlugQueryResult,
   ArticlesListQueryResult,
+  ContactPageQueryResult,
+  HomePageQueryResult,
+  ServiceBySlugQueryResult,
+  ServicesQueryResult,
+  SiteSettingsQueryResult,
   Chart,
   FeaturedReportQueryResult,
   LatestArticlesQueryResult,
@@ -32,3 +38,5 @@ export type ArticleCardData = NonNullable<LatestArticlesQueryResult[number]>;
 export type ReportDetail = NonNullable<ReportBySlugQueryResult>;
 export type ArticleDetail = NonNullable<ArticleBySlugQueryResult>;
 export type AuthorDetail = NonNullable<ReportDetail["authors"]>[number];
+export type ServiceCardData = NonNullable<import("./types.generated").ServicesQueryResult[number]>;
+export type SiteSettings = NonNullable<import("./types.generated").SiteSettingsQueryResult>;
