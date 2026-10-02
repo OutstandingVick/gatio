@@ -16,7 +16,7 @@ export const NAV_LINKS = [
   { href: "/contact", label: "Contact" },
 ] as const;
 
-export function Navbar() {
+export function Navbar({ ctaLabel = "Work with us" }: { ctaLabel?: string | null }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const menuId = useId();
@@ -69,7 +69,7 @@ export function Navbar() {
 
         <div className="flex items-center gap-3">
           <div className="hidden sm:block">
-            <Button href="/contact">Work with us</Button>
+            <Button href="/contact">{ctaLabel}</Button>
           </div>
           <button
             ref={toggleRef}
@@ -112,7 +112,7 @@ export function Navbar() {
             </ul>
           </nav>
           <Button href="/contact" variant="accent" size="lg" onClick={close} className="w-full">
-            Work with us
+            {ctaLabel}
           </Button>
         </Container>
       </div>

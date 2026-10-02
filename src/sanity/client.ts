@@ -11,7 +11,16 @@ export const client = createClient({
 });
 
 /** Tags attached to cached fetches; the /api/revalidate webhook invalidates them by document type. */
-export type SanityTag = "report" | "article" | "author" | "topic";
+export type SanityTag =
+  | "report"
+  | "article"
+  | "author"
+  | "topic"
+  | "service"
+  | "siteSettings"
+  | "homePage"
+  | "aboutPage"
+  | "contactPage";
 
 type FetchOptions<Q extends string> = {
   query: Q;

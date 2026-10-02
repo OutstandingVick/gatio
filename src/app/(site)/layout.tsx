@@ -1,7 +1,9 @@
 import { Footer } from "@/components/ui/Footer";
 import { Navbar } from "@/components/ui/Navbar";
+import { getSettings } from "@/sanity/settings";
 
-export default function SiteLayout({ children }: { children: React.ReactNode }) {
+export default async function SiteLayout({ children }: { children: React.ReactNode }) {
+  const settings = await getSettings();
   return (
     <>
       <a
@@ -10,11 +12,11 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       >
         Skip to content
       </a>
-      <Navbar />
+      <Navbar ctaLabel={settings?.ctaLabel} />
       <main id="main" className="flex-1">
         {children}
       </main>
-      <Footer />
+      <Footer settings={settings} />
     </>
   );
 }
