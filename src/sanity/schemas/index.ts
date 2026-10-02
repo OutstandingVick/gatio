@@ -6,12 +6,21 @@ import { richText, simpleText } from "./objects/portableText";
 import { pullQuote } from "./objects/pullQuote";
 import { seo } from "./objects/seo";
 import { report } from "./report";
+import { aboutPage, contactPage, homePage } from "./pages";
+import { service } from "./service";
+import { siteSettings } from "./siteSettings";
 import { topic } from "./topic";
 
 export const schemaTypes: SchemaTypeDefinition[] = [
+  // Singletons
+  homePage,
+  aboutPage,
+  contactPage,
+  siteSettings,
   // Documents
   report,
   article,
+  service,
   author,
   topic,
   // Objects
