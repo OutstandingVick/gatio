@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Newsletter } from "@/components/sections/home/Newsletter";
 import { ListingGrid } from "@/components/sections/listing/ListingGrid";
 import { TopicFilter } from "@/components/sections/listing/TopicFilter";
 import { Container } from "@/components/ui/Container";
@@ -23,8 +24,8 @@ export default async function InsightsPage({ searchParams }: PageProps<"/insight
 
   return (
     <>
-      <PageHeader title="Insights" description="[DESCRIPTION]" />
-      <Container className="flex flex-col gap-10 py-10 md:py-14">
+      <PageHeader eyebrow="Insights" eyebrowTone="lavender" title="Notes from {blossom} *the field.*" description="[INSIGHTS DESCRIPTION: shorter pieces on what the team is seeing.]" />
+      <Container className="flex flex-col gap-10 pb-10 md:pb-14">
         <TopicFilter topics={topics ?? []} active={activeTopic?.slug ?? null} basePath="/insights" />
         <ListingGrid
           noun="insights"
@@ -41,6 +42,7 @@ export default async function InsightsPage({ searchParams }: PageProps<"/insight
           }))}
         />
       </Container>
+      <Newsletter heading="Get new insights *first.*" text="[NEWSLETTER DESCRIPTION]" />
     </>
   );
 }
