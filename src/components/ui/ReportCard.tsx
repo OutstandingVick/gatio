@@ -30,27 +30,26 @@ export function ReportCard({
   const date = formatDate(publishedAt);
 
   return (
-    <article
-      className={cn(
-        "group relative flex flex-col gap-5 rounded-[var(--radius-card)] bg-paper p-3 pb-6",
-        "transition-[box-shadow,transform] duration-200 ease-out hover:-translate-y-1 hover:shadow-[0_12px_32px_rgb(13_20_33/0.08)] focus-within:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0",
-        className,
-      )}
-    >
-      <div className="aspect-[4/3] overflow-hidden rounded-2xl">
-        <CoverArt coverStyle={coverStyle} topicSlug={topic?.slug} colorKey={topic?.colorKey} />
+    <article className={cn("group relative flex flex-col gap-5", className)}>
+      <div className="aspect-[4/3] overflow-hidden border border-rule">
+        <CoverArt
+          coverStyle={coverStyle}
+          topicSlug={topic?.slug}
+          colorKey={topic?.colorKey}
+          className="transition-transform duration-700 ease-out group-hover:scale-[1.04] motion-reduce:transition-none"
+        />
       </div>
-      <div className="flex flex-1 flex-col gap-3 px-3">
+      <div className="flex flex-1 flex-col gap-3">
         <TopicTag slug={topic?.slug} colorKey={topic?.colorKey} label={topic?.title} />
-        <Heading className="text-xl leading-snug font-bold tracking-[-0.02em]">
+        <Heading className="text-2xl leading-snug md:text-[28px]">
           <Link
             href={href}
-            className="after:absolute after:inset-0 after:rounded-[var(--radius-card)] focus-visible:outline-none focus-visible:after:outline focus-visible:after:outline-3 focus-visible:after:outline-offset-2 focus-visible:after:outline-accent group-hover:text-accent"
+            className="transition-colors after:absolute after:inset-0 focus-visible:outline-none focus-visible:after:outline focus-visible:after:outline-2 focus-visible:after:outline-offset-4 focus-visible:after:outline-gold group-hover:text-gold"
           >
             {title}
           </Link>
         </Heading>
-        <p className="mt-auto flex gap-2 pt-1 text-sm text-ink-muted">
+        <p className="label mt-auto flex gap-2 pt-1 text-fg-faint">
           {date && <time dateTime={publishedAt ?? undefined}>{date}</time>}
           {date && readTime ? <span aria-hidden="true">·</span> : null}
           {readTime ? <span>{readTime} min read</span> : null}
