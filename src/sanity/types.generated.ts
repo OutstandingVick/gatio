@@ -266,6 +266,11 @@ export type SiteSettings = {
   siteName?: string;
   positioning?: string;
   ctaLabel?: string;
+  capabilityPdf?: {
+    asset?: SanityFileAssetReference;
+    media?: unknown;
+    _type: "file";
+  };
   email?: string;
   phone?: string;
   address?: string;
@@ -333,6 +338,42 @@ export type HomePage = {
   intro?: string;
   primaryCta?: string;
   secondaryCta?: string;
+  availability?: string;
+  trustFacts?: Array<string>;
+  marquee?: Array<string>;
+  whoHeading?: string;
+  whoBody?: string;
+  whoQuote?: string;
+  whoQuoteAttribution?: string;
+  founderQuote?: string;
+  founderName?: string;
+  founderRole?: string;
+  numbersHeading?: string;
+  numbers?: Array<{
+    value?: string;
+    label?: string;
+    _type: "figure";
+    _key: string;
+  }>;
+  commitmentsHeading?: string;
+  commitments?: Array<{
+    title?: string;
+    text?: string;
+    _type: "commitment";
+    _key: string;
+  }>;
+  statementHeading?: string;
+  statementText?: string;
+  stepsHeading?: string;
+  steps?: Array<{
+    label?: string;
+    title?: string;
+    text?: string;
+    _type: "step";
+    _key: string;
+  }>;
+  ctaHeading?: string;
+  ctaText?: string;
   insightsHeading?: string;
   servicesHeading?: string;
   areasHeading?: string;
@@ -1325,7 +1366,7 @@ export type ArticleSlugsQueryResult = Array<string | null>;
 
 // Source: src/sanity/queries.ts
 // Variable: siteSettingsQuery
-// Query: *[_type == "siteSettings" && _id == "siteSettings"][0]{    siteName, positioning, ctaLabel, email, phone, address, officeHours, socials[]{ _key, label, url }, copyright  }
+// Query: *[_type == "siteSettings" && _id == "siteSettings"][0]{    siteName, positioning, ctaLabel, email, phone, address, officeHours, socials[]{ _key, label, url }, copyright,    "capabilityPdfUrl": capabilityPdf.asset->url  }
 export type SiteSettingsQueryResult = {
   siteName: string | null;
   positioning: string | null;
@@ -1340,17 +1381,51 @@ export type SiteSettingsQueryResult = {
     url: string | null;
   }> | null;
   copyright: string | null;
+  capabilityPdfUrl: string | null;
 } | null;
 
 // Source: src/sanity/queries.ts
 // Variable: homePageQuery
-// Query: *[_type == "homePage" && _id == "homePage"][0]{    eyebrow, headline, intro, primaryCta, secondaryCta,    insightsHeading, servicesHeading, areasHeading, newsletterHeading, newsletterText, seo  }
+// Query: *[_type == "homePage" && _id == "homePage"][0]{    eyebrow, headline, intro, primaryCta, secondaryCta, availability, trustFacts, marquee,    whoHeading, whoBody, whoQuote, whoQuoteAttribution,    founderQuote, founderName, founderRole,    numbersHeading, numbers[]{ _key, value, label },    commitmentsHeading, commitments[]{ _key, title, text },    statementHeading, statementText,    stepsHeading, steps[]{ _key, label, title, text },    ctaHeading, ctaText,    insightsHeading, servicesHeading, areasHeading, newsletterHeading, newsletterText, seo  }
 export type HomePageQueryResult = {
   eyebrow: string | null;
   headline: string | null;
   intro: string | null;
   primaryCta: string | null;
   secondaryCta: string | null;
+  availability: string | null;
+  trustFacts: Array<string> | null;
+  marquee: Array<string> | null;
+  whoHeading: string | null;
+  whoBody: string | null;
+  whoQuote: string | null;
+  whoQuoteAttribution: string | null;
+  founderQuote: string | null;
+  founderName: string | null;
+  founderRole: string | null;
+  numbersHeading: string | null;
+  numbers: Array<{
+    _key: string;
+    value: string | null;
+    label: string | null;
+  }> | null;
+  commitmentsHeading: string | null;
+  commitments: Array<{
+    _key: string;
+    title: string | null;
+    text: string | null;
+  }> | null;
+  statementHeading: string | null;
+  statementText: string | null;
+  stepsHeading: string | null;
+  steps: Array<{
+    _key: string;
+    label: string | null;
+    title: string | null;
+    text: string | null;
+  }> | null;
+  ctaHeading: string | null;
+  ctaText: string | null;
   insightsHeading: string | null;
   servicesHeading: string | null;
   areasHeading: string | null;
@@ -1408,7 +1483,7 @@ export type ContactPageQueryResult = {
 
 // Source: src/sanity/queries.ts
 // Variable: servicesQuery
-// Query: *[_type == "service" && defined(slug.current)] | order(order asc, title asc){ _id, title, "slug": slug.current, summary, colorKey, coverStyle, order }
+// Query: *[_type == "service" && defined(slug.current)] | order(order asc, title asc){ _id, title, "slug": slug.current, summary, colorKey, coverStyle, order, deliverables }
 export type ServicesQueryResult = Array<{
   _id: string;
   title: string | null;
@@ -1418,6 +1493,7 @@ export type ServicesQueryResult = Array<{
   coverStyle:
     "bars" | "circles" | "line" | "rings" | "squares" | "triangle" | null;
   order: number | null;
+  deliverables: Array<string> | null;
 }>;
 
 // Source: src/sanity/queries.ts
@@ -1467,11 +1543,11 @@ declare global {
     '\n  *[_type == "article" && defined(slug.current) && (!defined($topic) || topic->slug.current == $topic)]\n    | order(publishedAt desc){ \n  _id,\n  title,\n  "slug": slug.current,\n  excerpt,\n  coverStyle,\n  publishedAt,\n  readTime,\n  featured,\n  topic->{ _id, title, "slug": slug.current, colorKey },\n  author->{ name, "slug": slug.current }\n }\n': ArticlesListQueryResult;
     '\n  *[_type == "article" && defined(slug.current) && _id != $id]\n    | order(select(topic._ref == $topicId => 1, 0) desc, publishedAt desc)[0...3]{ \n  _id,\n  title,\n  "slug": slug.current,\n  excerpt,\n  coverStyle,\n  publishedAt,\n  readTime,\n  featured,\n  topic->{ _id, title, "slug": slug.current, colorKey },\n  author->{ name, "slug": slug.current }\n }\n': RelatedArticlesQueryResult;
     '\n  *[_type == "article" && defined(slug.current)].slug.current\n': ArticleSlugsQueryResult;
-    '\n  *[_type == "siteSettings" && _id == "siteSettings"][0]{\n    siteName, positioning, ctaLabel, email, phone, address, officeHours, socials[]{ _key, label, url }, copyright\n  }\n': SiteSettingsQueryResult;
-    '\n  *[_type == "homePage" && _id == "homePage"][0]{\n    eyebrow, headline, intro, primaryCta, secondaryCta,\n    insightsHeading, servicesHeading, areasHeading, newsletterHeading, newsletterText, seo\n  }\n': HomePageQueryResult;
+    '\n  *[_type == "siteSettings" && _id == "siteSettings"][0]{\n    siteName, positioning, ctaLabel, email, phone, address, officeHours, socials[]{ _key, label, url }, copyright,\n    "capabilityPdfUrl": capabilityPdf.asset->url\n  }\n': SiteSettingsQueryResult;
+    '\n  *[_type == "homePage" && _id == "homePage"][0]{\n    eyebrow, headline, intro, primaryCta, secondaryCta, availability, trustFacts, marquee,\n    whoHeading, whoBody, whoQuote, whoQuoteAttribution,\n    founderQuote, founderName, founderRole,\n    numbersHeading, numbers[]{ _key, value, label },\n    commitmentsHeading, commitments[]{ _key, title, text },\n    statementHeading, statementText,\n    stepsHeading, steps[]{ _key, label, title, text },\n    ctaHeading, ctaText,\n    insightsHeading, servicesHeading, areasHeading, newsletterHeading, newsletterText, seo\n  }\n': HomePageQueryResult;
     '\n  *[_type == "aboutPage" && _id == "aboutPage"][0]{\n    headline, intro, story, values[]{ _key, title, text }, stats[]{ _key, value, label }, teamHeading,\n    team[]->{ _id, name, "slug": slug.current, role, photo, bio },\n    seo\n  }\n': AboutPageQueryResult;
     '\n  *[_type == "contactPage" && _id == "contactPage"][0]{ headline, intro, topics, successMessage, seo }\n': ContactPageQueryResult;
-    '\n  *[_type == "service" && defined(slug.current)] | order(order asc, title asc){ _id, title, "slug": slug.current, summary, colorKey, coverStyle, order }\n': ServicesQueryResult;
+    '\n  *[_type == "service" && defined(slug.current)] | order(order asc, title asc){ _id, title, "slug": slug.current, summary, colorKey, coverStyle, order, deliverables }\n': ServicesQueryResult;
     '\n  *[_type == "service" && slug.current == $slug][0]{\n    _id, title, "slug": slug.current, summary, colorKey, coverStyle, order, deliverables, body, seo, isSample\n  }\n': ServiceBySlugQueryResult;
     '\n  *[_type == "service" && defined(slug.current)].slug.current\n': ServiceSlugsQueryResult;
   }

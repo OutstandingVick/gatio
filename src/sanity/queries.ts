@@ -118,13 +118,21 @@ const serviceCardFields = /* groq */ `_id, title, "slug": slug.current, summary,
 
 export const siteSettingsQuery = defineQuery(`
   *[_type == "siteSettings" && _id == "siteSettings"][0]{
-    siteName, positioning, ctaLabel, email, phone, address, officeHours, socials[]{ _key, label, url }, copyright
+    siteName, positioning, ctaLabel, email, phone, address, officeHours, socials[]{ _key, label, url }, copyright,
+    "capabilityPdfUrl": capabilityPdf.asset->url
   }
 `);
 
 export const homePageQuery = defineQuery(`
   *[_type == "homePage" && _id == "homePage"][0]{
-    eyebrow, headline, intro, primaryCta, secondaryCta,
+    eyebrow, headline, intro, primaryCta, secondaryCta, availability, trustFacts, marquee,
+    whoHeading, whoBody, whoQuote, whoQuoteAttribution,
+    founderQuote, founderName, founderRole,
+    numbersHeading, numbers[]{ _key, value, label },
+    commitmentsHeading, commitments[]{ _key, title, text },
+    statementHeading, statementText,
+    stepsHeading, steps[]{ _key, label, title, text },
+    ctaHeading, ctaText,
     insightsHeading, servicesHeading, areasHeading, newsletterHeading, newsletterText, seo
   }
 `);
@@ -142,7 +150,7 @@ export const contactPageQuery = defineQuery(`
 `);
 
 export const servicesQuery = defineQuery(`
-  *[_type == "service" && defined(slug.current)] | order(order asc, title asc){ ${serviceCardFields} }
+  *[_type == "service" && defined(slug.current)] | order(order asc, title asc){ ${serviceCardFields}, deliverables }
 `);
 
 export const serviceBySlugQuery = defineQuery(`
