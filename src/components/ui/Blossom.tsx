@@ -20,7 +20,8 @@ export function Blossom({ color = "var(--plum)", petals = 8, className }: Blosso
       viewBox="0 0 100 100"
       aria-hidden="true"
       focusable="false"
-      className={cn("inline-block size-[0.8em] shrink-0 align-[-0.08em]", className)}
+      // Default to text-relative size unless the caller sets one.
+      className={cn("inline-block shrink-0 align-[-0.08em]", !/(^|\s)size-/.test(className ?? "") && "size-[0.8em]", className)}
     >
       <g fill={color}>
         {Array.from({ length: petals }, (_, i) => {
