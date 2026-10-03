@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Newsletter } from "@/components/sections/home/Newsletter";
 import { RichText } from "@/components/portable-text/RichText";
 import { AuthorBox } from "@/components/sections/detail/AuthorBox";
 import { DetailHeader } from "@/components/sections/detail/DetailHeader";
@@ -62,8 +63,9 @@ export default async function InsightPage({ params }: PageProps<"/insights/[slug
           </div>
         </div>
       </Container>
+      <Newsletter heading="Get new insights *first.*" text="[NEWSLETTER DESCRIPTION]" />
       <RelatedList
-        title="More insights"
+        title="More *insights*"
         items={related.map((a) => ({
           id: a._id,
           title: a.title ?? "Untitled",

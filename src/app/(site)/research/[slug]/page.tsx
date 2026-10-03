@@ -151,7 +151,7 @@ export default async function ReportPage({ params }: PageProps<"/research/[slug]
       </Container>
 
       <RelatedList
-        title="Related research"
+        title="Related *research*"
         items={related.map((r) => ({
           id: r._id,
           title: r.title ?? "Untitled",
