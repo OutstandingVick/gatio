@@ -8,7 +8,7 @@ A spec demo of a research agency website with a CMS. Gatio publishes research re
 
 | Route | Purpose |
 | --- | --- |
-| `/` | Home: hero with fanned report covers, featured report, latest insights, research areas, newsletter |
+| `/` | Home: hero and report showcase, capabilities strip, who we are, services, founder's note, recent research, numbers, commitments, statement band, how we work, insights, closing call to action. Every section's copy is in **Pages → Home**. |
 | `/research` | Research listing, filterable by `?topic=slug` |
 | `/research/[slug]` | Research detail: findings, charts, pull quotes, contents rail, methodology, sources, related |
 | `/insights` | Insights listing, filterable by `?topic=slug` |
@@ -96,7 +96,7 @@ Open `/studio` and sign in with your Sanity account. It has:
 | **Media** | Library of every uploaded image, with search and tagging |
 | **Users** | Managed in Sanity at sanity.io/manage (linked from the Dashboard) |
 
-In page headlines, wrap words in `*asterisks*` to set them in the accent italic.
+In page headlines, wrap words in `*asterisks*` to set them in the brand emphasis colour, and type `{blossom}` to drop in the flower ornament, e.g. `Research that turns {blossom} *complex markets* into clear decisions.`
 
 Reports and articles reference topics and authors, so create those first. All demo documents have **Sample content** ticked, which shows a note on their detail pages.
 
@@ -134,6 +134,12 @@ src/
 sanity.config.ts       Studio config
 sanity.cli.ts          CLI + TypeGen config
 ```
+
+## Design
+
+The look follows PiggyVest's style: Plus Jakarta Sans at 800 for headlines, a cool grey page with white cards, navy bands with large rounded corners, a royal-blue main action and pastel accents (lime, lavender, mint, blush, butter, sky). Section order follows the A&A Tech site structure.
+
+Load the placeholder Home content into a fresh dataset with the seed in `scripts/seed/`.
 
 ## Design notes
 
