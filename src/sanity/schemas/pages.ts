@@ -76,7 +76,7 @@ export const homePage = defineType({
       of: [
         defineArrayMember({
           type: "object",
-          name: "number",
+          name: "figure",
           fields: [
             defineField({ name: "value", type: "string", validation: (rule) => rule.required().max(10) }),
             defineField({ name: "label", type: "string", validation: (rule) => rule.required().max(60) }),
