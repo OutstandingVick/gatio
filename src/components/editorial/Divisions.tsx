@@ -47,7 +47,7 @@ export function Divisions({ services, ctaLabel }: { services: ServicesQueryResul
             <li key={s._id}>
               <Container className="grid gap-8 py-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-16 md:py-0">
                 {/* Sticky image column */}
-                <div className="md:min-h-[130vh]">
+                <div className="md:min-h-[175vh]">
                   <div className="relative aspect-[4/5] overflow-hidden md:sticky md:top-20 md:aspect-auto md:h-[calc(100vh-7rem)]">
                     <Image src={img.src} alt={img.alt} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
                     <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
@@ -64,7 +64,7 @@ export function Divisions({ services, ctaLabel }: { services: ServicesQueryResul
                 </div>
 
                 {/* Scrolling text column */}
-                <div className="flex flex-col justify-center md:min-h-[130vh]">
+                <div className="flex flex-col justify-center md:min-h-[175vh]">
                   <p className={cn("label", color.text)}>Service {n}</p>
                   <h3 className="mt-4 text-4xl md:text-5xl">{s.title}</h3>
                   {s.summary && <p className="mt-6 max-w-[46ch] text-lg leading-relaxed text-fg-muted">{s.summary}</p>}
