@@ -38,15 +38,15 @@ export function ReportFan({ reports }: { reports: ReportCardData[] }) {
           >
             <Link
               href={reportHref(report.slug)}
-              className="flex h-full flex-col gap-3 rounded-[var(--radius-card)] border border-line bg-paper p-3 shadow-[0_1px_0_var(--line)] hover:border-ink"
+              className="flex h-full flex-col gap-3 rounded-[22px] bg-paper p-3 shadow-[0_8px_24px_rgb(13_20_33/0.08)] hover:shadow-[0_12px_32px_rgb(13_20_33/0.14)]"
             >
               <span className="px-1 pt-1">
                 <TopicTag slug={report.topic?.slug} colorKey={report.topic?.colorKey} label={report.topic?.title} />
               </span>
-              <span className="block aspect-[4/3] overflow-hidden rounded-xl">
+              <span className="block aspect-[4/3] overflow-hidden rounded-2xl">
                 <CoverArt coverStyle={report.coverStyle} topicSlug={report.topic?.slug} colorKey={report.topic?.colorKey} />
               </span>
-              <span className="line-clamp-3 px-1 pb-1 font-display text-lg leading-snug tracking-[-0.02em]">
+              <span className="line-clamp-3 px-1 pb-1 text-[15px] leading-snug font-bold tracking-[-0.02em]">
                 {report.title}
               </span>
             </Link>
