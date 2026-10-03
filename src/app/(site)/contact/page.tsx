@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { ContactForm } from "@/components/sections/contact/ContactForm";
 import { Container } from "@/components/ui/Container";
 import { Emphasis, stripEmphasis } from "@/components/ui/Emphasis";
-import { Eyebrow } from "@/components/ui/Eyebrow";
 import { sanityFetch } from "@/sanity/client";
 import { contactPageQuery } from "@/sanity/queries";
 import { getSettings } from "@/sanity/settings";
@@ -20,47 +18,43 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const CARDS = [
-  { key: "email", label: "Email", icon: Mail, tone: "bg-sky text-accent" },
-  { key: "phone", label: "Phone", icon: Phone, tone: "bg-mint text-teal" },
-  { key: "address", label: "Office", icon: MapPin, tone: "bg-blush text-plum" },
-  { key: "officeHours", label: "Hours", icon: Clock, tone: "bg-butter text-mustard-text" },
+const DETAILS = [
+  { key: "email", label: "Email" },
+  { key: "phone", label: "Phone" },
+  { key: "address", label: "Office" },
+  { key: "officeHours", label: "Hours" },
 ] as const;
 
 export default async function ContactPage() {
   const [contact, settings] = await Promise.all([getContact(), getSettings()]);
   const topics = contact?.topics?.filter(Boolean) as string[] | undefined;
 
-  const value = (key: (typeof CARDS)[number]["key"]) => {
+  const value = (key: (typeof DETAILS)[number]["key"]) => {
     const v = settings?.[key];
-    if (!v) return <span className="text-ink-muted">[{key === "officeHours" ? "HOURS" : key.toUpperCase()}]</span>;
-    if (key === "email") return <a href={`mailto:${v}`} className="hover:text-accent hover:underline">{v}</a>;
-    if (key === "phone") return <a href={`tel:${v.replace(/[^\d+]/g, "")}`} className="hover:text-accent hover:underline">{v}</a>;
+    if (!v) return <span className="text-fg-faint">[{key === "officeHours" ? "HOURS" : key.toUpperCase()}]</span>;
+    if (key === "email") return <a href={`mailto:${v}`} className="hover:text-gold">{v}</a>;
+    if (key === "phone") return <a href={`tel:${v.replace(/[^\d+]/g, "")}`} className="hover:text-gold">{v}</a>;
     return <span className="whitespace-pre-line">{v}</span>;
   };
 
   return (
-    <Container className="grid gap-12 py-14 md:py-20 lg:grid-cols-[1fr_1.25fr] lg:gap-14">
-      <div className="flex flex-col gap-10">
+    <Container className="grid gap-14 pt-32 pb-20 md:pt-40 md:pb-28 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
+      <div className="flex flex-col gap-12">
         <div>
-          <Eyebrow tone="accent">Contact</Eyebrow>
-          <h1 className="mt-6 text-5xl md:text-[64px] md:leading-[1.02]">
-            <Emphasis text={contact?.headline || "Let's talk about *your market.*"} />
+          <p className="label text-gold">Contact</p>
+          <h1 className="mt-5 text-5xl md:text-7xl">
+            <Emphasis text={contact?.headline || "Let's talk about *your market.*"} blossomColor="none" />
           </h1>
-          <p className="mt-6 max-w-[44ch] text-lg leading-relaxed text-ink-muted">{contact?.intro || "[CONTACT INTRO]"}</p>
+          <p className="mt-6 max-w-[44ch] text-lg leading-relaxed text-fg-muted">{contact?.intro || "[CONTACT INTRO]"}</p>
         </div>
-
-        <ul className="grid grid-cols-2 gap-3">
-          {CARDS.map(({ key, label, icon: Icon, tone }) => (
-            <li key={key} className="flex min-w-0 flex-col gap-2.5 rounded-[var(--radius-card)] bg-paper p-4 sm:p-5">
-              <span className={`flex size-10 items-center justify-center rounded-full ${tone}`}>
-                <Icon className="size-5" aria-hidden="true" />
-              </span>
-              <span className="text-sm font-semibold text-ink-muted">{label}</span>
-              <span className="text-[15px] font-semibold break-words">{value(key)}</span>
-            </li>
+        <dl className="border-t border-rule">
+          {DETAILS.map(({ key, label }) => (
+            <div key={key} className="grid grid-cols-[100px_minmax(0,1fr)] gap-4 border-b border-rule py-4">
+              <dt className="label pt-1 text-gold">{label}</dt>
+              <dd className="text-lg break-words">{value(key)}</dd>
+            </div>
           ))}
-        </ul>
+        </dl>
       </div>
 
       <div>
