@@ -1,4 +1,5 @@
-import Link from "next/link";
+import { ArrowLink } from "@/components/ui/ArrowLink";
+import { Blossom } from "@/components/ui/Blossom";
 import { ReportCard, type ReportCardProps } from "@/components/ui/ReportCard";
 
 type Item = Omit<ReportCardProps, "headingLevel" | "className"> & { id: string };
@@ -17,21 +18,23 @@ export function ListingGrid({
 }) {
   if (!items.length) {
     return (
-      <div className="rounded-[var(--radius-panel)] border border-dashed border-line bg-paper px-6 py-16 text-center">
-        <p className="font-display text-3xl tracking-[-0.02em]">
+      <div className="flex flex-col items-center rounded-[var(--radius-panel)] bg-paper px-6 py-20 text-center">
+        <Blossom color="var(--lavender)" className="size-16" />
+        <p className="mt-6 text-2xl font-extrabold tracking-[-0.03em]">
           {emptyTopic ? `No ${noun} on ${emptyTopic} yet.` : `No ${noun} published yet.`}
         </p>
+        <p className="mt-2 text-ink-muted">New work is published regularly. Check back soon.</p>
         {emptyTopic && (
-          <Link href={basePath} className="mt-4 inline-block font-medium underline decoration-accent decoration-2 underline-offset-4">
+          <ArrowLink href={basePath} className="mt-6">
             See all {noun}
-          </Link>
+          </ArrowLink>
         )}
       </div>
     );
   }
 
   return (
-    <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {items.map(({ id, ...card }) => (
         <li key={id} className="flex">
           <ReportCard {...card} headingLevel="h2" className="w-full" />
