@@ -30,7 +30,7 @@ export function ResearchRows({ reports }: { reports: FeaturedWorkQueryResult }) 
           return (
             <li key={r._id} className="border-b border-rule">
               <article className="group relative grid gap-6 py-10 md:grid-cols-[80px_minmax(0,4fr)_minmax(0,7fr)] md:gap-10 md:py-14">
-                <p className="outline-numeral text-6xl leading-none text-gold md:text-7xl" aria-hidden="true">
+                <p className="outline-numeral text-6xl leading-none md:text-7xl" aria-hidden="true">
                   {String(i + 1).padStart(2, "0")}
                 </p>
                 <div className="aspect-[4/3] overflow-hidden border border-rule">

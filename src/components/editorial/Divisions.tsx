@@ -4,7 +4,8 @@ import { ArrowLink } from "@/components/ui/ArrowLink";
 import { Container } from "@/components/ui/Container";
 import { cn } from "@/lib/cn";
 import { sceneForService } from "@/lib/scenes";
-import { COLOR_CLASSES, topicColor } from "@/lib/topics";
+import { COLOR_CLASSES, COLOR_HEX, topicColor } from "@/lib/topics";
+import type { CSSProperties } from "react";
 import { urlFor } from "@/sanity/image";
 import type { ServicesQueryResult } from "@/sanity/types";
 
@@ -57,7 +58,9 @@ export function Divisions({ services, ctaLabel }: { services: ServicesQueryResul
                       ))}
                     </ol>
                     <div aria-hidden="true" className="absolute bottom-8 left-8 right-16">
-                      <p className={cn("outline-numeral text-[110px] leading-none md:text-[150px]", color.text)}>{n}</p>
+                      <p className="outline-numeral text-[110px] leading-none md:text-[150px]" style={{ "--numeral": COLOR_HEX[topicColor(null, s.colorKey)] } as CSSProperties}>
+                        {n}
+                      </p>
                       <p className="mt-3 font-serif text-2xl font-semibold text-fg md:text-3xl">{s.title}</p>
                     </div>
                   </div>
