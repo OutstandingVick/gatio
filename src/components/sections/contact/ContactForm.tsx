@@ -20,7 +20,7 @@ function validate(data: FormData): Errors {
 }
 
 const inputClass =
-  "w-full rounded-2xl border-[1.5px] border-line bg-paper px-4 py-3 text-base placeholder:text-ink-muted/70 hover:border-ink-muted aria-[invalid=true]:border-accent";
+  "w-full rounded-xl border-2 border-sand bg-sand px-4 py-3 text-base placeholder:text-ink-muted/70 hover:border-line focus:border-accent focus:bg-paper focus:outline-none aria-[invalid=true]:border-plum";
 
 /** Demo contact form: validates in the browser and confirms inline. Nothing is sent. */
 export function ContactForm({ topics, successMessage }: { topics: string[]; successMessage: string }) {
@@ -43,13 +43,13 @@ export function ContactForm({ topics, successMessage }: { topics: string[]; succ
 
   if (sent) {
     return (
-      <div role="status" className="rounded-[var(--radius-panel)] border border-line bg-paper p-8 md:p-10">
-        <p className="font-display text-3xl tracking-[-0.02em]">{successMessage}</p>
+      <div role="status" className="rounded-[var(--radius-panel)] bg-mint p-8 md:p-10">
+        <p className="text-3xl font-extrabold tracking-[-0.03em]">{successMessage}</p>
         <p className="mt-3 text-ink-muted">This is a demo form, so no message was actually sent.</p>
         <button
           type="button"
           onClick={() => setSent(false)}
-          className="mt-6 font-medium underline decoration-accent decoration-2 underline-offset-4"
+          className="mt-6 font-semibold text-accent underline decoration-2 underline-offset-4"
         >
           Send another message
         </button>
@@ -65,19 +65,19 @@ export function ContactForm({ topics, successMessage }: { topics: string[]; succ
   });
   const error = (name: Field) =>
     errors[name] ? (
-      <p id={`${id}-${name}-error`} className="mt-2 text-sm text-accent">
+      <p id={`${id}-${name}-error`} className="mt-2 text-sm font-semibold text-plum">
         {errors[name]}
       </p>
     ) : null;
   const label = (name: string, text: string, optional = false) => (
-    <label htmlFor={`${id}-${name}`} className="mb-2 block text-sm font-medium">
+    <label htmlFor={`${id}-${name}`} className="mb-2 block text-sm font-semibold">
       {text}
       {optional && <span className="font-normal text-ink-muted"> (optional)</span>}
     </label>
   );
 
   return (
-    <form ref={formRef} onSubmit={onSubmit} noValidate className="grid gap-6 rounded-[var(--radius-panel)] border border-line bg-paper p-6 sm:grid-cols-2 md:p-10">
+    <form ref={formRef} onSubmit={onSubmit} noValidate className="grid gap-5 rounded-[var(--radius-panel)] bg-paper p-6 sm:grid-cols-2 md:p-10">
       <div>
         {label("name", "Name")}
         <input {...field("name")} type="text" autoComplete="name" className={inputClass} />
@@ -94,7 +94,7 @@ export function ContactForm({ topics, successMessage }: { topics: string[]; succ
       </div>
       <div>
         {label("topic", "What's this about?")}
-        <select {...field("topic")} defaultValue="" className={cn(inputClass, "appearance-none bg-[length:12px] bg-[right_1rem_center] bg-no-repeat pr-10")} style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2314213D' stroke-width='1.6'/%3E%3C/svg%3E\")" }}>
+        <select {...field("topic")} defaultValue="" className={cn(inputClass, "appearance-none bg-[length:12px] bg-[right_1rem_center] bg-no-repeat pr-10")} style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%230D1421' stroke-width='1.6'/%3E%3C/svg%3E\")" }}>
           <option value="" disabled>
             Choose one
           </option>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { ContactForm } from "@/components/sections/contact/ContactForm";
 import { Container } from "@/components/ui/Container";
 import { Emphasis, stripEmphasis } from "@/components/ui/Emphasis";
@@ -19,59 +20,47 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const detailLink = "underline decoration-line decoration-2 underline-offset-4 hover:decoration-accent";
+const CARDS = [
+  { key: "email", label: "Email", icon: Mail, tone: "bg-sky text-accent" },
+  { key: "phone", label: "Phone", icon: Phone, tone: "bg-mint text-teal" },
+  { key: "address", label: "Office", icon: MapPin, tone: "bg-blush text-plum" },
+  { key: "officeHours", label: "Hours", icon: Clock, tone: "bg-butter text-mustard-text" },
+] as const;
 
 export default async function ContactPage() {
   const [contact, settings] = await Promise.all([getContact(), getSettings()]);
   const topics = contact?.topics?.filter(Boolean) as string[] | undefined;
 
+  const value = (key: (typeof CARDS)[number]["key"]) => {
+    const v = settings?.[key];
+    if (!v) return <span className="text-ink-muted">[{key === "officeHours" ? "HOURS" : key.toUpperCase()}]</span>;
+    if (key === "email") return <a href={`mailto:${v}`} className="hover:text-accent hover:underline">{v}</a>;
+    if (key === "phone") return <a href={`tel:${v.replace(/[^\d+]/g, "")}`} className="hover:text-accent hover:underline">{v}</a>;
+    return <span className="whitespace-pre-line">{v}</span>;
+  };
+
   return (
-    <Container className="grid gap-12 py-14 md:py-20 lg:grid-cols-[1fr_1.3fr] lg:gap-16">
+    <Container className="grid gap-12 py-14 md:py-20 lg:grid-cols-[1fr_1.25fr] lg:gap-14">
       <div className="flex flex-col gap-10">
         <div>
-          <Eyebrow>Contact</Eyebrow>
-          <h1 className="mt-6 text-5xl md:text-7xl">
+          <Eyebrow tone="accent">Contact</Eyebrow>
+          <h1 className="mt-6 text-5xl md:text-[64px] md:leading-[1.02]">
             <Emphasis text={contact?.headline || "Let's talk about *your market.*"} />
           </h1>
-          <p className="mt-6 max-w-[44ch] text-lg text-ink-muted">{contact?.intro || "[CONTACT INTRO]"}</p>
+          <p className="mt-6 max-w-[44ch] text-lg leading-relaxed text-ink-muted">{contact?.intro || "[CONTACT INTRO]"}</p>
         </div>
 
-        <dl className="grid gap-6 border-t border-line pt-8 sm:grid-cols-2 lg:grid-cols-1">
-          <div>
-            <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-ink-muted">Email</dt>
-            <dd className="mt-2 text-lg">
-              {settings?.email ? (
-                <a href={`mailto:${settings.email}`} className={detailLink}>
-                  {settings.email}
-                </a>
-              ) : (
-                "[EMAIL]"
-              )}
-            </dd>
-          </div>
-          <div>
-            <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-ink-muted">Phone</dt>
-            <dd className="mt-2 text-lg">
-              {settings?.phone ? (
-                <a href={`tel:${settings.phone.replace(/[^\d+]/g, "")}`} className={detailLink}>
-                  {settings.phone}
-                </a>
-              ) : (
-                "[PHONE]"
-              )}
-            </dd>
-          </div>
-          <div>
-            <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-ink-muted">Office</dt>
-            <dd className="mt-2 whitespace-pre-line text-lg">{settings?.address || "[ADDRESS]"}</dd>
-          </div>
-          {settings?.officeHours && (
-            <div>
-              <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-ink-muted">Hours</dt>
-              <dd className="mt-2 text-lg">{settings.officeHours}</dd>
-            </div>
-          )}
-        </dl>
+        <ul className="grid gap-3 sm:grid-cols-2">
+          {CARDS.map(({ key, label, icon: Icon, tone }) => (
+            <li key={key} className="flex flex-col gap-3 rounded-[var(--radius-card)] bg-paper p-5">
+              <span className={`flex size-10 items-center justify-center rounded-full ${tone}`}>
+                <Icon className="size-5" aria-hidden="true" />
+              </span>
+              <span className="text-sm font-semibold text-ink-muted">{label}</span>
+              <span className="text-[15px] font-semibold break-words">{value(key)}</span>
+            </li>
+          ))}
+        </ul>
       </div>
 
       <div>
