@@ -48,11 +48,11 @@ export function FeaturedWork({ reports }: { reports: FeaturedWorkQueryResult }) 
                       {r.title}
                     </Link>
                   </h3>
-                  <dl className="grid grid-cols-2 gap-x-6 gap-y-3 border-y border-line py-4 sm:grid-cols-4">
+                  <dl className="grid grid-cols-2 gap-x-6 gap-y-3 border-y border-line py-4 xl:grid-cols-4">
                     {meta.map(([k, v]) => (
                       <div key={k}>
                         <dt className="text-xs font-semibold text-ink-muted">{k}</dt>
-                        <dd className="mt-0.5 truncate text-sm font-semibold">{v || "—"}</dd>
+                        <dd className="mt-0.5 text-sm font-semibold">{v || "—"}</dd>
                       </div>
                     ))}
                   </dl>
