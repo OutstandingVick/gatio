@@ -1,12 +1,21 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Cormorant_Garamond, Jost } from "next/font/google";
 import "./globals.css";
 
-/** One family for everything: 800 for headlines, 400–600 for text. */
-const jakarta = Plus_Jakarta_Sans({
-  variable: "--font-jakarta",
+/** Editorial serif for display type: bold roman for names, italic for the gold emphasis. */
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["500", "600", "700"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
+/** Geometric sans for body copy and the wide-tracked uppercase labels. */
+const jost = Jost({
+  variable: "--font-jost",
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
   display: "swap",
 });
 
@@ -20,8 +29,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${jakarta.variable} h-full antialiased`}>
-      <body className="flex min-h-full flex-col bg-cream font-sans text-ink">{children}</body>
+    <html lang="en" className={`${cormorant.variable} ${jost.variable} h-full antialiased`}>
+      <body className="flex min-h-full flex-col bg-bg font-sans text-fg">{children}</body>
     </html>
   );
 }

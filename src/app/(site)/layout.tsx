@@ -1,6 +1,5 @@
 import { Footer } from "@/components/ui/Footer";
-import { Navbar } from "@/components/ui/Navbar";
-import { UtilityBar } from "@/components/ui/UtilityBar";
+import { SiteHeader } from "@/components/editorial/SiteHeader";
 import { getSettings } from "@/sanity/settings";
 
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
@@ -9,12 +8,11 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
     <>
       <a
         href="#main"
-        className="sr-only z-50 rounded-full bg-ink px-5 py-3 text-paper focus:not-sr-only focus:fixed focus:top-4 focus:left-4"
+        className="sr-only z-[60] bg-gold px-5 py-3 text-bg focus:not-sr-only focus:fixed focus:top-4 focus:left-4"
       >
         Skip to content
       </a>
-      <UtilityBar settings={settings} />
-      <Navbar ctaLabel={settings?.ctaLabel} />
+      <SiteHeader ctaLabel={settings?.ctaLabel} />
       <main id="main" className="flex-1">
         {children}
       </main>

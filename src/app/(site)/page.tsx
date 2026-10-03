@@ -1,21 +1,12 @@
 import type { Metadata } from "next";
-import { CapabilityCta } from "@/components/sections/home/CapabilityCta";
-import { Commitments } from "@/components/sections/home/Commitments";
-import { FeaturedWork } from "@/components/sections/home/FeaturedWork";
-import { FinalCta } from "@/components/sections/home/FinalCta";
-import { FounderNote } from "@/components/sections/home/FounderNote";
-import { Hero } from "@/components/sections/home/Hero";
-import { HowWeWork } from "@/components/sections/home/HowWeWork";
-import { LatestInsights } from "@/components/sections/home/LatestInsights";
-import { Marquee } from "@/components/sections/home/Marquee";
-import { Numbers } from "@/components/sections/home/Numbers";
-import { ServicesGrid } from "@/components/sections/home/ServicesGrid";
-import { StatementBand } from "@/components/sections/home/StatementBand";
-import { WhoWeAre } from "@/components/sections/home/WhoWeAre";
+import { Hero } from "@/components/editorial/Hero";
+import { Statement } from "@/components/editorial/Statement";
+import { StatsRow } from "@/components/editorial/StatsRow";
+import { Ticker } from "@/components/editorial/Ticker";
 import { stripEmphasis } from "@/components/ui/Emphasis";
+import { researchTopicHref } from "@/lib/routes";
 import { sanityFetch } from "@/sanity/client";
-import { featuredWorkQuery, homePageQuery, latestArticlesQuery, latestReportsQuery, servicesQuery } from "@/sanity/queries";
-import { getSettings } from "@/sanity/settings";
+import { allTopicsQuery, homePageQuery } from "@/sanity/queries";
 
 // ISR fallback; publishing in the Studio refreshes sooner via the /api/revalidate webhook.
 export const revalidate = 60;
@@ -33,29 +24,22 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function HomePage() {
-  const [home, settings, reports, work, articles, services] = await Promise.all([
-    getHome(),
-    getSettings(),
-    sanityFetch({ query: latestReportsQuery, params: { limit: 6 }, tags: ["report", "topic"] }),
-    sanityFetch({ query: featuredWorkQuery, params: { limit: 3 }, tags: ["report", "topic", "author"] }),
-    sanityFetch({ query: latestArticlesQuery, params: { limit: 3 }, tags: ["article", "topic", "author"] }),
-    sanityFetch({ query: servicesQuery, tags: ["service"] }),
-  ]);
+  const [home, topics] = await Promise.all([getHome(), sanityFetch({ query: allTopicsQuery, tags: ["topic"] })]);
 
   return (
     <>
-      <Hero reports={reports ?? []} content={home} />
-      <Marquee items={home?.marquee ?? []} />
-      <WhoWeAre heading={home?.whoHeading} body={home?.whoBody} quote={home?.whoQuote} attribution={home?.whoQuoteAttribution} />
-      <ServicesGrid services={services ?? []} heading={home?.servicesHeading} footer={<CapabilityCta pdfUrl={settings?.capabilityPdfUrl} />} />
-      <FounderNote quote={home?.founderQuote} name={home?.founderName} role={home?.founderRole} />
-      <FeaturedWork reports={work ?? []} />
-      <Numbers heading={home?.numbersHeading} numbers={home?.numbers ?? []} />
-      <Commitments heading={home?.commitmentsHeading} items={home?.commitments ?? []} />
-      <StatementBand heading={home?.statementHeading} text={home?.statementText} />
-      <HowWeWork heading={home?.stepsHeading} steps={home?.steps ?? []} />
-      <LatestInsights articles={articles ?? []} heading={home?.insightsHeading} />
-      <FinalCta heading={home?.ctaHeading} text={home?.ctaText} ctaLabel={settings?.ctaLabel} />
+      <Hero
+        headline={home?.headline}
+        intro={home?.intro}
+        primaryCta={home?.primaryCta}
+        secondaryCta={home?.secondaryCta}
+        note={home?.availability}
+        facts={(home?.trustFacts ?? []).filter(Boolean) as string[]}
+        areas={(topics ?? []).map((t) => ({ title: t.title ?? "", href: researchTopicHref(t.slug) }))}
+      />
+      <StatsRow stats={(home?.numbers ?? []).map((n) => ({ _key: n._key, value: n.value, label: n.label }))} />
+      <Ticker items={home?.marquee ?? []} />
+      <Statement label="The standard" text={home?.statementHeading || "We don't sell reports. We sell *decisions.*"} />
     </>
   );
 }

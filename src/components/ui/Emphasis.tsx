@@ -10,7 +10,7 @@ export function Emphasis({ text, blossomColor }: { text: string | null | undefin
   return (
     <>
       {text.split(/(\*[^*]+\*|\{blossom\})/g).map((part, i) => {
-        if (part === "{blossom}") return <Blossom key={i} color={blossomColor} className="mx-[0.12em]" />;
+        if (part === "{blossom}") return blossomColor === "none" ? null : <Blossom key={i} color={blossomColor} className="mx-[0.12em]" />;
         if (/^\*[^*]+\*$/.test(part)) return <em key={i}>{part.slice(1, -1)}</em>;
         return <Fragment key={i}>{part}</Fragment>;
       })}

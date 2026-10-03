@@ -4,6 +4,17 @@
 /* Design tokens                                                        */
 /* ------------------------------------------------------------------ */
 :root {
+  /* Editorial (dark, gold) */
+  --bg: #060606;
+  --surface: #0d0d0d;
+  --surface-2: #151515;
+  --rule: #262626;
+  --fg: #f4f1ea;
+  --fg-muted: #a8a299; /* 8.6:1 on --bg */
+  --fg-faint: #8a847b; /* 5.6:1 on --bg, labels only */
+  --gold: #c8a96e; /* 9:1 on --bg */
+  --gold-deep: #a88a52;
+
   /* Surfaces (cool grey page, white cards, grey panels) */
   --cream: #f2f7f8;
   --paper: #ffffff;
@@ -69,6 +80,16 @@
 }
 
 @theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-rule: var(--rule);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-faint: var(--fg-faint);
+  --color-gold: var(--gold);
+  --color-gold-deep: var(--gold-deep);
+  --font-serif: var(--font-cormorant), Georgia, serif;
   --color-cream: var(--cream);
   --color-paper: var(--paper);
   --color-sand: var(--sand);
@@ -111,8 +132,8 @@
   --color-topic-fintech: var(--topic-fintech);
   --color-topic-markets: var(--topic-markets);
 
-  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-jost), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-cormorant), Georgia, serif;
 
   --radius-card: var(--radius-card);
   --radius-panel: var(--radius-panel);
@@ -125,14 +146,15 @@
 /* ------------------------------------------------------------------ */
 @layer base {
   html {
-    background: var(--cream);
-    color: var(--ink);
+    background: var(--bg);
+    color: var(--fg);
   }
 
   body {
-    background: var(--cream);
-    color: var(--ink);
+    background: var(--bg);
+    color: var(--fg);
     font-family: var(--font-sans);
+    font-weight: 300;
   }
 
   h1,
@@ -141,16 +163,17 @@
   h4,
   .headline {
     font-family: var(--font-display);
-    font-weight: 800;
-    letter-spacing: var(--tracking-headline);
-    line-height: 1.05;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.02;
     text-wrap: balance;
   }
 
-  /* Emphasis in headlines: upright, in the brand blue (dark sections switch it to lime). */
+  /* Emphasis in headlines: gold italic. */
   :is(h1, h2, h3, h4, .headline) em {
-    color: var(--accent);
-    font-style: normal;
+    color: var(--gold);
+    font-style: italic;
+    font-weight: 500;
   }
 
   p {
@@ -158,14 +181,14 @@
   }
 
   :focus-visible {
-    outline: 3px solid var(--accent);
+    outline: 2px solid var(--gold);
     outline-offset: 3px;
     border-radius: 4px;
   }
 
   ::selection {
-    background: var(--lime);
-    color: var(--ink);
+    background: var(--gold);
+    color: var(--bg);
   }
 }
 
@@ -214,4 +237,23 @@
   .marquee-track {
     animation: none;
   }
+}
+
+/* ------------------------------------------------------------------ */
+/* Editorial utilities                                                  */
+/* ------------------------------------------------------------------ */
+@utility label {
+  /* Tiny uppercase label with wide tracking, as in the reference site. */
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+}
+
+@utility outline-numeral {
+  /* Huge hollow numerals ("02") drawn with a thin stroke. */
+  font-family: var(--font-display);
+  color: transparent;
+  -webkit-text-stroke: 1px currentColor;
 }
