@@ -10,13 +10,13 @@ import type { ReactNode } from "react";
 type Service = ServicesQueryResult[number];
 
 /** Product-card style service tile with a mock "app screen" listing what's included. */
-export function ServiceTile({ service, index }: { service: Service; index: number }) {
+export function ServiceTile({ service, index, surface = "sand" }: { service: Service; index: number; surface?: "sand" | "paper" }) {
   const key = topicColor(null, service.colorKey);
   const color = COLOR_CLASSES[key];
   const deliverables = (service.deliverables ?? []).filter(Boolean).slice(0, 3);
 
   return (
-    <article className="group relative flex w-full flex-col overflow-hidden rounded-[var(--radius-panel)] bg-sand px-7 pt-8 md:px-9 md:pt-10">
+    <article className={cn("group relative flex w-full flex-col overflow-hidden rounded-[var(--radius-panel)] px-7 pt-8 md:px-9 md:pt-10", surface === "paper" ? "bg-paper" : "bg-sand")}>
       <div className="flex items-center gap-3">
         <span className="relative flex size-11 items-center justify-center">
           <Blossom color={COLOR_HEX[key]} className="absolute inset-0 size-11" />

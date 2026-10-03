@@ -29,7 +29,7 @@ export default async function ServicesPage() {
           <ul className="grid gap-5 md:grid-cols-2">
             {services.map((s, i) => (
               <li key={s._id} className="flex">
-                <ServiceTile service={s} index={i} />
+                <ServiceTile service={s} index={i} surface="paper" />
               </li>
             ))}
           </ul>

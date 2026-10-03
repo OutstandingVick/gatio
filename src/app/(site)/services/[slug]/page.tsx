@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { RichText } from "@/components/portable-text/RichText";
-import { ServiceCard } from "@/components/sections/services/ServiceCard";
+import { ServiceTile } from "@/components/sections/home/ServicesGrid";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Check, ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { CoverArt } from "@/components/ui/CoverArt";
@@ -44,39 +46,44 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
   return (
     <article>
       <header>
-        <Container className="grid gap-10 pt-12 pb-14 md:pt-20 lg:grid-cols-[1.3fr_1fr] lg:items-end">
+        <Container className="grid gap-10 pt-10 pb-14 md:pt-14 lg:grid-cols-[1.2fr_1fr] lg:items-center">
           <div>
-            <div className="flex flex-wrap items-center gap-4">
-              <Eyebrow>
-                <Link href="/services" className="hover:underline">
-                  Services
-                </Link>
-              </Eyebrow>
+            <Link href="/services" className="inline-flex items-center gap-1 text-sm font-semibold text-ink-muted hover:text-ink">
+              <ChevronLeft className="size-4" aria-hidden="true" />
+              Services
+            </Link>
+            <div className="mt-6 flex flex-wrap items-center gap-2">
+              <Eyebrow tone="teal">Service</Eyebrow>
               {service.isSample && <SampleBadge />}
             </div>
-            <h1 className="mt-6 text-5xl md:text-7xl">{service.title}</h1>
-            {service.summary && <p className="mt-6 max-w-[52ch] text-xl text-ink-muted">{service.summary}</p>}
-            <Button href="/contact" variant="accent" className="mt-10">
-              Discuss this service
-            </Button>
+            <h1 className="mt-6 text-[44px] md:text-7xl md:leading-[1]">{service.title}</h1>
+            {service.summary && <p className="mt-6 max-w-[48ch] text-xl leading-relaxed text-ink-muted">{service.summary}</p>}
+            <div className="mt-10 flex flex-wrap gap-3">
+              <Button href="/contact" variant="accent" size="lg">
+                Discuss this service
+              </Button>
+              <Button href="/research" variant="soft" size="lg">
+                See our research
+              </Button>
+            </div>
           </div>
-          <div className="aspect-[4/3] overflow-hidden rounded-[var(--radius-panel)]">
+          <div className="aspect-[4/3] overflow-hidden rounded-[32px] md:rounded-[48px]">
             <CoverArt coverStyle={service.coverStyle} colorKey={service.colorKey} />
           </div>
         </Container>
       </header>
 
-      <Container className="grid gap-12 border-t border-line py-14 md:py-20 lg:grid-cols-[280px_minmax(0,1fr)] lg:gap-16">
+      <Container className="grid gap-10 pb-16 md:pb-24 lg:grid-cols-[320px_minmax(0,1fr)] lg:gap-16">
         {service.deliverables && service.deliverables.length > 0 ? (
-          <aside aria-labelledby="included-title">
-            <h2 id="included-title" className="mb-5 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-ink-muted">
+          <aside aria-labelledby="included-title" className="h-fit rounded-[var(--radius-card)] bg-paper p-6 lg:sticky lg:top-28">
+            <h2 id="included-title" className="text-xl">
               What&rsquo;s included
             </h2>
-            <ul className="flex flex-col divide-y divide-line border-y border-line">
+            <ul className="mt-5 flex flex-col gap-3">
               {service.deliverables.map((d) => (
-                <li key={d} className="flex gap-3 py-3 text-[15px]">
-                  <span aria-hidden="true" className="text-accent">
-                    ✓
+                <li key={d} className="flex items-start gap-3 text-[15px] font-medium">
+                  <span aria-hidden="true" className="flex size-6 shrink-0 items-center justify-center rounded-full bg-mint text-teal">
+                    <Check className="size-3.5" strokeWidth={3} />
                   </span>
                   {d}
                 </li>
@@ -90,14 +97,12 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
       </Container>
 
       {others.length > 0 && (
-        <Section tone="sand" labelledBy="other-services">
-          <h2 id="other-services" className="mb-10 text-4xl md:text-5xl">
-            Other services
-          </h2>
-          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {others.slice(0, 3).map((s, i) => (
-              <li key={s._id}>
-                <ServiceCard service={s} index={(all ?? []).indexOf(s) >= 0 ? (all ?? []).indexOf(s) : i} />
+        <Section tone="sand" rounded labelledBy="other-services" className="mb-3">
+          <SectionHeading id="other-services" eyebrow="Keep exploring" eyebrowTone="lavender" title="Other *services*" />
+          <ul className="grid gap-5 md:grid-cols-2">
+            {others.slice(0, 2).map((s) => (
+              <li key={s._id} className="flex">
+                <ServiceTile service={s} index={(all ?? []).indexOf(s)} surface="paper" />
               </li>
             ))}
           </ul>
