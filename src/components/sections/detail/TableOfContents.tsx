@@ -38,11 +38,11 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
   if (!items.length) return null;
 
   return (
-    <nav aria-labelledby="toc-title" className="sticky top-28 rounded-[var(--radius-card)] bg-paper p-4">
-      <h2 id="toc-title" className="mb-3 px-2 text-sm font-bold tracking-normal">
+    <nav aria-labelledby="toc-title" className="sticky top-28">
+      <h2 id="toc-title" className="label mb-4 font-sans text-gold">
         Contents
       </h2>
-      <ol className="flex flex-col gap-0.5">
+      <ol className="flex flex-col border-t border-rule">
         {items.map((item) => {
           const isActive = item.id === active;
           return (
@@ -51,9 +51,9 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
                 href={`#${item.id}`}
                 aria-current={isActive ? "location" : undefined}
                 className={cn(
-                  "block rounded-xl py-2 pr-2 text-sm leading-snug hover:bg-sand hover:text-ink",
-                  item.level === 3 ? "pl-6" : "pl-3",
-                  isActive ? "bg-sky font-semibold text-accent" : "text-ink-muted",
+                  "flex items-baseline gap-3 border-b border-rule py-3 text-[15px] leading-snug transition-colors hover:text-fg",
+                  item.level === 3 && "pl-5",
+                  isActive ? "text-gold before:size-1.5 before:shrink-0 before:translate-y-[-2px] before:rounded-full before:bg-gold" : "text-fg-muted",
                 )}
               >
                 {item.text}

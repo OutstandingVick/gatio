@@ -72,22 +72,22 @@ export default async function ReportPage({ params }: PageProps<"/research/[slug]
 
       <Container className="py-14 md:py-20">
         {report.abstract && (
-          <section aria-labelledby="abstract-title" className="rounded-[var(--radius-panel)] bg-paper p-8 md:p-12">
-            <h2 id="abstract-title" className="w-fit rounded-full bg-sky px-3.5 py-1.5 text-[13px] font-bold tracking-normal text-accent">
+          <section aria-labelledby="abstract-title" className="grid gap-6 border-y border-rule py-12 md:grid-cols-[200px_minmax(0,1fr)] md:gap-12 md:py-16">
+            <h2 id="abstract-title" className="label font-sans text-gold">
               Abstract
             </h2>
-            <p className="mt-5 max-w-[62ch] text-xl leading-[1.6] font-semibold tracking-[-0.015em] md:text-2xl">{report.abstract}</p>
+            <p className="max-w-[60ch] font-serif text-2xl leading-[1.45] font-medium md:text-[30px]">{report.abstract}</p>
           </section>
         )}
 
         {report.keyFindings && report.keyFindings.length > 0 && (
           <section aria-labelledby="findings-title" className="mt-16">
-            <h2 id="findings-title" className="mb-8 text-3xl md:text-[44px]">
+            <h2 id="findings-title" className="mb-10 text-4xl md:text-5xl">
               Key <em>findings</em>
             </h2>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 [&>*]:-ml-px [&>*]:-mt-px">
               {report.keyFindings.map((f, i) => (
-                <StatBlock key={f._key} value={f.value ?? ""} label={f.label ?? ""} color={findingColors[i % findingColors.length]} boxed className="min-h-[170px] justify-between" />
+                <StatBlock key={f._key} value={f.value ?? ""} label={f.label ?? ""} color={findingColors[i % findingColors.length]} boxed className="min-h-[200px] justify-between" />
               ))}
             </div>
           </section>
@@ -100,33 +100,33 @@ export default async function ReportPage({ params }: PageProps<"/research/[slug]
             <RichText value={report.body} color={color} />
 
             {report.methodology && report.methodology.length > 0 && (
-              <details className="group mt-16 max-w-[680px] rounded-[var(--radius-card)] bg-paper">
-                <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-4 px-6 py-4 text-xl font-extrabold tracking-[-0.03em] [&::-webkit-details-marker]:hidden">
+              <details className="group mt-16 max-w-[680px] border-y border-rule">
+                <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-4 py-5 font-serif text-2xl font-semibold [&::-webkit-details-marker]:hidden">
                   Methodology
-                  <span aria-hidden="true" className="flex size-8 items-center justify-center rounded-full bg-sky text-accent transition-transform group-open:rotate-45">+</span>
+                  <span aria-hidden="true" className="text-2xl text-gold transition-transform group-open:rotate-45">+</span>
                 </summary>
-                <div className="px-6 pb-6">
-                  <RichText value={report.methodology} className="text-[16px] leading-[1.7] text-ink-muted" />
+                <div className="pb-8">
+                  <RichText value={report.methodology} className="text-[16px] leading-[1.75] text-fg-muted" />
                 </div>
               </details>
             )}
 
             {report.sources && report.sources.length > 0 && (
               <section aria-labelledby="sources-title" className="mt-14 max-w-[680px]">
-                <h2 id="sources-title" className="mb-5 text-2xl md:text-3xl">Sources</h2>
-                <ol className="flex flex-col gap-2 text-[15px]">
+                <h2 id="sources-title" className="mb-6 text-3xl">Sources</h2>
+                <ol className="border-t border-rule text-[15px]">
                   {report.sources.map((src, i) => (
-                    <li key={src._key} className="flex items-start gap-3 rounded-2xl bg-paper px-4 py-3">
-                      <span aria-hidden="true" className="flex size-6 shrink-0 items-center justify-center rounded-full bg-sand text-xs font-bold">
-                        {i + 1}
+                    <li key={src._key} className="flex items-baseline gap-5 border-b border-rule py-4">
+                      <span aria-hidden="true" className="label shrink-0 text-gold">
+                        {String(i + 1).padStart(2, "0")}
                       </span>
                       {src.url ? (
-                        <a href={src.url} rel="noopener noreferrer" target="_blank" className="font-semibold hover:text-accent hover:underline">
+                        <a href={src.url} rel="noopener noreferrer" target="_blank" className="text-fg hover:text-gold hover:underline">
                           {src.title}
                           <span className="sr-only"> (opens in a new tab)</span>
                         </a>
                       ) : (
-                        <span className="font-semibold">{src.title}</span>
+                        <span className="text-fg">{src.title}</span>
                       )}
                     </li>
                   ))}
@@ -135,10 +135,12 @@ export default async function ReportPage({ params }: PageProps<"/research/[slug]
             )}
 
             {report.pdfUrl && (
-              <section aria-labelledby="download-title" className="mt-14 flex max-w-[680px] flex-col gap-5 rounded-[var(--radius-panel)] bg-accent p-8 text-white sm:flex-row sm:items-center sm:justify-between">
-                <h2 id="download-title" className="text-2xl">Take it with you</h2>
-                <Button href={`${report.pdfUrl}?dl=`} variant="light" prefetch={false}>
-                  Download the full report (PDF)
+              <section aria-labelledby="download-title" className="mt-14 flex max-w-[680px] flex-col gap-5 border border-gold/40 p-8 sm:flex-row sm:items-center sm:justify-between">
+                <h2 id="download-title" className="text-3xl">
+                  The full <em>report</em>
+                </h2>
+                <Button href={`${report.pdfUrl}?dl=`} prefetch={false}>
+                  Download PDF
                 </Button>
               </section>
             )}
