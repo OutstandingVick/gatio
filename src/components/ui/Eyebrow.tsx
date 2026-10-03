@@ -1,21 +1,20 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
-/** Pastel pill styles. Text colours keep 4.5:1 contrast on their pastel. */
+/** Tones map to text colours; all are 4.5:1 or better on the dark page. */
 const tones = {
-  accent: "bg-sky text-accent",
-  teal: "bg-mint text-teal",
-  plum: "bg-blush text-plum",
-  mustard: "bg-butter text-mustard-text",
-  lavender: "bg-lavender text-ink",
-  muted: "bg-sand text-ink-muted",
-  /** For navy sections. */
-  dark: "bg-white/10 text-white",
+  accent: "text-gold",
+  teal: "text-teal",
+  plum: "text-plum",
+  mustard: "text-mustard",
+  lavender: "text-fg-muted",
+  muted: "text-fg-faint",
+  dark: "text-gold",
 } as const;
 
 export type EyebrowTone = keyof typeof tones;
 
-/** Small pill badge above headings. */
+/** Tiny uppercase label with wide tracking (the editorial kicker above headings). */
 export function Eyebrow({
   children,
   tone = "accent",
@@ -28,13 +27,7 @@ export function Eyebrow({
   className?: string;
 }) {
   return (
-    <p
-      className={cn(
-        "inline-flex w-fit items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[13px] font-semibold",
-        tones[tone],
-        className,
-      )}
-    >
+    <p className={cn("label inline-flex w-fit items-center gap-2", tones[tone], className)}>
       {icon}
       {children}
     </p>
