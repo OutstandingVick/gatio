@@ -1,6 +1,5 @@
 import { Footer } from "@/components/ui/Footer";
-import { Navbar } from "@/components/ui/Navbar";
-import { UtilityBar } from "@/components/ui/UtilityBar";
+import { SiteHeader } from "@/components/editorial/SiteHeader";
 import { getSettings } from "@/sanity/settings";
 import SiteNotFound from "./(site)/not-found";
 
@@ -9,8 +8,7 @@ export default async function NotFound() {
   const settings = await getSettings();
   return (
     <>
-      <UtilityBar settings={settings} />
-      <Navbar ctaLabel={settings?.ctaLabel} />
+      <SiteHeader ctaLabel={settings?.ctaLabel} />
       <main id="main" className="flex-1">
         <SiteNotFound />
       </main>
