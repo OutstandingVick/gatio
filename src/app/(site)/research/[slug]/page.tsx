@@ -72,22 +72,22 @@ export default async function ReportPage({ params }: PageProps<"/research/[slug]
 
       <Container className="py-14 md:py-20">
         {report.abstract && (
-          <section aria-labelledby="abstract-title" className="rounded-[var(--radius-panel)] border border-line bg-paper p-8 md:p-12">
-            <h2 id="abstract-title" className="mb-4 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-ink-muted">
+          <section aria-labelledby="abstract-title" className="rounded-[var(--radius-panel)] bg-paper p-8 md:p-12">
+            <h2 id="abstract-title" className="w-fit rounded-full bg-sky px-3.5 py-1.5 text-[13px] font-bold tracking-normal text-accent">
               Abstract
             </h2>
-            <p className="max-w-[62ch] font-display text-2xl leading-[1.45] tracking-[-0.01em] md:text-[26px]">{report.abstract}</p>
+            <p className="mt-5 max-w-[62ch] text-xl leading-[1.6] font-semibold tracking-[-0.015em] md:text-2xl">{report.abstract}</p>
           </section>
         )}
 
         {report.keyFindings && report.keyFindings.length > 0 && (
           <section aria-labelledby="findings-title" className="mt-16">
-            <h2 id="findings-title" className="mb-8 text-3xl md:text-4xl">
+            <h2 id="findings-title" className="mb-8 text-3xl md:text-[44px]">
               Key <em>findings</em>
             </h2>
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {report.keyFindings.map((f, i) => (
-                <StatBlock key={f._key} value={f.value ?? ""} label={f.label ?? ""} color={findingColors[i % findingColors.length]} />
+                <StatBlock key={f._key} value={f.value ?? ""} label={f.label ?? ""} color={findingColors[i % findingColors.length]} boxed className="min-h-[170px] justify-between" />
               ))}
             </div>
           </section>
