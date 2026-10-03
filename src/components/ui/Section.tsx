@@ -4,19 +4,21 @@ import { Container } from "./Container";
 
 type Tone = "cream" | "paper" | "sand" | "ink";
 
+/** All tones are dark; they differ by a step of lightness. `ink` is the deepest. */
 const toneClasses: Record<Tone, string> = {
-  cream: "bg-cream text-ink",
-  paper: "bg-paper text-ink",
-  sand: "bg-sand text-ink",
-  ink: "bg-ink text-white",
+  cream: "bg-bg",
+  paper: "bg-surface",
+  sand: "bg-surface-2",
+  ink: "bg-black",
 };
 
 type SectionProps = {
   id?: string;
   tone?: Tone;
-  /** Inset band with large rounded corners (PiggyVest-style). */
+  /** Kept for API compatibility; editorial bands are separated by hairlines, not rounded. */
   rounded?: boolean;
-  /** Accessible label; required when the section has no visible heading. */
+  /** Draw a hairline above the section. */
+  rule?: boolean;
   label?: string;
   labelledBy?: string;
   className?: string;
@@ -24,28 +26,14 @@ type SectionProps = {
   children: ReactNode;
 };
 
-/** Full-bleed vertical band with a toned background and a Container inside. */
-export function Section({
-  id,
-  tone = "cream",
-  rounded = false,
-  label,
-  labelledBy,
-  className,
-  containerClassName,
-  children,
-}: SectionProps) {
+/** Full-bleed band with a Container inside. */
+export function Section({ id, tone = "cream", rule = true, label, labelledBy, className, containerClassName, children }: SectionProps) {
   return (
     <section
       id={id}
       aria-label={label}
       aria-labelledby={labelledBy}
-      className={cn(
-        "py-16 md:py-28",
-        toneClasses[tone],
-        rounded && "mx-2 rounded-[32px] md:mx-3 md:rounded-[48px]",
-        className,
-      )}
+      className={cn("py-20 text-fg md:py-32", toneClasses[tone], rule && "border-t border-rule", className)}
     >
       <Container className={containerClassName}>{children}</Container>
     </section>
