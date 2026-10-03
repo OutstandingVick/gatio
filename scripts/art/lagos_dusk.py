@@ -6,38 +6,16 @@ Usage:  python3 scripts/art/lagos_dusk.py  ->  public/images/hero-lagos-dusk.web
 Deterministic (seeded), so the output only changes when this script does.
 """
 
-import random
-from pathlib import Path
-
 from PIL import Image, ImageChops, ImageDraw, ImageFilter
+
+from common import GOLD, OUT_DIR, WARM, lerp, rng, vertical_gradient
 
 W, H = 2400, 1400
 HORIZON = int(H * 0.62)  # waterline
 SEED = 7
-OUT = Path(__file__).resolve().parents[2] / "public" / "images" / "hero-lagos-dusk.webp"
+OUT = OUT_DIR / "hero-lagos-dusk.webp"
 
-GOLD = (200, 169, 110)
-WARM = (255, 196, 120)
-
-rnd = random.Random(SEED)
-
-
-def lerp(a, b, t):
-    return tuple(int(a[i] + (b[i] - a[i]) * t) for i in range(3))
-
-
-def vertical_gradient(size, stops):
-    """stops: list of (position 0..1, rgb)."""
-    w, h = size
-    img = Image.new("RGB", size)
-    px = ImageDraw.Draw(img)
-    for y in range(h):
-        t = y / (h - 1)
-        for (p0, c0), (p1, c1) in zip(stops, stops[1:]):
-            if p0 <= t <= p1:
-                px.line([(0, y), (w, y)], fill=lerp(c0, c1, (t - p0) / max(p1 - p0, 1e-6)))
-                break
-    return img
+rnd = rng(SEED)
 
 
 def sky():
