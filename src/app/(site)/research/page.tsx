@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { FinalCta } from "@/components/sections/home/FinalCta";
 import { ListingGrid } from "@/components/sections/listing/ListingGrid";
 import { TopicFilter } from "@/components/sections/listing/TopicFilter";
 import { Container } from "@/components/ui/Container";
@@ -23,8 +24,8 @@ export default async function ResearchPage({ searchParams }: PageProps<"/researc
 
   return (
     <>
-      <PageHeader title="Research" description="[DESCRIPTION]" />
-      <Container className="flex flex-col gap-10 py-10 md:py-14">
+      <PageHeader eyebrow="Research" title="Research {blossom} worth *opening.*" description="[RESEARCH DESCRIPTION: what the reports cover and who they are for.]" />
+      <Container className="flex flex-col gap-10 pb-10 md:pb-14">
         <TopicFilter topics={topics ?? []} active={activeTopic?.slug ?? null} basePath="/research" />
         <ListingGrid
           noun="reports"
@@ -41,6 +42,7 @@ export default async function ResearchPage({ searchParams }: PageProps<"/researc
           }))}
         />
       </Container>
+      <FinalCta heading="Need research on *your market?*" text="[CTA: commission a study or a briefing.]" />
     </>
   );
 }
