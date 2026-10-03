@@ -6,23 +6,24 @@ export type ButtonVariant = "primary" | "accent" | "outline" | "soft" | "light";
 export type ButtonSize = "md" | "lg";
 
 const base =
-  "inline-flex min-h-12 items-center justify-center gap-2 rounded-xl px-5 text-[15px] font-semibold whitespace-nowrap leading-none tracking-[-0.01em] transition-[background-color,color,border-color,transform] duration-150 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50";
+  "label inline-flex min-h-12 items-center justify-center gap-3 px-7 font-medium whitespace-nowrap transition-colors duration-200 disabled:pointer-events-none disabled:opacity-50";
 
 const variants: Record<ButtonVariant, string> = {
-  /** Navy: the default call to action. */
-  primary: "bg-ink text-white hover:bg-[#1f2a3d]",
-  /** Royal blue: the most important action on a screen. */
-  accent: "bg-accent text-white hover:bg-[#2232c4]",
-  outline: "border-[1.5px] border-ink/80 bg-transparent text-ink hover:border-ink hover:bg-ink/5",
-  /** White on grey: secondary actions on the page background. */
-  soft: "bg-paper text-ink shadow-[0_1px_2px_rgb(13_20_33/0.06)] hover:bg-white hover:shadow-[0_2px_8px_rgb(13_20_33/0.08)]",
-  /** White on navy sections. */
-  light: "bg-white text-ink hover:bg-lime",
+  /** Gold solid: the main action. */
+  primary: "bg-gold text-bg hover:bg-fg",
+  /** Alias of primary, kept for existing call sites. */
+  accent: "bg-gold text-bg hover:bg-fg",
+  /** Thin outline: secondary actions. */
+  outline: "border border-fg/45 text-fg hover:border-gold hover:text-gold",
+  /** Raised surface with a hairline: tertiary actions. */
+  soft: "border border-rule bg-surface-2 text-fg hover:border-gold/60 hover:text-gold",
+  /** Ivory solid, for use over imagery. */
+  light: "bg-fg text-bg hover:bg-gold",
 };
 
 const sizes: Record<ButtonSize, string> = {
   md: "",
-  lg: "min-h-14 px-7 text-base",
+  lg: "min-h-14 px-9",
 };
 
 type CommonProps = {
