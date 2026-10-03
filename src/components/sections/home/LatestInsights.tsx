@@ -1,26 +1,23 @@
-import Link from "next/link";
+import { ArrowLink } from "@/components/ui/ArrowLink";
 import { ReportCard } from "@/components/ui/ReportCard";
-import { Emphasis } from "@/components/ui/Emphasis";
 import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { articleHref } from "@/lib/routes";
 import type { ArticleCardData } from "@/sanity/types";
 
 export function LatestInsights({ articles, heading }: { articles: ArticleCardData[]; heading?: string | null }) {
   return (
-    <Section labelledBy="insights-title">
-      <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
-        <h2 id="insights-title" className="text-4xl md:text-6xl [&_em]:text-teal">
-          <Emphasis text={heading || "What we're *thinking about*"} />
-        </h2>
-        <Link
-          href="/insights"
-          className="font-medium underline decoration-accent decoration-2 underline-offset-4 hover:text-accent"
-        >
-          All insights <span aria-hidden="true">→</span>
-        </Link>
-      </div>
+    <Section tone="sand" rounded labelledBy="insights-title">
+      <SectionHeading
+        id="insights-title"
+        eyebrow="Insights from the field"
+        eyebrowTone="lavender"
+        title={heading || "What we're *thinking about*"}
+        intro="[INSIGHTS INTRO: what the team writes about.]"
+        action={<ArrowLink href="/insights">Read all insights</ArrowLink>}
+      />
       {articles.length ? (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {articles.map((a) => (
             <ReportCard
               key={a._id}
