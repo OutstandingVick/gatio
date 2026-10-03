@@ -21,6 +21,7 @@ export type {
   SiteSettingsQueryResult,
   Chart,
   FeaturedReportQueryResult,
+  FeaturedWorkQueryResult,
   LatestArticlesQueryResult,
   LatestReportsQueryResult,
   PullQuote,

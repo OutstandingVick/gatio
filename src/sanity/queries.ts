@@ -162,3 +162,12 @@ export const serviceBySlugQuery = defineQuery(`
 export const serviceSlugsQuery = defineQuery(`
   *[_type == "service" && defined(slug.current)].slug.current
 `);
+
+/** Latest reports with enough detail for case-study style rows on Home. */
+export const featuredWorkQuery = defineQuery(`
+  *[_type == "report" && defined(slug.current)] | order(featured desc, publishedAt desc)[0...$limit]{
+    ${reportCardFields},
+    "authors": authors[]->name,
+    "findings": keyFindings[0...2]{ _key, value, label }
+  }
+`);

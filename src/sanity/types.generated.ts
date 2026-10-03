@@ -1519,6 +1519,34 @@ export type ServiceBySlugQueryResult = {
 // Query: *[_type == "service" && defined(slug.current)].slug.current
 export type ServiceSlugsQueryResult = Array<string | null>;
 
+// Source: src/sanity/queries.ts
+// Variable: featuredWorkQuery
+// Query: *[_type == "report" && defined(slug.current)] | order(featured desc, publishedAt desc)[0...$limit]{      _id,  title,  "slug": slug.current,  subtitle,  abstract,  coverStyle,  publishedAt,  featured,  // Estimated from body length at ~220 words per minute.  "readTime": round(length(pt::text(body)) / 5 / 220) + 1,  topic->{ _id, title, "slug": slug.current, colorKey },    "authors": authors[]->name,    "findings": keyFindings[0...2]{ _key, value, label }  }
+export type FeaturedWorkQueryResult = Array<{
+  _id: string;
+  title: string | null;
+  slug: string | null;
+  subtitle: string | null;
+  abstract: string | null;
+  coverStyle:
+    "bars" | "circles" | "line" | "rings" | "squares" | "triangle" | null;
+  publishedAt: string | null;
+  featured: boolean | null;
+  readTime: number;
+  topic: {
+    _id: string;
+    title: string | null;
+    slug: string | null;
+    colorKey: "accent" | "ink" | "mustard" | "plum" | "teal" | null;
+  } | null;
+  authors: Array<string | null> | null;
+  findings: Array<{
+    _key: string;
+    value: string | null;
+    label: string | null;
+  }> | null;
+}>;
+
 // Query TypeMap
 declare global {
   interface SanityQueries {
@@ -1550,6 +1578,7 @@ declare global {
     '\n  *[_type == "service" && defined(slug.current)] | order(order asc, title asc){ _id, title, "slug": slug.current, summary, colorKey, coverStyle, order, deliverables }\n': ServicesQueryResult;
     '\n  *[_type == "service" && slug.current == $slug][0]{\n    _id, title, "slug": slug.current, summary, colorKey, coverStyle, order, deliverables, body, seo, isSample\n  }\n': ServiceBySlugQueryResult;
     '\n  *[_type == "service" && defined(slug.current)].slug.current\n': ServiceSlugsQueryResult;
+    '\n  *[_type == "report" && defined(slug.current)] | order(featured desc, publishedAt desc)[0...$limit]{\n    \n  _id,\n  title,\n  "slug": slug.current,\n  subtitle,\n  abstract,\n  coverStyle,\n  publishedAt,\n  featured,\n  // Estimated from body length at ~220 words per minute.\n  "readTime": round(length(pt::text(body)) / 5 / 220) + 1,\n  topic->{ _id, title, "slug": slug.current, colorKey }\n,\n    "authors": authors[]->name,\n    "findings": keyFindings[0...2]{ _key, value, label }\n  }\n': FeaturedWorkQueryResult;
   }
 }
 // Lets @sanity/client releases that predate the global registry read it too
