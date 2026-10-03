@@ -10,19 +10,20 @@ type TopicFilterProps = {
 };
 
 const pill =
-  "inline-flex min-h-11 items-center rounded-full border-[1.5px] px-5 text-sm font-medium whitespace-nowrap";
+  "inline-flex min-h-11 items-center rounded-full px-5 text-sm font-semibold whitespace-nowrap transition-colors";
+const idle = "bg-paper text-ink-muted shadow-[0_1px_2px_rgb(13_20_33/0.06)] hover:text-ink";
 
 /** Topic pills as links, so the filter lives in the URL and works without JS. */
 export function TopicFilter({ topics, active, basePath }: TopicFilterProps) {
   return (
     <nav aria-label="Filter by topic" className="-mx-[var(--gutter)] overflow-x-auto px-[var(--gutter)] py-1 [scrollbar-width:none]">
-      <ul className="flex gap-2 sm:flex-wrap">
+      <ul className="flex gap-2 sm:flex-wrap sm:justify-center">
         <li>
           <Link
             href={basePath}
             scroll={false}
             aria-current={active === null ? "page" : undefined}
-            className={cn(pill, active === null ? "border-ink bg-ink text-paper" : "border-line hover:border-ink")}
+            className={cn(pill, active === null ? "bg-ink text-white" : idle)}
           >
             All
           </Link>
@@ -38,7 +39,7 @@ export function TopicFilter({ topics, active, basePath }: TopicFilterProps) {
                 aria-current={isActive ? "page" : undefined}
                 className={cn(
                   pill,
-                  isActive ? cn(color.bg, color.fg, "border-transparent") : "border-line hover:border-ink",
+                  isActive ? cn(color.bg, color.fg) : idle,
                 )}
               >
                 {t.title}
