@@ -1,20 +1,21 @@
 import type { Metadata } from "next";
-import { FeaturedReport } from "@/components/sections/home/FeaturedReport";
+import { CapabilityCta } from "@/components/sections/home/CapabilityCta";
+import { Commitments } from "@/components/sections/home/Commitments";
+import { FeaturedWork } from "@/components/sections/home/FeaturedWork";
+import { FinalCta } from "@/components/sections/home/FinalCta";
+import { FounderNote } from "@/components/sections/home/FounderNote";
 import { Hero } from "@/components/sections/home/Hero";
+import { HowWeWork } from "@/components/sections/home/HowWeWork";
 import { LatestInsights } from "@/components/sections/home/LatestInsights";
-import { Newsletter } from "@/components/sections/home/Newsletter";
-import { ResearchAreas } from "@/components/sections/home/ResearchAreas";
-import { ServicesStrip } from "@/components/sections/home/ServicesStrip";
+import { Marquee } from "@/components/sections/home/Marquee";
+import { Numbers } from "@/components/sections/home/Numbers";
+import { ServicesGrid } from "@/components/sections/home/ServicesGrid";
+import { StatementBand } from "@/components/sections/home/StatementBand";
+import { WhoWeAre } from "@/components/sections/home/WhoWeAre";
 import { stripEmphasis } from "@/components/ui/Emphasis";
 import { sanityFetch } from "@/sanity/client";
-import {
-  allTopicsQuery,
-  featuredReportQuery,
-  homePageQuery,
-  latestArticlesQuery,
-  latestReportsQuery,
-  servicesQuery,
-} from "@/sanity/queries";
+import { featuredWorkQuery, homePageQuery, latestArticlesQuery, latestReportsQuery, servicesQuery } from "@/sanity/queries";
+import { getSettings } from "@/sanity/settings";
 
 // ISR fallback; publishing in the Studio refreshes sooner via the /api/revalidate webhook.
 export const revalidate = 60;
@@ -32,23 +33,29 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function HomePage() {
-  const [home, reports, featured, articles, services, topics] = await Promise.all([
+  const [home, settings, reports, work, articles, services] = await Promise.all([
     getHome(),
+    getSettings(),
     sanityFetch({ query: latestReportsQuery, params: { limit: 6 }, tags: ["report", "topic"] }),
-    sanityFetch({ query: featuredReportQuery, tags: ["report", "topic"] }),
+    sanityFetch({ query: featuredWorkQuery, params: { limit: 3 }, tags: ["report", "topic", "author"] }),
     sanityFetch({ query: latestArticlesQuery, params: { limit: 3 }, tags: ["article", "topic", "author"] }),
     sanityFetch({ query: servicesQuery, tags: ["service"] }),
-    sanityFetch({ query: allTopicsQuery, tags: ["topic"] }),
   ]);
 
   return (
     <>
       <Hero reports={reports ?? []} content={home} />
-      {featured && <FeaturedReport report={featured} />}
-      <ServicesStrip services={services ?? []} heading={home?.servicesHeading} />
+      <Marquee items={home?.marquee ?? []} />
+      <WhoWeAre heading={home?.whoHeading} body={home?.whoBody} quote={home?.whoQuote} attribution={home?.whoQuoteAttribution} />
+      <ServicesGrid services={services ?? []} heading={home?.servicesHeading} footer={<CapabilityCta pdfUrl={settings?.capabilityPdfUrl} />} />
+      <FounderNote quote={home?.founderQuote} name={home?.founderName} role={home?.founderRole} />
+      <FeaturedWork reports={work ?? []} />
+      <Numbers heading={home?.numbersHeading} numbers={home?.numbers ?? []} />
+      <Commitments heading={home?.commitmentsHeading} items={home?.commitments ?? []} />
+      <StatementBand heading={home?.statementHeading} text={home?.statementText} />
+      <HowWeWork heading={home?.stepsHeading} steps={home?.steps ?? []} />
       <LatestInsights articles={articles ?? []} heading={home?.insightsHeading} />
-      <ResearchAreas topics={topics ?? []} heading={home?.areasHeading} />
-      <Newsletter heading={home?.newsletterHeading} text={home?.newsletterText} />
+      <FinalCta heading={home?.ctaHeading} text={home?.ctaText} ctaLabel={settings?.ctaLabel} />
     </>
   );
 }
