@@ -84,12 +84,12 @@ export default function StyleguidePage() {
   return (
     <>
         <Container className="py-16 md:py-24">
-          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.14em] text-accent">Internal · temporary</p>
-          <h1 className="text-5xl md:text-7xl">
-            Gatio <em>styleguide</em>
+          <Eyebrow tone="mustard">Internal · not linked from the site</Eyebrow>
+          <h1 className="mt-5 text-5xl md:text-7xl">
+            Gatio <Blossom /> <em>styleguide</em>
           </h1>
           <p className="mt-6 max-w-[60ch] text-lg text-ink-muted">
-            Design tokens and shared components for checking the Phase 2 foundation.
+            Colour tokens, type and shared components of the PiggyVest-inspired design system.
           </p>
         </Container>
 
