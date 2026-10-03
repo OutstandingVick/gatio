@@ -27,6 +27,14 @@ export const service = defineType({
     }),
     coverStyleField,
     defineField({
+      name: "image",
+      title: "Image",
+      description: "Optional. Without one, the site uses a painted scene chosen for the service.",
+      type: "image",
+      options: { hotspot: true },
+      fields: [defineField({ name: "alt", title: "Alt text", type: "string" })],
+    }),
+    defineField({
       name: "deliverables",
       title: "What's included",
       type: "array",

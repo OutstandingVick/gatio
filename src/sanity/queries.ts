@@ -114,7 +114,7 @@ export const articleSlugsQuery = defineQuery(`
   *[_type == "article" && defined(slug.current)].slug.current
 `);
 
-const serviceCardFields = /* groq */ `_id, title, "slug": slug.current, summary, colorKey, coverStyle, order`;
+const serviceCardFields = /* groq */ `_id, title, "slug": slug.current, summary, colorKey, coverStyle, order, image`;
 
 export const siteSettingsQuery = defineQuery(`
   *[_type == "siteSettings" && _id == "siteSettings"][0]{

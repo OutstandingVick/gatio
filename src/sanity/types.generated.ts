@@ -113,11 +113,35 @@ export type Service = {
   summary?: string;
   colorKey?: "accent" | "teal" | "plum" | "mustard" | "ink";
   coverStyle?: "bars" | "circles" | "squares" | "triangle" | "line" | "rings";
+  image?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
   deliverables?: Array<string>;
   body?: RichText;
   order?: number;
   seo?: Seo;
   isSample?: boolean;
+};
+
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+};
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x?: number;
+  y?: number;
+  height?: number;
+  width?: number;
 };
 
 export type TopicReference = {
@@ -172,22 +196,6 @@ export type Author = {
     _type: "image";
   };
   bio?: string;
-};
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
-};
-
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
 };
 
 export type Slug = {
@@ -513,12 +521,12 @@ export type AllSanitySchemaTypes =
   | PullQuote
   | Seo
   | Service
+  | SanityImageCrop
+  | SanityImageHotspot
   | TopicReference
   | AuthorReference
   | Article
   | Author
-  | SanityImageCrop
-  | SanityImageHotspot
   | Slug
   | SanityFileAssetReference
   | Report
@@ -1483,7 +1491,7 @@ export type ContactPageQueryResult = {
 
 // Source: src/sanity/queries.ts
 // Variable: servicesQuery
-// Query: *[_type == "service" && defined(slug.current)] | order(order asc, title asc){ _id, title, "slug": slug.current, summary, colorKey, coverStyle, order, deliverables }
+// Query: *[_type == "service" && defined(slug.current)] | order(order asc, title asc){ _id, title, "slug": slug.current, summary, colorKey, coverStyle, order, image, deliverables }
 export type ServicesQueryResult = Array<{
   _id: string;
   title: string | null;
@@ -1493,12 +1501,20 @@ export type ServicesQueryResult = Array<{
   coverStyle:
     "bars" | "circles" | "line" | "rings" | "squares" | "triangle" | null;
   order: number | null;
+  image: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  } | null;
   deliverables: Array<string> | null;
 }>;
 
 // Source: src/sanity/queries.ts
 // Variable: serviceBySlugQuery
-// Query: *[_type == "service" && slug.current == $slug][0]{    _id, title, "slug": slug.current, summary, colorKey, coverStyle, order, deliverables, body, seo, isSample  }
+// Query: *[_type == "service" && slug.current == $slug][0]{    _id, title, "slug": slug.current, summary, colorKey, coverStyle, order, image, deliverables, body, seo, isSample  }
 export type ServiceBySlugQueryResult = {
   _id: string;
   title: string | null;
@@ -1508,6 +1524,14 @@ export type ServiceBySlugQueryResult = {
   coverStyle:
     "bars" | "circles" | "line" | "rings" | "squares" | "triangle" | null;
   order: number | null;
+  image: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  } | null;
   deliverables: Array<string> | null;
   body: RichText | null;
   seo: Seo | null;
@@ -1575,8 +1599,8 @@ declare global {
     '\n  *[_type == "homePage" && _id == "homePage"][0]{\n    eyebrow, headline, intro, primaryCta, secondaryCta, availability, trustFacts, marquee,\n    whoHeading, whoBody, whoQuote, whoQuoteAttribution,\n    founderQuote, founderName, founderRole,\n    numbersHeading, numbers[]{ _key, value, label },\n    commitmentsHeading, commitments[]{ _key, title, text },\n    statementHeading, statementText,\n    stepsHeading, steps[]{ _key, label, title, text },\n    ctaHeading, ctaText,\n    insightsHeading, servicesHeading, areasHeading, newsletterHeading, newsletterText, seo\n  }\n': HomePageQueryResult;
     '\n  *[_type == "aboutPage" && _id == "aboutPage"][0]{\n    headline, intro, story, values[]{ _key, title, text }, stats[]{ _key, value, label }, teamHeading,\n    team[]->{ _id, name, "slug": slug.current, role, photo, bio },\n    seo\n  }\n': AboutPageQueryResult;
     '\n  *[_type == "contactPage" && _id == "contactPage"][0]{ headline, intro, topics, successMessage, seo }\n': ContactPageQueryResult;
-    '\n  *[_type == "service" && defined(slug.current)] | order(order asc, title asc){ _id, title, "slug": slug.current, summary, colorKey, coverStyle, order, deliverables }\n': ServicesQueryResult;
-    '\n  *[_type == "service" && slug.current == $slug][0]{\n    _id, title, "slug": slug.current, summary, colorKey, coverStyle, order, deliverables, body, seo, isSample\n  }\n': ServiceBySlugQueryResult;
+    '\n  *[_type == "service" && defined(slug.current)] | order(order asc, title asc){ _id, title, "slug": slug.current, summary, colorKey, coverStyle, order, image, deliverables }\n': ServicesQueryResult;
+    '\n  *[_type == "service" && slug.current == $slug][0]{\n    _id, title, "slug": slug.current, summary, colorKey, coverStyle, order, image, deliverables, body, seo, isSample\n  }\n': ServiceBySlugQueryResult;
     '\n  *[_type == "service" && defined(slug.current)].slug.current\n': ServiceSlugsQueryResult;
     '\n  *[_type == "report" && defined(slug.current)] | order(featured desc, publishedAt desc)[0...$limit]{\n    \n  _id,\n  title,\n  "slug": slug.current,\n  subtitle,\n  abstract,\n  coverStyle,\n  publishedAt,\n  featured,\n  // Estimated from body length at ~220 words per minute.\n  "readTime": round(length(pt::text(body)) / 5 / 220) + 1,\n  topic->{ _id, title, "slug": slug.current, colorKey }\n,\n    "authors": authors[]->name,\n    "findings": keyFindings[0...2]{ _key, value, label }\n  }\n': FeaturedWorkQueryResult;
   }
