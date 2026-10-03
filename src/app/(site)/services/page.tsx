@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
-import { ServiceCard } from "@/components/sections/services/ServiceCard";
-import { Button } from "@/components/ui/Button";
+import { CapabilityCta } from "@/components/sections/home/CapabilityCta";
+import { FinalCta } from "@/components/sections/home/FinalCta";
+import { ServiceTile } from "@/components/sections/home/ServicesGrid";
 import { Container } from "@/components/ui/Container";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { sanityFetch } from "@/sanity/client";
 import { servicesQuery } from "@/sanity/queries";
+import { getSettings } from "@/sanity/settings";
 
 export const metadata: Metadata = {
   title: "Services",
@@ -12,33 +14,33 @@ export const metadata: Metadata = {
 };
 
 export default async function ServicesPage() {
-  const services = (await sanityFetch({ query: servicesQuery, tags: ["service"] })) ?? [];
+  const [services, settings] = await Promise.all([sanityFetch({ query: servicesQuery, tags: ["service"] }), getSettings()]);
 
   return (
     <>
-      <PageHeader title="Services" description="[SERVICES DESCRIPTION]" />
-      <Container className="py-10 md:py-14">
-        {services.length ? (
-          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <PageHeader
+        eyebrow="Services"
+        eyebrowTone="teal"
+        title="Everything you need to {blossom} *understand a market.*"
+        description="[SERVICES DESCRIPTION: how engagements are scoped, quoted and led.]"
+      />
+      <Container className="pb-10 md:pb-14">
+        {services?.length ? (
+          <ul className="grid gap-5 md:grid-cols-2">
             {services.map((s, i) => (
-              <li key={s._id}>
-                <ServiceCard service={s} index={i} headingLevel="h2" />
+              <li key={s._id} className="flex">
+                <ServiceTile service={s} index={i} />
               </li>
             ))}
           </ul>
         ) : (
-          <p className="text-ink-muted">No services published yet.</p>
+          <p className="text-center text-ink-muted">No services published yet.</p>
         )}
-
-        <div className="mt-16 flex flex-col items-start gap-6 rounded-[var(--radius-panel)] bg-ink p-8 text-cream md:flex-row md:items-center md:justify-between md:p-12">
-          <h2 className="max-w-[20ch] text-3xl md:text-4xl [&_em]:text-mustard">
-            Not sure which fits? <em>Let&rsquo;s talk.</em>
-          </h2>
-          <Button href="/contact" variant="accent">
-            Get in touch
-          </Button>
+        <div className="mt-12 flex justify-center">
+          <CapabilityCta pdfUrl={settings?.capabilityPdfUrl} />
         </div>
       </Container>
+      <FinalCta heading="Not sure which fits? *Let's talk.*" text="[CTA: describe your question and we'll suggest an approach.]" ctaLabel={settings?.ctaLabel} />
     </>
   );
 }
