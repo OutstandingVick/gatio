@@ -100,10 +100,10 @@ export default async function ReportPage({ params }: PageProps<"/research/[slug]
             <RichText value={report.body} color={color} />
 
             {report.methodology && report.methodology.length > 0 && (
-              <details className="group mt-16 max-w-[680px] rounded-[var(--radius-card)] border border-line bg-paper">
-                <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 px-6 py-4 font-display text-2xl tracking-[-0.02em] [&::-webkit-details-marker]:hidden">
+              <details className="group mt-16 max-w-[680px] rounded-[var(--radius-card)] bg-paper">
+                <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-4 px-6 py-4 text-xl font-extrabold tracking-[-0.03em] [&::-webkit-details-marker]:hidden">
                   Methodology
-                  <span aria-hidden="true" className="text-accent transition-transform group-open:rotate-45">+</span>
+                  <span aria-hidden="true" className="flex size-8 items-center justify-center rounded-full bg-sky text-accent transition-transform group-open:rotate-45">+</span>
                 </summary>
                 <div className="px-6 pb-6">
                   <RichText value={report.methodology} className="text-[16px] leading-[1.7] text-ink-muted" />
@@ -113,17 +113,20 @@ export default async function ReportPage({ params }: PageProps<"/research/[slug]
 
             {report.sources && report.sources.length > 0 && (
               <section aria-labelledby="sources-title" className="mt-14 max-w-[680px]">
-                <h2 id="sources-title" className="mb-5 text-3xl">Sources</h2>
-                <ol className="list-decimal space-y-3 pl-6 text-[15px] marker:text-ink-muted">
-                  {report.sources.map((s) => (
-                    <li key={s._key}>
-                      {s.url ? (
-                        <a href={s.url} rel="noopener noreferrer" target="_blank" className="underline decoration-line decoration-2 underline-offset-4 hover:decoration-accent">
-                          {s.title}
+                <h2 id="sources-title" className="mb-5 text-2xl md:text-3xl">Sources</h2>
+                <ol className="flex flex-col gap-2 text-[15px]">
+                  {report.sources.map((src, i) => (
+                    <li key={src._key} className="flex items-start gap-3 rounded-2xl bg-paper px-4 py-3">
+                      <span aria-hidden="true" className="flex size-6 shrink-0 items-center justify-center rounded-full bg-sand text-xs font-bold">
+                        {i + 1}
+                      </span>
+                      {src.url ? (
+                        <a href={src.url} rel="noopener noreferrer" target="_blank" className="font-semibold hover:text-accent hover:underline">
+                          {src.title}
                           <span className="sr-only"> (opens in a new tab)</span>
                         </a>
                       ) : (
-                        s.title
+                        <span className="font-semibold">{src.title}</span>
                       )}
                     </li>
                   ))}
@@ -132,9 +135,9 @@ export default async function ReportPage({ params }: PageProps<"/research/[slug]
             )}
 
             {report.pdfUrl && (
-              <section aria-labelledby="download-title" className="mt-14 flex max-w-[680px] flex-col gap-5 rounded-[var(--radius-panel)] border border-line bg-paper p-8 sm:flex-row sm:items-center sm:justify-between">
+              <section aria-labelledby="download-title" className="mt-14 flex max-w-[680px] flex-col gap-5 rounded-[var(--radius-panel)] bg-accent p-8 text-white sm:flex-row sm:items-center sm:justify-between">
                 <h2 id="download-title" className="text-2xl">Take it with you</h2>
-                <Button href={`${report.pdfUrl}?dl=`} variant="accent" prefetch={false}>
+                <Button href={`${report.pdfUrl}?dl=`} variant="light" prefetch={false}>
                   Download the full report (PDF)
                 </Button>
               </section>
