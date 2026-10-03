@@ -27,9 +27,9 @@ function BodyImage({ value }: { value: ImageValue }) {
         width={w}
         height={Math.round((height / width) * w)}
         sizes="(min-width: 768px) 680px, 100vw"
-        className="h-auto w-full rounded-[var(--radius-card)] bg-sand"
+        className="h-auto w-full border border-rule bg-surface"
       />
-      {value.caption && <figcaption className="mt-3 text-sm text-ink-muted">{value.caption}</figcaption>}
+      {value.caption && <figcaption className="label mt-4 text-fg-faint">{value.caption}</figcaption>}
     </figure>
   );
 }
@@ -49,12 +49,12 @@ function components(ids: Map<string, string>, color: ColorKey): PortableTextComp
         </h3>
       ),
       blockquote: ({ children }) => (
-        <blockquote className="my-8 rounded-2xl bg-sand px-6 py-5 text-xl font-semibold">{children}</blockquote>
+        <blockquote className="my-10 font-serif text-2xl leading-snug italic text-fg">{children}</blockquote>
       ),
     },
     list: {
-      bullet: ({ children }) => <ul className="my-5 list-disc space-y-2 pl-6 marker:text-accent">{children}</ul>,
-      number: ({ children }) => <ol className="my-5 list-decimal space-y-2 pl-6 marker:text-ink-muted">{children}</ol>,
+      bullet: ({ children }) => <ul className="my-6 list-disc space-y-2 pl-6 marker:text-gold">{children}</ul>,
+      number: ({ children }) => <ol className="my-6 list-decimal space-y-2 pl-6 marker:text-gold">{children}</ol>,
     },
     marks: {
       link: ({ children, value }) => {
@@ -63,7 +63,7 @@ function components(ids: Map<string, string>, color: ColorKey): PortableTextComp
         return (
           <a
             href={href}
-            className="font-semibold text-accent underline decoration-accent/30 decoration-2 underline-offset-4 hover:decoration-accent"
+            className="text-gold underline decoration-gold/40 underline-offset-4 hover:decoration-gold"
             {...(external ? { rel: "noopener noreferrer", target: "_blank" } : {})}
           >
             {children}
@@ -92,7 +92,7 @@ type RichTextProps = {
 export function RichText({ value, color = "accent", className }: RichTextProps) {
   if (!value?.length) return null;
   return (
-    <div className={className ?? "max-w-[680px] text-[17px] leading-[1.75] text-ink/90"}>
+    <div className={className ?? "max-w-[680px] text-[18px] leading-[1.8] text-fg/85"}>
       <PortableText value={value as PortableTextBlock[]} components={components(headingIdMap(value), color)} />
     </div>
   );
