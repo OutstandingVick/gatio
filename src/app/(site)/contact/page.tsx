@@ -50,9 +50,9 @@ export default async function ContactPage() {
           <p className="mt-6 max-w-[44ch] text-lg leading-relaxed text-ink-muted">{contact?.intro || "[CONTACT INTRO]"}</p>
         </div>
 
-        <ul className="grid gap-3 sm:grid-cols-2">
+        <ul className="grid grid-cols-2 gap-3">
           {CARDS.map(({ key, label, icon: Icon, tone }) => (
-            <li key={key} className="flex flex-col gap-3 rounded-[var(--radius-card)] bg-paper p-5">
+            <li key={key} className="flex min-w-0 flex-col gap-2.5 rounded-[var(--radius-card)] bg-paper p-4 sm:p-5">
               <span className={`flex size-10 items-center justify-center rounded-full ${tone}`}>
                 <Icon className="size-5" aria-hidden="true" />
               </span>
