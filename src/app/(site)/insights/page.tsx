@@ -24,8 +24,8 @@ export default async function InsightsPage({ searchParams }: PageProps<"/insight
 
   return (
     <>
-      <PageHeader eyebrow="Insights" eyebrowTone="lavender" title="Notes from {blossom} *the field.*" description="[INSIGHTS DESCRIPTION: shorter pieces on what the team is seeing.]" />
-      <Container className="flex flex-col gap-10 pb-10 md:pb-14">
+      <PageHeader eyebrow="Insights" scene="nightMarket" title="Notes from *the field.*" description="[INSIGHTS DESCRIPTION: shorter pieces on what the team is seeing.]" />
+      <Container className="flex flex-col gap-14 py-14 md:py-20">
         <TopicFilter topics={topics ?? []} active={activeTopic?.slug ?? null} basePath="/insights" />
         <ListingGrid
           noun="insights"
