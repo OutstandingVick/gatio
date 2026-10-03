@@ -15,28 +15,26 @@
   --gold: #c8a96e; /* 9:1 on --bg */
   --gold-deep: #a88a52;
 
-  /* Surfaces (cool grey page, white cards, grey panels) */
-  --cream: #f2f7f8;
-  --paper: #ffffff;
-  --sand: #e8eff1;
-  --line: #dbe3e7;
+  /* Legacy token names, remapped to the editorial palette so existing components follow. */
+  --cream: var(--bg);
+  --paper: var(--surface);
+  --sand: var(--surface-2);
+  --line: var(--rule);
+  --ink: var(--fg);
+  --ink-muted: var(--fg-muted);
+  --accent: var(--gold);
+  --teal: #6fb5a4; /* sage teal, 8.3:1 on --bg */
+  --plum: #cf8aa1; /* dusty rose, 7.6:1 */
+  --mustard: #d9b25a; /* amber, 9.6:1 */
+  --mustard-text: #d9b25a;
 
-  /* Text + brand */
-  --ink: #0d1421;
-  --ink-muted: #4a5466;
-  --accent: #2b3fe0; /* royal blue: primary action */
-  --teal: #0b7a57; /* green */
-  --plum: #c92a63; /* pink */
-  --mustard: #ffc940; /* yellow: dark text only */
-  --mustard-text: #8a5a00; /* use when yellow is needed as a text colour */
-
-  /* Pastels for cards and ornaments (dark text only) */
-  --lime: #c6f36b;
-  --lavender: #e8e4ff;
-  --mint: #dcf7ea;
-  --blush: #ffe2ec;
-  --butter: #fff1c4;
-  --sky: #dfe7ff;
+  /* Dark tints for subtle fills */
+  --lime: #1d1a12;
+  --lavender: #17161b;
+  --mint: #121a17;
+  --blush: #1c1316;
+  --butter: #1d1911;
+  --sky: #18160f;
 
   /* Topics */
   --topic-payments: var(--accent);
