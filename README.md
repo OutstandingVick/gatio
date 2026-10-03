@@ -9,12 +9,12 @@ A spec demo of a research agency website with a CMS. Gatio publishes research re
 | Route | Purpose |
 | --- | --- |
 | `/` | Home: hero and report showcase, capabilities strip, who we are, services, founder's note, recent research, numbers, commitments, statement band, how we work, insights, closing call to action. Every section's copy is in **Pages → Home**. |
-| `/research` | Research listing, filterable by `?topic=slug` |
+| `/research` | Research listing, filterable by `?topic=slug`, with a closing call to action |
 | `/research/[slug]` | Research detail: findings, charts, pull quotes, contents rail, methodology, sources, related |
-| `/insights` | Insights listing, filterable by `?topic=slug` |
+| `/insights` | Insights listing, filterable by `?topic=slug`, with a newsletter sign-up |
 | `/insights/[slug]` | Insight detail |
 | `/about` | About: story, figures, values and team |
-| `/services` | Services listing |
+| `/services` | Services as product cards (with a mock screen of what's included) and the capability statement |
 | `/services/[slug]` | Service detail with what's included |
 | `/contact` | Contact details and a demo form (validates, sends nothing) |
 | `/styleguide` | Temporary: every token and component, plus a live Sanity content test section |
@@ -137,9 +137,21 @@ sanity.cli.ts          CLI + TypeGen config
 
 ## Design
 
-The look follows PiggyVest's style: Plus Jakarta Sans at 800 for headlines, a cool grey page with white cards, navy bands with large rounded corners, a royal-blue main action and pastel accents (lime, lavender, mint, blush, butter, sky). Section order follows the A&A Tech site structure.
+The look follows PiggyVest's style (see `/styleguide`): Plus Jakarta Sans at 800 for headlines, a cool grey page with white cards, navy bands with large rounded corners, a royal-blue main action and pastel accents (lime, lavender, mint, blush, butter, sky). Section order follows the A&A Tech site structure.
 
 Load the placeholder Home content into a fresh dataset with the seed in `scripts/seed/`.
+
+### Building blocks
+
+| Component | Use |
+| --- | --- |
+| `SectionHeading` | Pill, heavy title, intro; centred or left; light or dark |
+| `Section rounded` | Inset band with large rounded corners (navy, white or grey) |
+| `Eyebrow` | Pastel pill badge (`accent`, `teal`, `plum`, `mustard`, `lavender`, `muted`, `dark`) |
+| `Blossom` | Flower ornament; also via `{blossom}` in CMS headlines |
+| `Button` | `primary` (navy), `accent` (blue), `outline`, `soft` (white), `light` (on navy) |
+| `ArrowLink` | "Learn more ›" links |
+| `UtilityBar` | Navy bar above the navbar with email, phone and "Request a quote" |
 
 ## Design notes
 
