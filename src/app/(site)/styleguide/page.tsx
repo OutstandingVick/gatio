@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
+import { ArrowLink } from "@/components/ui/ArrowLink";
+import { Blossom } from "@/components/ui/Blossom";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { CoverArt } from "@/components/ui/CoverArt";
+import { Eyebrow } from "@/components/ui/Eyebrow";
 import { ReportCard } from "@/components/ui/ReportCard";
 import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { StatBlock } from "@/components/ui/StatBlock";
 import { TopicTag } from "@/components/ui/TopicTag";
 import { COVER_STYLES } from "@/lib/covers";
@@ -19,16 +23,22 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 const COLORS = [
-  { name: "cream", hex: "#F6F1E7", note: "Page background", dark: false },
-  { name: "paper", hex: "#FFFDF8", note: "Raised surfaces", dark: false },
-  { name: "sand", hex: "#EDE5D4", note: "Panels", dark: false },
-  { name: "line", hex: "#DDD3C0", note: "Borders", dark: false },
-  { name: "ink", hex: "#14213D", note: "Primary text, dark sections", dark: true },
-  { name: "ink-muted", hex: "#3A4460", note: "Secondary text", dark: true },
-  { name: "accent", hex: "#C2410C", note: "Primary accent", dark: true },
-  { name: "teal", hex: "#0B6B6A", note: "Secondary", dark: true },
-  { name: "plum", hex: "#6B2D5C", note: "Secondary", dark: true },
-  { name: "mustard", hex: "#E9B949", note: "Dark text only; as text use #8A5A00", dark: false },
+  { name: "cream", hex: "#F2F7F8", note: "Page background", dark: false },
+  { name: "paper", hex: "#FFFFFF", note: "Cards", dark: false },
+  { name: "sand", hex: "#E8EFF1", note: "Grey panels", dark: false },
+  { name: "line", hex: "#DBE3E7", note: "Borders", dark: false },
+  { name: "ink", hex: "#0D1421", note: "Text, navy sections, primary button", dark: true },
+  { name: "ink-muted", hex: "#4A5466", note: "Secondary text", dark: true },
+  { name: "accent", hex: "#2B3FE0", note: "Royal blue: key actions, emphasis", dark: true },
+  { name: "teal", hex: "#0B7A57", note: "Green", dark: true },
+  { name: "plum", hex: "#C92A63", note: "Pink", dark: true },
+  { name: "mustard", hex: "#FFC940", note: "Yellow; dark text only (as text use #8A5A00)", dark: false },
+  { name: "lime", hex: "#C6F36B", note: "Pastel: highlights, emphasis on navy", dark: false },
+  { name: "lavender", hex: "#E8E4FF", note: "Pastel", dark: false },
+  { name: "mint", hex: "#DCF7EA", note: "Pastel", dark: false },
+  { name: "blush", hex: "#FFE2EC", note: "Pastel", dark: false },
+  { name: "butter", hex: "#FFF1C4", note: "Pastel", dark: false },
+  { name: "sky", hex: "#DFE7FF", note: "Pastel", dark: false },
 ] as const;
 
 // Literal class names so Tailwind picks them up.
@@ -43,6 +53,12 @@ const SWATCH_BG: Record<string, string> = {
   teal: "bg-teal",
   plum: "bg-plum",
   mustard: "bg-mustard",
+  lime: "bg-lime",
+  lavender: "bg-lavender",
+  mint: "bg-mint",
+  blush: "bg-blush",
+  butter: "bg-butter",
+  sky: "bg-sky",
 };
 
 const TOPIC_BG: Record<string, string> = {
@@ -113,13 +129,13 @@ export default function StyleguidePage() {
             <p className="headline text-6xl md:text-8xl">
               Money moves <em>faster</em> now.
             </p>
-            <p className="headline text-4xl md:text-5xl">Fraunces display, 400, tracking −0.025em</p>
-            <p className="font-display text-3xl font-semibold tracking-[-0.02em]">Fraunces 600 for emphasis</p>
-            <p className="font-display text-3xl italic">Fraunces italic</p>
+            <p className="headline text-4xl md:text-5xl">Plus Jakarta Sans 800, tracking −0.035em</p>
+            <p className="font-display text-3xl font-semibold tracking-[-0.02em]">Plus Jakarta Sans 700 for subheads</p>
+            <p className="headline text-3xl">Emphasis is upright, <em>in royal blue</em></p>
             <div className="grid gap-4 md:grid-cols-3">
-              <p className="text-lg">Instrument Sans 400. Body copy for reports and articles.</p>
-              <p className="text-lg font-medium">Instrument Sans 500. Labels and navigation.</p>
-              <p className="text-lg font-semibold">Instrument Sans 600. Strong emphasis.</p>
+              <p className="text-lg">Plus Jakarta Sans 400. Body copy for reports and articles.</p>
+              <p className="text-lg font-medium">Plus Jakarta Sans 500. Labels and navigation.</p>
+              <p className="text-lg font-semibold">Plus Jakarta Sans 600. Strong emphasis.</p>
             </div>
             <p className="text-ink-muted">Secondary text in ink-muted.</p>
           </div>
@@ -131,6 +147,7 @@ export default function StyleguidePage() {
             <Button>Primary</Button>
             <Button variant="accent">Accent</Button>
             <Button variant="outline">Outline</Button>
+            <Button variant="soft">Soft</Button>
             <Button href="/styleguide#sg-buttons" variant="primary">
               Link button
             </Button>
@@ -138,6 +155,14 @@ export default function StyleguidePage() {
               Large
             </Button>
             <Button disabled>Disabled</Button>
+          </div>
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            {(["accent", "teal", "plum", "mustard", "lavender", "muted"] as const).map((t) => (
+              <Eyebrow key={t} tone={t}>
+                {t} pill
+              </Eyebrow>
+            ))}
+            <ArrowLink href="/styleguide#sg-buttons">Learn more</ArrowLink>
           </div>
           <div className="mt-10 flex flex-wrap gap-6">
             {topics.map((slug) => (
@@ -148,6 +173,29 @@ export default function StyleguidePage() {
             {topics.map((slug) => (
               <TopicTag key={slug} slug={slug} variant="solid" />
             ))}
+          </div>
+        </Section>
+
+        <Section tone="ink" rounded labelledBy="sg-dark">
+          <SectionHeading
+            id="sg-dark"
+            dark
+            align="center"
+            eyebrow="Section heading"
+            title="Research {blossom} worth *opening.*"
+            intro="Navy band with rounded corners, a pill, emphasis in lime and the blossom ornament."
+          />
+          <div className="flex flex-wrap justify-center gap-3">
+            <Button variant="light">Light button</Button>
+            <ArrowLink href="/styleguide#sg-dark" dark>
+              Learn more
+            </ArrowLink>
+          </div>
+          <div className="mt-10 flex justify-center gap-4 text-5xl">
+            <Blossom color="var(--lime)" />
+            <Blossom color="var(--plum)" />
+            <Blossom color="var(--accent)" petals={6} />
+            <Blossom color="var(--mustard)" petals={10} />
           </div>
         </Section>
 
@@ -202,7 +250,7 @@ export default function StyleguidePage() {
             Stat blocks
           </h2>
           <div className="grid gap-8 rounded-[var(--radius-panel)] bg-cream p-8 text-ink sm:grid-cols-2 lg:grid-cols-4">
-            <StatBlock value="00%" label="[SAMPLE STAT] Placeholder label" color="accent" />
+            <StatBlock value="00%" label="[SAMPLE STAT] Placeholder label" color="accent" boxed />
             <StatBlock value="0.0x" label="[SAMPLE STAT] Placeholder label" color="teal" />
             <StatBlock value="₦0bn" label="[SAMPLE STAT] Placeholder label" color="plum" />
             <StatBlock value="000" label="[SAMPLE STAT] Placeholder label" color="mustard" />
