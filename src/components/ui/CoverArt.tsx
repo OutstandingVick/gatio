@@ -1,7 +1,6 @@
 import { cn } from "@/lib/cn";
-import { COLOR_HEX, topicColor, type ColorKey } from "@/lib/topics";
-
 import { COVER_STYLES, type CoverStyle } from "@/lib/covers";
+import { COLOR_HEX, topicColor } from "@/lib/topics";
 
 type CoverArtProps = {
   coverStyle?: string | null;
@@ -10,123 +9,90 @@ type CoverArtProps = {
   className?: string;
 };
 
-const PASTEL: Record<ColorKey, string> = {
-  accent: "#DFE7FF",
-  teal: "#DCF7EA",
-  plum: "#FFE2EC",
-  mustard: "#FFF1C4",
-  ink: "#E8E4FF",
-};
+const GOLD = "#C8A96E";
 
-/** Contrasting accent for each topic colour, used for the highlight shape and blossom. */
-const ALT: Record<ColorKey, string> = {
-  accent: COLOR_HEX.plum,
-  teal: COLOR_HEX.accent,
-  plum: COLOR_HEX.mustard,
-  mustard: COLOR_HEX.plum,
-  ink: COLOR_HEX.accent,
-};
-
-/** Pastel ground, topic-colour shapes, contrasting highlight. */
-function palette(color: ColorKey) {
-  return { bg: PASTEL[color], fg: color === "mustard" ? "#E0A800" : COLOR_HEX[color], alt: ALT[color] };
-}
-
-function Petals({ cx, cy, r, fill }: { cx: number; cy: number; r: number; fill: string }) {
-  return (
-    <g fill={fill}>
-      {Array.from({ length: 8 }, (_, i) => {
-        const a = (i / 8) * Math.PI * 2;
-        return <circle key={i} cx={cx + Math.cos(a) * r * 0.55} cy={cy + Math.sin(a) * r * 0.55} r={r * 0.38} />;
-      })}
-      <circle cx={cx} cy={cy} r={r * 0.6} />
-    </g>
-  );
-}
-
-function Shapes({ style, fg, alt }: { style: CoverStyle; fg: string; alt: string }) {
+/** Fine-line "engraved" compositions; `c` is the topic colour, gold marks the focal point. */
+function Lines({ style, c }: { style: CoverStyle; c: string }) {
+  const stroke = { fill: "none", stroke: c, strokeWidth: 1.25, vectorEffect: "non-scaling-stroke" as const };
   switch (style) {
     case "bars":
       return (
-        <g fill={fg}>
-          {[90, 140, 110, 190, 160].map((h, i) => (
-            <rect key={i} x={70 + i * 56} y={260 - h} width={36} height={h} rx={4} opacity={i === 3 ? 1 : 0.35} />
+        <g>
+          {[70, 110, 90, 160, 130, 200, 150].map((h, i) => (
+            <rect key={i} x={70 + i * 40} y={250 - h} width={22} height={h} {...stroke} opacity={i === 5 ? 1 : 0.55} />
           ))}
-          <circle cx={256} cy={50} r={10} fill={alt} />
+          <line x1={50} x2={350} y1={250} y2={250} {...stroke} />
+          <circle cx={281} cy={38} r={6} fill={GOLD} />
         </g>
       );
     case "circles":
       return (
         <g>
-          <circle cx={150} cy={150} r={90} fill={fg} opacity={0.25} />
-          <circle cx={250} cy={150} r={90} fill={fg} opacity={0.25} />
-          <circle cx={200} cy={150} r={42} fill={alt} />
+          {[0, 1, 2, 3, 4].map((i) => (
+            <circle key={i} cx={130 + i * 35} cy={150} r={80} {...stroke} opacity={0.35 + i * 0.13} />
+          ))}
+          <circle cx={200} cy={150} r={10} fill={GOLD} />
         </g>
       );
     case "squares":
       return (
-        <g fill={fg}>
-          {[0, 1, 2].flatMap((r) =>
-            [0, 1, 2].map((c) => (
-              <rect
-                key={`${r}-${c}`}
-                x={110 + c * 64}
-                y={60 + r * 64}
-                width={52}
-                height={52}
-                rx={6}
-                opacity={r === 1 && c === 2 ? 1 : 0.28}
-                fill={r === 1 && c === 2 ? alt : fg}
-              />
+        <g>
+          {[0, 1, 2, 3].flatMap((r) =>
+            [0, 1, 2, 3].map((col) => (
+              <rect key={`${r}-${col}`} x={120 + col * 42} y={66 + r * 42} width={32} height={32} {...stroke} opacity={0.4 + ((r + col) % 3) * 0.2} />
             )),
           )}
+          <rect x={246} y={108} width={32} height={32} fill={GOLD} />
         </g>
       );
     case "triangle":
       return (
         <g>
-          <path d="M200 50 L320 250 L80 250 Z" fill={fg} opacity={0.28} />
-          <path d="M200 130 L260 250 L140 250 Z" fill={alt} />
+          {[0, 1, 2, 3, 4, 5].map((i) => (
+            <path key={i} d={`M200 ${50 + i * 18} L${320 - i * 14} 250 L${80 + i * 14} 250 Z`} {...stroke} opacity={0.3 + i * 0.12} />
+          ))}
+          <circle cx={200} cy={50} r={6} fill={GOLD} />
         </g>
       );
     case "line":
       return (
-        <g fill="none" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M40 220 L110 180 L170 200 L240 110 L300 140 L360 70" stroke={fg} strokeWidth={6} />
-          <path d="M40 250 H360" stroke={fg} strokeWidth={2} opacity={0.35} />
-          <circle cx={360} cy={70} r={12} fill={alt} />
+        <g>
+          {[40, 80, 120, 160, 200, 240].map((y) => (
+            <line key={y} x1={40} x2={360} y1={y} y2={y} stroke={c} strokeWidth={0.6} opacity={0.25} vectorEffect="non-scaling-stroke" />
+          ))}
+          <path d="M40 220 L100 190 L150 205 L210 130 L260 150 L320 80 L360 70" {...stroke} strokeWidth={1.75} />
+          <circle cx={320} cy={80} r={6} fill={GOLD} />
         </g>
       );
     case "rings":
       return (
-        <g fill="none">
-          {[110, 80, 50].map((r, i) => (
-            <circle key={r} cx={200} cy={150} r={r} stroke={fg} strokeWidth={10} opacity={0.3 + i * 0.25} />
+        <g>
+          {[120, 100, 80, 60, 40, 20].map((r, i) => (
+            <circle key={r} cx={200} cy={150} r={r} {...stroke} opacity={0.3 + i * 0.12} />
           ))}
-          <circle cx={200} cy={150} r={18} fill={alt} />
+          <circle cx={200} cy={150} r={6} fill={GOLD} />
         </g>
       );
   }
 }
 
-/** Decorative geometric cover art on a pastel ground, driven by `coverStyle` and the topic colour. */
+/** Decorative cover: fine-line composition on near-black, driven by `coverStyle` and topic colour. */
 export function CoverArt({ coverStyle, topicSlug, colorKey, className }: CoverArtProps) {
-  const style: CoverStyle = (COVER_STYLES as readonly string[]).includes(coverStyle ?? "")
-    ? (coverStyle as CoverStyle)
-    : "bars";
-  const { bg, fg, alt } = palette(topicColor(topicSlug, colorKey));
+  const style: CoverStyle = (COVER_STYLES as readonly string[]).includes(coverStyle ?? "") ? (coverStyle as CoverStyle) : "bars";
+  const c = COLOR_HEX[topicColor(topicSlug, colorKey)];
+  const gid = `cover-${style}-${c.slice(1)}`;
 
   return (
-    <svg
-      viewBox="0 0 400 300"
-      preserveAspectRatio="xMidYMid slice"
-      aria-hidden="true"
-      focusable="false"
-      className={cn("block h-full w-full", className)}
-    >
-      <rect width={400} height={300} fill={bg} />
-      <Shapes style={style} fg={fg} alt={alt} />
-      <Petals cx={352} cy={48} r={26} fill={alt} />
+    <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false" className={cn("block h-full w-full", className)}>
+      <defs>
+        <radialGradient id={gid} cx="50%" cy="45%" r="70%">
+          <stop offset="0%" stopColor="#1a1814" />
+          <stop offset="100%" stopColor="#0a0a0a" />
+        </radialGradient>
+      </defs>
+      <rect width={400} height={300} fill={`url(#${gid})`} />
+      <rect x={14} y={14} width={372} height={272} fill="none" stroke={c} strokeWidth={0.5} opacity={0.25} vectorEffect="non-scaling-stroke" />
+      <Lines style={style} c={c} />
     </svg>
   );
 }
