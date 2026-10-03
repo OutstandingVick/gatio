@@ -51,6 +51,7 @@ export default async function InsightPage({ params }: PageProps<"/insights/[slug
         publishedAt={article.publishedAt}
         readTime={article.readTime}
         coverStyle={article.coverStyle}
+        back={{ href: "/insights", label: "Insights" }}
         isSample={article.isSample}
       />
       <Container className="py-14 md:py-20">

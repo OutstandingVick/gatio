@@ -66,6 +66,7 @@ export default async function ReportPage({ params }: PageProps<"/research/[slug]
         publishedAt={report.publishedAt}
         readTime={report.readTime}
         coverStyle={report.coverStyle}
+        back={{ href: "/research", label: "Research" }}
         isSample={report.isSample}
       />
 
