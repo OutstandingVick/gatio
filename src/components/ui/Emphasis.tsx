@@ -1,16 +1,15 @@
 import { Fragment } from "react";
-import { Blossom } from "./Blossom";
 
 /**
- * Render a CMS headline: `*words*` become `<em>` (the brand emphasis colour) and
- * `{blossom}` drops in the decorative blossom ornament. Anything else is left as typed.
+ * Render a CMS headline: `*words*` become `<em>` (gold italic). The legacy
+ * `{blossom}` token from an earlier design is ignored.
  */
-export function Emphasis({ text, blossomColor }: { text: string | null | undefined; blossomColor?: string }) {
+export function Emphasis({ text }: { text: string | null | undefined; blossomColor?: string }) {
   if (!text) return null;
   return (
     <>
-      {text.split(/(\*[^*]+\*|\{blossom\})/g).map((part, i) => {
-        if (part === "{blossom}") return blossomColor === "none" ? null : <Blossom key={i} color={blossomColor} className="mx-[0.12em]" />;
+      {text.split(/(\*[^*]+\*|\s*\{blossom\}\s*)/g).map((part, i) => {
+        if (/^\s*\{blossom\}\s*$/.test(part)) return <Fragment key={i}> </Fragment>;
         if (/^\*[^*]+\*$/.test(part)) return <em key={i}>{part.slice(1, -1)}</em>;
         return <Fragment key={i}>{part}</Fragment>;
       })}
