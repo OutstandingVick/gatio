@@ -137,24 +137,16 @@ sanity.cli.ts          CLI + TypeGen config
 
 ## Design
 
-The look follows PiggyVest's style (see `/styleguide`): Plus Jakarta Sans at 800 for headlines, a cool grey page with white cards, navy bands with large rounded corners, a royal-blue main action and pastel accents (lime, lavender, mint, blush, butter, sky). Section order follows the A&A Tech site structure.
+An editorial dark system modelled on randolphscottbell.com: near-black page, warm gold accent, Cormorant Garamond for display (bold roman, gold italic emphasis), Jost for text, tiny wide-tracked uppercase labels and hairline rules. See `/styleguide`.
+
+| Piece | Where |
+| --- | --- |
+| Tokens (`bg`, `surface`, `rule`, `fg`, `gold`, topic colours) | `src/app/globals.css` |
+| `label` and `outline-numeral` utilities | `src/app/globals.css` |
+| Header (transparent → solid, full-screen menu) | `src/components/editorial/SiteHeader.tsx` |
+| Home sections (hero, stats, ticker, featured band, statement, sticky services, research rows, founder, commitments, process, insights) | `src/components/editorial/` |
+| Painted images (no stock photography) | `scripts/art/` → `public/images/` |
+
+In CMS headlines, wrap words in `*asterisks*` for gold italic. Services can take an uploaded image; without one they use a painted scene.
 
 Load the placeholder Home content into a fresh dataset with the seed in `scripts/seed/`.
-
-### Building blocks
-
-| Component | Use |
-| --- | --- |
-| `SectionHeading` | Pill, heavy title, intro; centred or left; light or dark |
-| `Section rounded` | Inset band with large rounded corners (navy, white or grey) |
-| `Eyebrow` | Pastel pill badge (`accent`, `teal`, `plum`, `mustard`, `lavender`, `muted`, `dark`) |
-| `Blossom` | Flower ornament; also via `{blossom}` in CMS headlines |
-| `Button` | `primary` (navy), `accent` (blue), `outline`, `soft` (white), `light` (on navy) |
-| `ArrowLink` | "Learn more ›" links |
-| `UtilityBar` | Navy bar above the navbar with email, phone and "Request a quote" |
-
-## Design notes
-
-- Tokens live as CSS variables in `src/app/globals.css` and are mapped into the Tailwind theme (`bg-cream`, `text-ink`, `bg-topic-payments`, …).
-- Covers are geometric SVGs (`CoverArt.tsx`) driven by `coverStyle` and topic colour. No stock photography.
-- Agency copy uses bracketed placeholders such as `[AGENCY POSITIONING]` until real copy is supplied.
