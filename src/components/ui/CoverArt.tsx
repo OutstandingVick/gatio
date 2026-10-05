@@ -9,7 +9,8 @@ type CoverArtProps = {
   className?: string;
 };
 
-const GOLD = "#C8A96E";
+/** Light steel focal mark (brand steel blue, lightened for contrast on the deep ground). */
+const GOLD = "#8CC3E0";
 
 /** Fine-line "engraved" compositions; `c` is the topic colour, gold marks the focal point. */
 function Lines({ style, c }: { style: CoverStyle; c: string }) {
@@ -76,7 +77,7 @@ function Lines({ style, c }: { style: CoverStyle; c: string }) {
   }
 }
 
-/** Decorative cover: fine-line composition on near-black, driven by `coverStyle` and topic colour. */
+/** Decorative cover: fine-line composition on deep blue-teal, driven by `coverStyle` and topic colour. */
 export function CoverArt({ coverStyle, topicSlug, colorKey, className }: CoverArtProps) {
   const style: CoverStyle = (COVER_STYLES as readonly string[]).includes(coverStyle ?? "") ? (coverStyle as CoverStyle) : "bars";
   const c = COLOR_HEX[topicColor(topicSlug, colorKey)];
@@ -86,8 +87,8 @@ export function CoverArt({ coverStyle, topicSlug, colorKey, className }: CoverAr
     <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false" className={cn("block h-full w-full", className)}>
       <defs>
         <radialGradient id={gid} cx="50%" cy="45%" r="70%">
-          <stop offset="0%" stopColor="#1a1814" />
-          <stop offset="100%" stopColor="#0a0a0a" />
+          <stop offset="0%" stopColor="#1d5068" />
+          <stop offset="100%" stopColor="#0f3142" />
         </radialGradient>
       </defs>
       <rect width={400} height={300} fill={`url(#${gid})`} />
