@@ -49,7 +49,7 @@ export function SiteHeader({ ctaLabel = "Work with us" }: { ctaLabel?: string | 
       <div
         className={cn(
           "flex h-16 items-center justify-between px-5 transition-colors duration-300 md:px-8",
-          scrolled || open ? "border-b border-rule bg-bg/95 backdrop-blur" : "bg-gradient-to-b from-black/60 to-transparent",
+          scrolled || open ? "border-b border-rule bg-bg/95 backdrop-blur" : "bg-gradient-to-b from-[#0b2533]/70 to-transparent",
         )}
       >
         <div className="flex items-center gap-5">
