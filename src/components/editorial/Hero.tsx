@@ -25,7 +25,7 @@ export function Hero({ headline, intro, primaryCta, secondaryCta, note, facts = 
         className="-z-20 object-cover object-[60%_center]"
       />
       {/* Darken the left for legibility, fade into the page at the bottom. */}
-      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-r from-black/85 via-black/55 to-black/10" />
+      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-r from-[#0b2533]/90 via-[#0f3142]/60 to-[#12384b]/15" />
       <div aria-hidden="true" className="absolute inset-x-0 bottom-0 -z-10 h-1/3 bg-gradient-to-t from-bg to-transparent" />
 
       <div className="mx-auto flex w-full max-w-[1280px] flex-1 flex-col px-5 pt-24 pb-10 md:px-8 md:pt-28">
@@ -41,10 +41,10 @@ export function Hero({ headline, intro, primaryCta, secondaryCta, note, facts = 
           <p className="mt-7 max-w-[52ch] text-lg leading-relaxed text-fg/80 md:text-xl">{intro || "[AGENCY POSITIONING]"}</p>
 
           <div className="mt-10 flex flex-wrap gap-3">
-            <Link href="/research" className="label inline-flex min-h-12 items-center bg-gold px-7 font-medium text-bg transition-colors hover:bg-fg">
+            <Link href="/research" className="label inline-flex min-h-12 items-center bg-steel px-7 font-medium text-white transition-colors hover:bg-white hover:text-deep">
               {primaryCta || "Explore research"}
             </Link>
-            <Link href="/contact" className="label inline-flex min-h-12 items-center border border-fg/50 px-7 text-fg transition-colors hover:border-gold hover:text-gold">
+            <Link href="/contact" className="label inline-flex min-h-12 items-center border border-white/60 px-7 text-white transition-colors hover:border-gold hover:text-gold">
               {secondaryCta || "Work with us"} <span aria-hidden="true" className="ml-3">↓</span>
             </Link>
           </div>
