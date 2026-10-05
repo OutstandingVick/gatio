@@ -4,16 +4,18 @@
 /* Design tokens                                                        */
 /* ------------------------------------------------------------------ */
 :root {
-  /* Editorial (dark, gold) */
-  --bg: #060606;
-  --surface: #0d0d0d;
-  --surface-2: #151515;
-  --rule: #262626;
-  --fg: #f4f1ea;
-  --fg-muted: #a8a299; /* 8.6:1 on --bg */
-  --fg-faint: #8a847b; /* 5.6:1 on --bg, labels only */
-  --gold: #c8a96e; /* 9:1 on --bg */
-  --gold-deep: #a88a52;
+  /* Brand: deep blue-teal ground, steel blue accent, white text (LinusBio palette). */
+  --deep: #164258; /* brand deep blue-teal */
+  --steel: #317ea6; /* brand steel blue, for fills: white text on it is 4.6:1 */
+  --bg: #12384b; /* page: a step darker than --deep for depth */
+  --surface: #164258; /* raised bands */
+  --surface-2: #1b4c64; /* panels */
+  --rule: #2c5d75; /* hairlines */
+  --fg: #ffffff;
+  --fg-muted: #c7d6df; /* 9.3:1 on --bg */
+  --fg-faint: #9bb3c1; /* 5.8:1 on --bg, labels only */
+  --gold: #8cc3e0; /* light steel: accent text, numerals, rules. 6.9:1 on --bg (token name kept for compatibility) */
+  --gold-deep: #317ea6;
 
   /* Legacy token names, remapped to the editorial palette so existing components follow. */
   --cream: var(--bg);
@@ -86,6 +88,8 @@
   --color-fg-muted: var(--fg-muted);
   --color-fg-faint: var(--fg-faint);
   --color-gold: var(--gold);
+  --color-steel: var(--steel);
+  --color-deep: var(--deep);
   --color-gold-deep: var(--gold-deep);
   --font-serif: var(--font-cormorant), Georgia, serif;
   --color-cream: var(--cream);
