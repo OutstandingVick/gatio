@@ -36,14 +36,14 @@ def main():
     img = Image.new("RGBA", (W, H), (0, 0, 0, 255))
     sky = vertical_gradient(
         (W, HORIZON),
-        [(0.0, (6, 14, 18)), (0.5, (14, 40, 46)), (0.85, (44, 92, 92)), (1.0, (150, 140, 104))],
+        [(0.0, (6, 16, 24)), (0.5, (16, 48, 66)), (0.85, (40, 100, 130)), (1.0, (130, 186, 214))],
     )
     img.paste(sky, (0, 0))
-    img.alpha_composite(radial_glow((W, H), (int(W * 0.3), HORIZON + 20), 700, (230, 180, 110), strength=90, squash=1.4))
+    img.alpha_composite(radial_glow((W, H), (int(W * 0.3), HORIZON + 20), 700, (170, 214, 236), strength=90, squash=1.4))
 
     d = ImageDraw.Draw(img)
     # Containers along the quay, in muted colours.
-    palette = [(80, 44, 36), (36, 58, 70), (90, 76, 40), (40, 40, 44), (64, 30, 30)]
+    palette = [(49, 126, 166), (36, 70, 92), (70, 96, 112), (30, 44, 56), (22, 66, 88)]
     quay = HORIZON
     x = -20
     while x < W:
@@ -71,7 +71,7 @@ def main():
     # Water: mirrored, blurred, darkened, with broken gold trails under the lights.
     mirror = img.crop((0, 0, W, HORIZON)).transpose(Image.FLIP_TOP_BOTTOM).resize((W, H - HORIZON))
     mirror = mirror.filter(ImageFilter.GaussianBlur(6))
-    mirror.alpha_composite(Image.new("RGBA", mirror.size, (4, 10, 12, 170)))
+    mirror.alpha_composite(Image.new("RGBA", mirror.size, (4, 18, 26, 170)))
     t = ImageDraw.Draw(mirror)
     for _ in range(700):
         x = rnd.randint(0, W)
