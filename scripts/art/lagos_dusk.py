@@ -22,11 +22,11 @@ def sky():
     img = vertical_gradient(
         (W, HORIZON),
         [
-            (0.0, (8, 10, 18)),
-            (0.45, (24, 26, 40)),
-            (0.78, (74, 54, 52)),
-            (0.9, (162, 104, 66)),
-            (1.0, (226, 160, 96)),
+            (0.0, (6, 18, 26)),
+            (0.45, (14, 44, 60)),
+            (0.78, (30, 84, 110)),
+            (0.9, (60, 130, 166)),
+            (1.0, (150, 200, 226)),
         ],
     )
     # Soft sun glow sitting just under the horizon, right of centre.
@@ -46,7 +46,7 @@ def sky():
         x = rnd.randint(-200, W)
         c.ellipse([x, y, x + rnd.randint(300, 900), y + rnd.randint(8, 22)], fill=rnd.randint(30, 70))
     clouds = clouds.filter(ImageFilter.GaussianBlur(10))
-    img = Image.composite(Image.new("RGB", img.size, (120, 84, 70)), img, clouds)
+    img = Image.composite(Image.new("RGB", img.size, (64, 112, 140)), img, clouds)
     return img
 
 
@@ -99,17 +99,17 @@ def bridge(img):
         ax, ay = x0 + (x1 - x0) * e0, y0 + (y1 - y0) * e0
         bx, by = x0 + (x1 - x0) * e1, y0 + (y1 - y0) * e1
         thick = max(2, int(26 * (1 - e0)))
-        d.polygon([(ax, ay), (bx, by), (bx, by + thick), (ax, ay + thick)], fill=(12, 11, 14))
+        d.polygon([(ax, ay), (bx, by), (bx, by + thick), (ax, ay + thick)], fill=(8, 18, 24))
         if i % 6 == 0:
             pier_h = int(160 * (1 - e0)) + 8
             pw = max(2, int(14 * (1 - e0)))
-            d.rectangle([ax, ay + thick, ax + pw, ay + thick + pier_h], fill=(10, 10, 12))
+            d.rectangle([ax, ay + thick, ax + pw, ay + thick + pier_h], fill=(6, 16, 22))
         if i % 4 == 0:
             size = max(1.5, 9 * (1 - e0))
             post = max(4, int(46 * (1 - e0)))
-            g.line([(ax, ay), (ax, ay - post)], fill=(16, 15, 17, 255), width=max(1, int(3 * (1 - e0))))
-            g.ellipse([ax - size * 3, ay - post - size * 3, ax + size * 3, ay - post + size * 3], fill=(255, 180, 100, 60))
-            g.ellipse([ax - size, ay - post - size, ax + size, ay - post + size], fill=(255, 214, 150, 255))
+            g.line([(ax, ay), (ax, ay - post)], fill=(10, 20, 26, 255), width=max(1, int(3 * (1 - e0))))
+            g.ellipse([ax - size * 3, ay - post - size * 3, ax + size * 3, ay - post + size * 3], fill=(140, 195, 224, 60))
+            g.ellipse([ax - size, ay - post - size, ax + size, ay - post + size], fill=(214, 233, 244, 255))
     img.alpha_composite(glow.filter(ImageFilter.GaussianBlur(1.5)))
 
 
@@ -119,9 +119,9 @@ def main():
 
     # Depth layers, far to near. Far layers are paler, hazier and slightly blurred.
     layers = [
-        dict(n=70, hr=(60, 200), wr=(30, 90), col=(70, 54, 60, 255), wc=0.04, win=(3, 4, 9, 11), gap=(0, 18), blur=1.6, haze=120),
-        dict(n=48, hr=(120, 340), wr=(50, 130), col=(36, 30, 38, 255), wc=0.10, win=(4, 6, 11, 14), gap=(6, 60), blur=0.6, haze=55),
-        dict(n=18, hr=(180, 470), wr=(70, 160), col=(12, 12, 16, 255), wc=0.14, win=(5, 8, 14, 18), gap=(60, 260), blur=0, haze=0),
+        dict(n=70, hr=(60, 200), wr=(30, 90), col=(40, 72, 92, 255), wc=0.04, win=(3, 4, 9, 11), gap=(0, 18), blur=1.6, haze=120),
+        dict(n=48, hr=(120, 340), wr=(50, 130), col=(20, 42, 56, 255), wc=0.10, win=(4, 6, 11, 14), gap=(6, 60), blur=0.6, haze=55),
+        dict(n=18, hr=(180, 470), wr=(70, 160), col=(8, 18, 26, 255), wc=0.14, win=(5, 8, 14, 18), gap=(60, 260), blur=0, haze=0),
     ]
     all_lights = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     for L in layers:
@@ -133,17 +133,17 @@ def main():
         canvas.alpha_composite(lights.filter(ImageFilter.GaussianBlur(5)))
         all_lights.alpha_composite(lights)
         if L["haze"]:
-            haze = vertical_gradient((W, HORIZON), [(0.0, (0, 0, 0)), (0.7, (0, 0, 0)), (1.0, (150, 104, 76))]).convert("L")
+            haze = vertical_gradient((W, HORIZON), [(0.0, (0, 0, 0)), (0.7, (0, 0, 0)), (1.0, (150, 150, 150))]).convert("L")
             haze = haze.point(lambda v: int(v / 150 * L["haze"]))
             hz = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-            hz.paste(Image.new("RGBA", (W, HORIZON), (170, 118, 84, 255)), (0, 0), haze)
+            hz.paste(Image.new("RGBA", (W, HORIZON), (90, 150, 182, 255)), (0, 0), haze)
             canvas.alpha_composite(hz)
 
     # Water: mirrored, blurred, darkened copy of the scene with gold ripples.
     above = canvas.crop((0, 0, W, HORIZON))
     mirror = above.transpose(Image.FLIP_TOP_BOTTOM).resize((W, H - HORIZON))
     mirror = mirror.filter(ImageFilter.GaussianBlur(5))
-    dark = Image.new("RGBA", mirror.size, (6, 8, 14, 170))
+    dark = Image.new("RGBA", mirror.size, (4, 20, 30, 170))
     mirror.alpha_composite(dark)
     trails = Image.new("RGBA", mirror.size, (0, 0, 0, 0))
     t = ImageDraw.Draw(trails)
