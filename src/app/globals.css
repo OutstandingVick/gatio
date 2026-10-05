@@ -6,15 +6,15 @@
 :root {
   /* Brand: deep blue-teal ground, steel blue accent, white text (LinusBio palette). */
   --deep: #164258; /* brand deep blue-teal */
-  --steel: #317ea6; /* brand steel blue, for fills: white text on it is 4.6:1 */
+  --steel: #317ea6; /* brand steel blue, for fills: white text on it is 4.50:1 (pass, no margin) */
   --bg: #12384b; /* page: a step darker than --deep for depth */
   --surface: #164258; /* raised bands */
   --surface-2: #1b4c64; /* panels */
   --rule: #2c5d75; /* hairlines */
   --fg: #ffffff;
-  --fg-muted: #c7d6df; /* 9.3:1 on --bg */
-  --fg-faint: #9bb3c1; /* 5.8:1 on --bg, labels only */
-  --gold: #8cc3e0; /* light steel: accent text, numerals, rules. 6.9:1 on --bg (token name kept for compatibility) */
+  --fg-muted: #c7d6df; /* 8.3:1 on --bg */
+  --fg-faint: #adc3cf; /* 6.8:1 on --bg, 5.1:1 on --surface-2; labels only */
+  --gold: #8cc3e0; /* light steel: accent text, numerals, rules. 6.5:1 on --bg, 4.9:1 on --surface-2 (token name kept for compatibility) */
   --gold-deep: #317ea6;
 
   /* Legacy token names, remapped to the editorial palette so existing components follow. */
