@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Jost } from "next/font/google";
 import "./globals.css";
 
@@ -18,6 +18,12 @@ const jost = Jost({
   weight: ["300", "400", "500"],
   display: "swap",
 });
+
+/** Tints mobile browser chrome and keeps native controls dark. */
+export const viewport: Viewport = {
+  themeColor: "#12384b",
+  colorScheme: "dark",
+};
 
 export const metadata: Metadata = {
   title: {
