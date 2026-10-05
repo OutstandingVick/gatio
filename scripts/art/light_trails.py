@@ -20,15 +20,15 @@ def curve(t, lane):
 
 def main():
     img = Image.new("RGBA", (W, H), (0, 0, 0, 255))
-    img.paste(vertical_gradient((W, H), [(0.0, (4, 5, 10)), (0.4, (12, 12, 22)), (0.6, (28, 20, 26)), (1.0, (8, 7, 10))]), (0, 0))
-    img.alpha_composite(radial_glow((W, H), (int(W * 0.7), int(H * 0.38)), 600, (180, 110, 70), strength=70, squash=1.6))
+    img.paste(vertical_gradient((W, H), [(0.0, (4, 12, 18)), (0.4, (12, 34, 48)), (0.6, (20, 56, 76)), (1.0, (6, 16, 22))]), (0, 0))
+    img.alpha_composite(radial_glow((W, H), (int(W * 0.7), int(H * 0.38)), 600, (90, 160, 196), strength=70, squash=1.6))
 
     d = ImageDraw.Draw(img)
     # Distant towers on the skyline.
     x = 0
     while x < W:
         bw, bh = rnd.randint(40, 120), rnd.randint(80, 420)
-        d.rectangle([x, H * 0.4 - bh, x + bw, H * 0.42], fill=(14, 13, 18))
+        d.rectangle([x, H * 0.4 - bh, x + bw, H * 0.42], fill=(10, 24, 32))
         for wy in range(int(H * 0.4 - bh) + 10, int(H * 0.41), 14):
             for wx in range(x + 6, x + bw - 6, 11):
                 if rnd.random() < 0.08:
@@ -37,12 +37,12 @@ def main():
 
     # Road surface between the outer lanes.
     road = [curve(t / 100, -1.2) for t in range(101)] + [curve(t / 100, 1.2) for t in range(100, -1, -1)]
-    d.polygon(road, fill=(10, 10, 12))
+    d.polygon(road, fill=(6, 18, 24))
 
     trails = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     td = ImageDraw.Draw(trails)
     # Warm head-light trails on one side, red tail-lights on the other.
-    for lane, colour in [(-0.9, (255, 220, 160)), (-0.5, (255, 200, 130)), (0.5, (255, 70, 50)), (0.9, (230, 50, 40))]:
+    for lane, colour in [(-0.9, (236, 246, 252)), (-0.5, (190, 222, 240)), (0.5, (110, 176, 214)), (0.9, (49, 126, 166))]:
         for strand in range(6):
             jitter = rnd.uniform(-0.06, 0.06)
             pts = [curve(t / 300, lane + jitter) for t in range(301)]
@@ -61,10 +61,10 @@ def main():
         t = (k / 18) ** 0.8
         x, y = curve(t, -1.35)
         h = 220 * (1 - t) + 20
-        lp.line([(x, y), (x, y - h)], fill=(18, 18, 20, 255), width=max(1, int(6 * (1 - t))))
+        lp.line([(x, y), (x, y - h)], fill=(10, 22, 28, 255), width=max(1, int(6 * (1 - t))))
         r = max(2, 10 * (1 - t))
-        lp.ellipse([x - r * 4, y - h - r * 4, x + r * 4, y - h + r * 4], fill=(255, 190, 110, 50))
-        lp.ellipse([x - r, y - h - r, x + r, y - h + r], fill=(255, 220, 160, 255))
+        lp.ellipse([x - r * 4, y - h - r * 4, x + r * 4, y - h + r * 4], fill=(140, 195, 224, 50))
+        lp.ellipse([x - r, y - h - r, x + r, y - h + r], fill=(214, 233, 244, 255))
     img.alpha_composite(lamps.filter(ImageFilter.GaussianBlur(1.5)))
 
     save(finish(img), "scene-light-trails.webp")
