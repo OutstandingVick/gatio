@@ -24,11 +24,11 @@ export const COLOR_CLASSES: Record<ColorKey, { bg: string; fg: string; text: str
 
 /** Raw hex values, for SVG fills. */
 export const COLOR_HEX: Record<ColorKey, string> = {
-  accent: "#C8A96E",
+  accent: "#8CC3E0",
   teal: "#6FB5A4",
   plum: "#CF8AA1",
   mustard: "#D9B25A",
-  ink: "#E8E2D6",
+  ink: "#FFFFFF",
 };
 
 /** Soft pastel companion for each colour key, for card backgrounds. */
