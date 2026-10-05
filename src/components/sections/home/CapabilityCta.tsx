@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const cls = "label inline-flex min-h-12 items-center gap-3 border border-gold/60 px-7 text-gold transition-colors hover:bg-gold hover:text-bg";
+const cls = "label inline-flex min-h-12 items-center gap-3 border border-gold/60 px-7 text-gold transition-colors hover:border-steel hover:bg-steel hover:text-white";
 
 /** "Download capability statement" when a PDF is set in Settings, otherwise a link to discuss a project. */
 export function CapabilityCta({ pdfUrl }: { pdfUrl?: string | null }) {

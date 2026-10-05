@@ -39,7 +39,7 @@ export function Footer({ settings }: { settings?: SiteSettings | null }) {
           <p className="max-w-[16ch] font-serif text-5xl leading-[1.02] font-semibold md:text-7xl">
             Let&rsquo;s talk about <em className="font-medium text-gold italic">your market.</em>
           </p>
-          <Link href="/contact" className="label inline-flex min-h-14 w-fit items-center bg-gold px-9 font-medium text-bg transition-colors hover:bg-fg">
+          <Link href="/contact" className="label inline-flex min-h-14 w-fit items-center bg-steel px-9 font-medium text-white transition-colors hover:bg-white hover:text-deep">
             {settings?.ctaLabel || "Work with us"}
           </Link>
         </div>
