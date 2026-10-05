@@ -8,8 +8,12 @@ from PIL import Image, ImageChops, ImageDraw, ImageFilter
 ROOT = Path(__file__).resolve().parents[2]
 OUT_DIR = ROOT / "public" / "images"
 
-GOLD = (200, 169, 110)
-WARM = (255, 196, 120)
+# Brand palette (LinusBio): deep blue-teal #164258, steel blue #317EA6, white.
+DEEP = (22, 66, 88)
+STEEL = (49, 126, 166)
+# Light tones used for lights, glints and reflections. Names kept so scenes read the same.
+GOLD = (140, 195, 224)  # light steel
+WARM = (214, 233, 244)  # pale blue-white
 
 
 def lerp(a, b, t):
