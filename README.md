@@ -137,7 +137,15 @@ sanity.cli.ts          CLI + TypeGen config
 
 ## Design
 
-An editorial dark system modelled on randolphscottbell.com: near-black page, warm gold accent, Cormorant Garamond for display (bold roman, gold italic emphasis), Jost for text, tiny wide-tracked uppercase labels and hairline rules. See `/styleguide`.
+An editorial system whose layout is modelled on randolphscottbell.com, in a brand palette taken from linusbio.com:
+
+| Brand colour | Hex | Use |
+| --- | --- | --- |
+| Deep blue-teal | `#164258` | Page and bands (page `#12384B`, panels `#1B4C64`) |
+| Steel blue | `#317EA6` | Fills: buttons, highlights (white text on it is 4.5:1) |
+| White | `#FFFFFF` | Text |
+
+Steel blue is too dark to use as text on the blue-teal (2.8:1), so accent text, italics, labels and numerals use a light steel tint, `#8CC3E0` (6.5:1). Type is Cormorant Garamond for display (italic emphasis in light steel) and Jost for text, with tiny wide-tracked labels and hairline rules. See `/styleguide`.
 
 | Piece | Where |
 | --- | --- |
@@ -147,6 +155,6 @@ An editorial dark system modelled on randolphscottbell.com: near-black page, war
 | Home sections (hero, stats, ticker, featured band, statement, sticky services, research rows, founder, commitments, process, insights) | `src/components/editorial/` |
 | Painted images (no stock photography) | `scripts/art/` → `public/images/` |
 
-In CMS headlines, wrap words in `*asterisks*` for gold italic. Services can take an uploaded image; without one they use a painted scene.
+In CMS headlines, wrap words in `*asterisks*` for the light steel italic. Services can take an uploaded image; without one they use a painted scene.
 
 Load the placeholder Home content into a fresh dataset with the seed in `scripts/seed/`.
