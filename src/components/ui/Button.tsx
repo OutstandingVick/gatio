@@ -9,16 +9,16 @@ const base =
   "label inline-flex min-h-12 items-center justify-center gap-3 px-7 font-medium whitespace-nowrap transition-colors duration-200 disabled:pointer-events-none disabled:opacity-50";
 
 const variants: Record<ButtonVariant, string> = {
-  /** Gold solid: the main action. */
-  primary: "bg-gold text-bg hover:bg-fg",
+  /** Steel blue solid: the main action. Inverts to white on hover. */
+  primary: "bg-steel text-white hover:bg-white hover:text-deep",
   /** Alias of primary, kept for existing call sites. */
-  accent: "bg-gold text-bg hover:bg-fg",
+  accent: "bg-steel text-white hover:bg-white hover:text-deep",
   /** Thin outline: secondary actions. */
   outline: "border border-fg/45 text-fg hover:border-gold hover:text-gold",
   /** Raised surface with a hairline: tertiary actions. */
   soft: "border border-rule bg-surface-2 text-fg hover:border-gold/60 hover:text-gold",
   /** Ivory solid, for use over imagery. */
-  light: "bg-fg text-bg hover:bg-gold",
+  light: "bg-white text-deep hover:bg-steel hover:text-white",
 };
 
 const sizes: Record<ButtonSize, string> = {
