@@ -6,8 +6,8 @@ from common import finish, radial_glow, rng, save, vertical_gradient
 
 W, H = 1600, 2000
 rnd = rng(37)
-AMBER = (255, 176, 92)
-ROSE = (220, 96, 120)
+AMBER = (140, 195, 224)  # light steel lanterns
+ROSE = (49, 126, 166)  # steel blue lanterns
 
 
 def bokeh(size, count, r_range, colours, blur):
@@ -25,19 +25,19 @@ def bokeh(size, count, r_range, colours, blur):
 
 def main():
     img = Image.new("RGBA", (W, H), (0, 0, 0, 255))
-    img.paste(vertical_gradient((W, H), [(0.0, (10, 6, 10)), (0.5, (34, 16, 22)), (0.8, (20, 10, 12)), (1.0, (6, 4, 6))]), (0, 0))
+    img.paste(vertical_gradient((W, H), [(0.0, (6, 14, 20)), (0.5, (18, 48, 64)), (0.8, (12, 32, 44)), (1.0, (4, 10, 14))]), (0, 0))
     img.alpha_composite(radial_glow((W, H), (int(W * 0.5), int(H * 0.5)), 800, AMBER, strength=60, squash=1.2))
 
     # Out-of-focus lanterns: big soft far ones, smaller sharper near ones.
-    img.alpha_composite(bokeh((W, H), 26, (50, 120), [AMBER, ROSE, (255, 214, 150)], 8))
-    img.alpha_composite(bokeh((W, H), 45, (10, 30), [AMBER, (255, 214, 150)], 1.5))
+    img.alpha_composite(bokeh((W, H), 26, (50, 120), [AMBER, ROSE, (214, 233, 244)], 8))
+    img.alpha_composite(bokeh((W, H), 45, (10, 30), [AMBER, (214, 233, 244)], 1.5))
 
     d = ImageDraw.Draw(img)
     # Strings of lights.
     for k in range(4):
         y0 = int(H * (0.08 + k * 0.1))
         pts = [(x, y0 + int(60 * ((x / W - 0.5) ** 2) * 4)) for x in range(0, W + 1, 20)]
-        d.line(pts, fill=(30, 20, 20), width=2)
+        d.line(pts, fill=(14, 30, 40), width=2)
         glow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
         g = ImageDraw.Draw(glow)
         for x, y in pts[::3]:
@@ -50,7 +50,7 @@ def main():
     x = -40
     while x < W:
         aw = rnd.randint(260, 420)
-        col = rnd.choice([(70, 24, 30), (60, 40, 20), (30, 30, 40)])
+        col = rnd.choice([(22, 66, 88), (30, 52, 66), (40, 80, 104)])
         d.polygon([(x, top), (x + aw, top - 30), (x + aw, top + 60), (x, top + 90)], fill=col)
         for sx in range(x, x + aw, 40):
             d.pieslice([sx, top + 60, sx + 40, top + 110], 0, 180, fill=col)
@@ -65,7 +65,7 @@ def main():
         h = rnd.randint(420, 640)
         base = H + rnd.randint(0, 80)
         w = h * 0.28
-        col = (6, 5, 7)
+        col = (4, 12, 16)
         d.ellipse([cx - w * 0.22, base - h, cx + w * 0.22, base - h + w * 0.44], fill=col)  # head
         d.rounded_rectangle([cx - w / 2, base - h + w * 0.4, cx + w / 2, base], radius=int(w * 0.3), fill=col)  # body
 
