@@ -24,21 +24,24 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 const COLORS = [
-  { name: "bg", hex: "#060606", note: "Page" },
-  { name: "surface", hex: "#0D0D0D", note: "Raised bands" },
-  { name: "surface-2", hex: "#151515", note: "Panels" },
-  { name: "rule", hex: "#262626", note: "Hairlines" },
-  { name: "fg", hex: "#F4F1EA", note: "Text" },
-  { name: "fg-muted", hex: "#A8A299", note: "Secondary text, 8.6:1" },
-  { name: "fg-faint", hex: "#8A847B", note: "Labels only, 5.6:1" },
-  { name: "gold", hex: "#C8A96E", note: "Accent, 9:1" },
+  { name: "deep", hex: "#164258", note: "Brand deep blue-teal" },
+  { name: "steel", hex: "#317EA6", note: "Brand steel blue: fills, white text 4.5:1" },
+  { name: "fg", hex: "#FFFFFF", note: "Brand white: text, 12.4:1" },
+  { name: "bg", hex: "#12384B", note: "Page" },
+  { name: "surface", hex: "#164258", note: "Raised bands" },
+  { name: "surface-2", hex: "#1B4C64", note: "Panels" },
+  { name: "rule", hex: "#2C5D75", note: "Hairlines" },
+  { name: "fg-muted", hex: "#C7D6DF", note: "Secondary text, 8.3:1" },
+  { name: "fg-faint", hex: "#ADC3CF", note: "Labels, 6.8:1" },
+  { name: "gold", hex: "#8CC3E0", note: "Light steel accent text, 6.5:1" },
   { name: "teal", hex: "#6FB5A4", note: "Topic" },
   { name: "plum", hex: "#CF8AA1", note: "Topic" },
-  { name: "mustard", hex: "#D9B25A", note: "Topic" },
 ] as const;
 
 // Literal class names so Tailwind picks them up.
 const SWATCH: Record<string, string> = {
+  deep: "bg-deep",
+  steel: "bg-steel",
   bg: "bg-bg",
   surface: "bg-surface",
   "surface-2": "bg-surface-2",
@@ -62,7 +65,7 @@ export default function StyleguidePage() {
         <h1 className="mt-5 text-6xl md:text-8xl">
           Gatio <em>styleguide</em>
         </h1>
-        <p className="mt-6 max-w-[56ch] text-lg text-fg-muted">The editorial system: near-black, warm gold, Cormorant Garamond for display and Jost for text.</p>
+        <p className="mt-6 max-w-[56ch] text-lg text-fg-muted">The editorial system in the brand palette: deep blue-teal, steel blue and white, with Cormorant Garamond for display and Jost for text.</p>
       </Container>
 
       <Section labelledBy="sg-colours">
