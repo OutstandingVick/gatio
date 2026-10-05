@@ -25,7 +25,7 @@ export function PageHeader({
   return (
     <header className="relative isolate overflow-hidden border-b border-rule">
       <Image src={img.src} alt="" fill priority sizes="100vw" className="-z-20 object-cover object-[60%_center]" />
-      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-r from-black/90 via-black/65 to-black/30" />
+      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-r from-[#0b2533]/90 via-[#0f3142]/65 to-[#12384b]/30" />
       <Container className="flex min-h-[62vh] flex-col justify-end pt-32 pb-14 md:pb-20">
         {eyebrow && <p className="label text-gold">{eyebrow}</p>}
         <h1 className="mt-5 max-w-[16ch] text-5xl md:text-8xl">

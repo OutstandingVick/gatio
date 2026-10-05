@@ -52,7 +52,7 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
     <article>
       <header className="relative isolate overflow-hidden border-b border-rule">
         <Image src={img.src} alt="" fill priority sizes="100vw" className="-z-20 object-cover" />
-        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-r from-black/90 via-black/60 to-black/20" />
+        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-r from-[#0b2533]/90 via-[#0f3142]/60 to-[#12384b]/20" />
         <Container className="flex min-h-[72vh] flex-col justify-end pt-32 pb-14 md:pb-20">
           <Link href="/services" className="label inline-flex w-fit items-center gap-2 text-fg-muted transition-colors hover:text-gold">
             <span aria-hidden="true">←</span> Services
