@@ -33,7 +33,7 @@ export function Divisions({ services, ctaLabel }: { services: ServicesQueryResul
             The <em>services</em>
           </h2>
         </div>
-        <Link href="/contact" className="label inline-flex min-h-12 w-fit items-center bg-gold px-7 font-medium text-bg transition-colors hover:bg-fg">
+        <Link href="/contact" className="label inline-flex min-h-12 w-fit items-center bg-steel px-7 font-medium text-white transition-colors hover:bg-white hover:text-deep">
           {ctaLabel || "Discuss a project"}
         </Link>
       </Container>
@@ -51,7 +51,7 @@ export function Divisions({ services, ctaLabel }: { services: ServicesQueryResul
                 <div className="md:min-h-[175vh]">
                   <div className="relative aspect-[4/5] overflow-hidden md:sticky md:top-20 md:aspect-auto md:h-[calc(100vh-7rem)]">
                     <Image src={img.src} alt={img.alt} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
-                    <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+                    <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-[#0b2533]/90 via-[#0f3142]/15 to-transparent" />
                     <ol aria-hidden="true" className="absolute top-1/2 right-5 flex -translate-y-1/2 flex-col gap-2">
                       {services.map((_, k) => (
                         <li key={k} className={cn("h-6 w-px", k === i ? "bg-gold" : "bg-fg/30")} />
