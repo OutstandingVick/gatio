@@ -8,8 +8,8 @@ const PAD = { top: 20, right: 16, bottom: 48, left: 52 };
 const INNER_W = W - PAD.left - PAD.right;
 const INNER_H = H - PAD.top - PAD.bottom;
 
-const LINE = "#262626";
-const MUTED = "#A8A299";
+const LINE = "#2C5D75";
+const MUTED = "#C7D6DF";
 
 /** Round the axis max up to a tidy number and return 4 evenly spaced ticks. */
 function niceTicks(max: number): number[] {
@@ -67,7 +67,7 @@ export function Chart({ value, color = "accent" }: { value: ChartData; color?: C
                 strokeLinecap="round"
               />
               {data.map((d, i) => (
-                <circle key={d._key} cx={x(i)} cy={y(d.value)} r={5} fill="#0D0D0D" stroke={fill} strokeWidth={2.5} />
+                <circle key={d._key} cx={x(i)} cy={y(d.value)} r={5} fill="#164258" stroke={fill} strokeWidth={2.5} />
               ))}
             </g>
           ) : (
@@ -84,7 +84,7 @@ export function Chart({ value, color = "accent" }: { value: ChartData; color?: C
             ))
           )}
 
-          <line x1={PAD.left} x2={W - PAD.right} y1={y(0)} y2={y(0)} stroke="#F4F1EA" strokeOpacity={0.5} strokeWidth={1} />
+          <line x1={PAD.left} x2={W - PAD.right} y1={y(0)} y2={y(0)} stroke="#FFFFFF" strokeOpacity={0.6} strokeWidth={1} />
           {data.map((d, i) =>
             i % labelEvery === 0 ? (
               <text key={d._key} x={x(i)} y={H - PAD.bottom + 24} textAnchor="middle" fontSize={13} fill={MUTED}>
