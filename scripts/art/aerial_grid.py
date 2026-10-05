@@ -11,7 +11,7 @@ rnd = rng(53)
 
 
 def main():
-    img = Image.new("RGBA", (W, H), (5, 6, 9, 255))
+    img = Image.new("RGBA", (W, H), (4, 12, 18, 255))
     streets = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     s = ImageDraw.Draw(streets)
     blocks = ImageDraw.Draw(img)
@@ -30,7 +30,7 @@ def main():
             pad = rnd.choice([10, 12, 16])
             quad = [rot(gx + pad, gy + pad), rot(gx + step - pad, gy + pad), rot(gx + step - pad, gy + step - pad), rot(gx + pad, gy + step - pad)]
             shade = rnd.randint(7, 14)
-            blocks.polygon(quad, fill=(shade, shade, shade + 4))
+            blocks.polygon(quad, fill=(shade, shade + 10, shade + 16))
             # Rooftop lights inside some blocks.
             if rnd.random() < 0.35:
                 for _ in range(rnd.randint(2, 8)):
@@ -57,7 +57,7 @@ def main():
     big = big.filter(ImageFilter.GaussianBlur(6))
     shore_big = big.filter(ImageFilter.FIND_EDGES).filter(ImageFilter.GaussianBlur(10))
     water = big.crop((P, P, P + W, P + H))
-    img = Image.composite(Image.new("RGBA", (W, H), (4, 10, 16, 255)), img, water)
+    img = Image.composite(Image.new("RGBA", (W, H), (10, 34, 46, 255)), img, water)
     shore = shore_big.crop((P, P, P + W, P + H))
     glow = Image.new("RGBA", (W, H), (*GOLD, 0))
     glow.putalpha(shore.point(lambda v: min(255, v * 6)))
